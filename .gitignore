@@ -1,0 +1,29 @@
+# emacs & vim files #
+#####################
+*org
+*.swp
+*.swo
+*~
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# VS Code Files #
+#################
+.vscode/*
+
+# node dependancies installs #
+##############################
+/react/node_modules
+/express/node_modules
+
+# react production build #
+##########################
+/react/build
