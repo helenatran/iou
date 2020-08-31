@@ -1,3 +1,7 @@
+# Secret #
+##########
+*.env
+
 # emacs & vim files #
 #####################
 *org
@@ -21,9 +25,9 @@ Thumbs.db
 
 # node dependancies installs #
 ##############################
-/react/node_modules
-/express/node_modules
+/frontend/node_modules
+/backend/node_modules
 
 # react production build #
 ##########################
-/react/build
+/frontend/build
