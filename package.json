@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/atut2000/iou/issues"
   },
-  "homepage": "https://github.com/atut2000/iou#readme"
+  "homepage": "https://github.com/atut2000/iou#readme",
+  "dependencies": {
+    "@material-ui/core": "^4.11.0"
+  }
 }

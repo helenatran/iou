@@ -20,7 +20,7 @@ const userSchema = new Schema ({
         required: true
     },
     requestsCompleted: {
-        type: Integer,
+        type: Number,
         required: true,
     }
 })
