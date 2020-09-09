@@ -37,6 +37,7 @@ export default function ButtonAppBar() {
           <Link to="/requests"><Button color="inherit">Requests</Button></Link>
           <Link to="/favours"><Button color="inherit">Favours</Button></Link>
           <Link to="/leaderboard"><Button color="inherit">Leaderboard</Button></Link>
+          <Link to="/account"><Button color="inherit">My Account</Button></Link>
         </Toolbar>
       </AppBar>
     </div>
