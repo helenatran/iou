@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { allowedNodeEnvironmentFlags } = require('process');
 
 // Environment variables
 require('dotenv').config();
@@ -14,6 +13,19 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
+
+// Connect to the MongoDB Database
+const URI = process.env.ATLAS_URI;
+mongoose.connect(URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+})
+
+const connection = mongoose.connection;
+connection.once('open', () => {
+    console.log("MongoDB connection successful")
+})
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
