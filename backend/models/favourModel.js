@@ -6,10 +6,6 @@ const favourSchema = new Schema ({
         type: String,
         required: true
     },
-    favourDescription: {
-        type: String,
-        required: true
-    },
     oweUserId: {
         type: Schema.Types.ObjectId,
         required: true,
