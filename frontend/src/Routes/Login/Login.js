@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import {Button, Box, Paper, TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -49,15 +48,3 @@ export default function Login() {
     )
 }
 
-=======
-import React from 'react'
-
-const Login = props => {
-
-    return (
-        <h1>Login</h1>
-    )
-}
-
-export default Login;
->>>>>>> d6e6f7b4b1dcb6b835dc6dc460c62452c2bfe752
