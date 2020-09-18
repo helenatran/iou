@@ -30,7 +30,8 @@ const requestSchema = new Schema ({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        enum: ["Open", "Pending Requester Confirmation", "Closed"]
     },
     timeCreated: {
         type: Date,
