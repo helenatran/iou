@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const requestSchema = new Schema ({
-    task: {
+    taskTitle: {
+        type: String,
+        required: true
+    },
+    taskDescription: {
         type: String,
         required: true
     },
