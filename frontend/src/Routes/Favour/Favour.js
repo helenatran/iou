@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -23,3 +24,15 @@ export default function Favours() {
         </div>
     )
 }
+=======
+import React from 'react'
+
+const Favours = props => {
+
+    return (
+        <h1>Favours</h1>
+    )
+}
+
+export default Favours;
+>>>>>>> 1d0c24bcfbd1ad1f6abc3032d61683e98644a2ff

@@ -3,7 +3,9 @@ import React from 'react'
 const Requests = props => {
 
     return (
-        <h1>Requests</h1>
+        <div class="requests-root-container">
+            <h1>Requests</h1>
+        </div>
     )
 }
 
