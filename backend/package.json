@@ -4,7 +4,10 @@
   "description": "Express backend for the IOU system",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./tests/testRequests.js ./tests/testFavours.js ./tests/testUsers.js",
+    "test-favours": "mocha ./tests/testFavours.js",
+    "test-requests": "mocha ./tests/testRequests.js",
+    "test-users": "mocha ./tests/testUsers.js"
   },
   "author": "Stick bugged lol",
   "license": "ISC",
