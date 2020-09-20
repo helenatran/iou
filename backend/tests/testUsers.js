@@ -1,5 +1,6 @@
 var assert = require('assert');
 
+//example test - feel free to delete
 describe("arrays", function() {
     describe('push', function() {
         it("should add a element to the array", function() {
