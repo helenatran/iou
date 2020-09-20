@@ -15,7 +15,8 @@ class Favours extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            favours: []
+            favours: [],
+            favoursToShow: 'pending'
         };
     }
 
@@ -32,17 +33,31 @@ class Favours extends React.Component {
             })
     }
 
+    updateShow = (showState) => {
+        this.setState({
+            favoursToShow: showState
+        })
+    }
+
     render() {
         const { classes } = this.props;
+        let favours = [];
+        if (this.state.favoursToShow === 'pending') {
+            favours = this.state.favours.filter(favour => !favour.isCompleted);
+        }
+        else if (this.state.favoursToShow === 'completed') {
+            favours = this.state.favours.filter(favour => favour.isCompleted);
+        }
+
         return (
             <div className={classes.root}>
                 <h1>Favours</h1>
                 <div>
-                    <Button variant="contained">I owe</Button>
-                    <Button variant="contained">Owe me</Button>
-                    <Button variant="contained">Past favours</Button>
+                    <Button variant="contained" onClick={() => this.updateShow('pending')}>I owe</Button>
+                    <Button variant="contained" onClick={() => this.updateShow('pending')}>Owe me</Button>
+                    <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={this.state.favours} />
+                <FavourList favours={favours} />
             </div>
         )
     }
