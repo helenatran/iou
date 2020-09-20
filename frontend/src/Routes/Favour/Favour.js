@@ -1,38 +1,52 @@
-<<<<<<< HEAD
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
+import axios from 'axios'
+import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import FavourList from './FavourList'
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
     root: {
         margin: theme.spacing(1),
     },
-}));
+});
 
-export default function Favours() {
+class Favours extends React.Component {
 
-    const classes = useStyles();
+    constructor(props) {
+        super(props);
+        this.state = {
+            favours: []
+        };
+    }
 
-    return (
-        <div className={classes.root}>
-            <h1>Favours</h1>
-            <div>
-                <Button variant="contained">I owe</Button>
-                <Button variant="contained">Owe me</Button>
-                <Button variant="contained">Past favours</Button>
+    componentDidMount() {
+        const url = 'http://localhost:5000/favoursList';
+        axios.get(url)
+            .then((res) => {
+                this.setState({
+                    favours: res.data
+                })
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
+    render() {
+        const { classes } = this.props;
+        return (
+            <div className={classes.root}>
+                <h1>Favours</h1>
+                <div>
+                    <Button variant="contained">I owe</Button>
+                    <Button variant="contained">Owe me</Button>
+                    <Button variant="contained">Past favours</Button>
+                </div>
+                <FavourList favours={this.state.favours} />
             </div>
-        </div>
-    )
-}
-=======
-import React from 'react'
-
-const Favours = props => {
-
-    return (
-        <h1>Favours</h1>
-    )
+        )
+    }
 }
 
-export default Favours;
->>>>>>> 1d0c24bcfbd1ad1f6abc3032d61683e98644a2ff
+//export default Favours;
+export default withStyles(useStyles)(Favours)

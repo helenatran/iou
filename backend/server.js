@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const favourRoutes = require('./routes/favours')
 
 // Environment variables
 require('dotenv').config();
@@ -27,17 +28,16 @@ connection.once('open', () => {
     console.log("MongoDB connection successful")
 })
 // api imports ---------------------
-
-
+favourRoutes(app);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
 
 // Redirect to react build file
-app.get('*', (req,res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
 });
 
-app.listen(PORT, () =>{
+app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`)
 });
