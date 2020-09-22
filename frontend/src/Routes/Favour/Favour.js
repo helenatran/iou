@@ -3,6 +3,7 @@ import axios from 'axios'
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import FavourList from './FavourList'
+import { Link } from 'react-router-dom'
 
 const useStyles = (theme) => ({
     root: {
@@ -58,6 +59,7 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
                 <FavourList favours={favours} />
+                <Link><Button variant="contained">Create Favour</Button></Link>
             </div>
         )
     }
