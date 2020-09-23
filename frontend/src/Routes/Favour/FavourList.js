@@ -21,13 +21,6 @@ export default function FavourList(props) {
     const classes = useStyles();
 
     return (
-        // <div>
-        //     <ul>
-        //         {props.favours.map((item) => (
-        //             <li key={item._id}>{item.favourName} </li>
-        //         ))}
-        //     </ul>
-        // </div>
         <div>
             <Grid container className={classes.gridRoot} spacing={3}>
                 {props.favours.map((item) => (
@@ -35,15 +28,9 @@ export default function FavourList(props) {
                         <Card className={classes.cardRoot}>
                             <CardActionArea>
                                 <CardContent>
-                                    <Typography variant="h6" component="h2">
-                                        {item.favourName}
-                                    </Typography>
-                                    <Typography>
-                                        Friend:
-                                </Typography>
-                                    <Typography>
-                                        Date: {item.timeCreated}
-                                    </Typography>
+                                    <Typography variant="h6">{item.favourName}</Typography>
+                                    <Typography>Friend:</Typography>
+                                    <Typography>Date: {item.timeCreated}</Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
