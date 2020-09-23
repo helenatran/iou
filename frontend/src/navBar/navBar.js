@@ -29,7 +29,6 @@ export default function ButtonAppBar() {
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-          
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             IOU
@@ -37,7 +36,6 @@ export default function ButtonAppBar() {
           <Link to="/requests"><Button color="inherit">Requests</Button></Link>
           <Link to="/favours"><Button color="inherit">Favours</Button></Link>
           <Link to="/leaderboard"><Button color="inherit">Leaderboard</Button></Link>
-          <Link to="/account"><Button color="inherit">My Account</Button></Link>
         </Toolbar>
       </AppBar>
     </div>

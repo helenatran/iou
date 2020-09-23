@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const favourSchema = new Schema ({
+const FavourSchema = new Schema({
     favourName: {
         type: String,
         required: true
@@ -30,6 +30,6 @@ const favourSchema = new Schema ({
     }
 });
 
-const Favour = mongoose.model('Favour', favourSchema);
+const Favour = mongoose.model('Favour', FavourSchema);
 
 module.exports = Favour;
