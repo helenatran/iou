@@ -30,6 +30,8 @@ connection.once('open', () => {
 })
 // api imports ---------------------
 favourRoutes(app);
+const userRoute = require('./routes/users');
+app.use('/api/users', /* verifyToken, */ userRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
