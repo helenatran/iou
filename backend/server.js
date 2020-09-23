@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+
 // Environment variables
 require('dotenv').config();
 
@@ -27,11 +28,17 @@ connection.once('open', () => {
     console.log("MongoDB connection successful")
 })
 // api imports ---------------------
+const userRouter = require('./routes/users');
+app.use('/api/users', userRouter); 
+
 
 
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
+
+
+
 
 // Redirect to react build file
 app.get('*', (req,res) => {
