@@ -17,8 +17,10 @@ class Favours extends React.Component {
         super(props);
         this.state = {
             favours: [],
-            favoursToShow: 'pending'
+            favoursToShow: 'pending',
+            selectedFavour: {}
         };
+        this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
     }
 
     componentDidMount() {
@@ -40,6 +42,12 @@ class Favours extends React.Component {
         })
     }
 
+    updateSelectedFavour = (favour) => {
+        this.setState({
+            selectedFavour: favour
+        })
+    }
+
     render() {
         const { classes } = this.props;
         let favours = [];
@@ -58,8 +66,8 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pending')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={favours} />
-                <Link to={`/favours/create-favour`}><Button variant="contained">Create Favour</Button></Link>
+                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} />
+                <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
             </div>
         )
     }

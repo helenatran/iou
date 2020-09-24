@@ -8,7 +8,7 @@ module.exports.createFavour = (req, res) => {
         }
         res.json(Favour);
     })
-}
+};
 
 module.exports.getFavours = (req, res) => {
     Favour.find()
@@ -16,4 +16,12 @@ module.exports.getFavours = (req, res) => {
             res.status(200).send(favours);
         })
         .catch(err => res.status(400).json({ 'error': err }));
-}
+};
+
+module.exports.getFavourWithID = (req, res) => {
+    Favour.findById(req.params.FavourId)
+        .then((favour) => {
+            res.status(200).send(favour);
+        })
+        .catch(err => res.status(400).json({ 'error': err }));
+};

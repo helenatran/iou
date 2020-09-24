@@ -5,6 +5,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     gridRoot: {
@@ -24,9 +25,13 @@ export default function FavourList(props) {
         <div>
             <Grid container className={classes.gridRoot} spacing={3}>
                 {props.favours.map((item) => (
-                    <Grid item>
+                    <Grid item key={item._id}>
                         <Card className={classes.cardRoot}>
-                            <CardActionArea>
+                            <CardActionArea onClick={props.updateSelectedFavour.bind(this, item)} component={Link}
+                                to={{
+                                    pathname: '/favours/' + item._id,
+                                    myCustomProps: item
+                                }}>
                                 <CardContent>
                                     <Typography variant="h6">{item.favourName}</Typography>
                                     <Typography>Friend:</Typography>
