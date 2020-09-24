@@ -31,7 +31,9 @@ connection.once('open', () => {
 // api imports ---------------------
 favourRoutes(app);
 const userRoute = require('./routes/users');
-app.use('/api/users', /* verifyToken, */ userRoute);
+const leaderRoute = require('./routes/leaderboardRoute')
+app.use('/api/leaderboard', leaderRoute)
+app.use('/api/users',  userRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
