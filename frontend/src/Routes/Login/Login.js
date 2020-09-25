@@ -40,7 +40,7 @@ export default function Login() {
                     </Button>
                 </Box>
                 <Box display="flex" justifyContent="center" margin = "1vw" >
-                    <p>Don't have an account yet? <Link to="/account">Register here.</Link></p>
+                    <p>Don't have an account yet? <Link to="/register">Register here.</Link></p>
                 </Box>
             </Paper>
         </div>

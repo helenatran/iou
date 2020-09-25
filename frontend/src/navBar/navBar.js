@@ -33,6 +33,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             IOU
           </Typography>
+          <Link to="/login"><Button color="inherit">Login</Button></Link>
+          <Link to="/register"><Button color="inherit">Register</Button></Link>
           <Link to="/requests"><Button color="inherit">Requests</Button></Link>
           <Link to="/favours"><Button color="inherit">Favours</Button></Link>
           <Link to="/leaderboard"><Button color="inherit">Leaderboard</Button></Link>

@@ -22,7 +22,7 @@ const Table = ({userList=[]}) => {
                         <tbody> */
                             <tr>
                             
-                            <td>{data.firstName}</td>
+                            <td>{data.firstName} {data.lastName}</td>
                             <td>{data.requestsCompleted}</td>
                            
                             </tr>
