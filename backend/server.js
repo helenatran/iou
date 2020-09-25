@@ -4,6 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
+// import requestRoutes from './routes/requestRoutes';
+const requestRoutes = require('./routes/requestRoutes');
+
 // Environment variables
 require('dotenv').config();
 

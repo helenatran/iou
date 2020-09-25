@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const requestSchema = new Schema ({
+const RequestSchema = new Schema ({
     taskTitle: {
         type: String,
         required: true
@@ -44,6 +44,6 @@ const requestSchema = new Schema ({
     }
 });
 
-const Request = mongoose.model('Request', requestSchema);
+const Request = mongoose.model('Request', RequestSchema);
 
 module.exports = Request;
