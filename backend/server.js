@@ -3,6 +3,8 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const favourRoutes = require('./routes/favours')
+
 
 // import requestRoutes from './routes/requestRoutes';
 const requestRoutes = require('./routes/requestRoutes');
@@ -30,17 +32,23 @@ connection.once('open', () => {
     console.log("MongoDB connection successful")
 })
 // api imports ---------------------
-
-
+favourRoutes(app);
+const userRoute = require('./routes/users');
+const leaderRoute = require('./routes/leaderboardRoute')
+app.use('/api/leaderboard', leaderRoute)
+app.use('/api/users',  userRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
 
+
+
+
 // Redirect to react build file
-app.get('*', (req,res) => {
+app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, "../frontend", "build", "index.html"));
 });
 
-app.listen(PORT, () =>{
+app.listen(PORT, () => {
     console.log(`Server started on port: ${PORT}`)
 });
