@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const favourRoutes = require('./routes/favours')
 
+
 // Environment variables
 require('dotenv').config();
 
@@ -29,9 +30,16 @@ connection.once('open', () => {
 })
 // api imports ---------------------
 favourRoutes(app);
+const userRoute = require('./routes/users');
+const leaderRoute = require('./routes/leaderboardRoute')
+app.use('/api/leaderboard', leaderRoute)
+app.use('/api/users',  userRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
+
+
+
 
 // Redirect to react build file
 app.get('*', (req, res) => {
