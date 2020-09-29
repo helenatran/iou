@@ -1,8 +1,8 @@
 import React from 'react'
 import axios from 'axios'
 import { withStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import FavourList from './FavourList';
+import { Button, TextField } from '@material-ui/core';
+import FavourList from './Components/FavourList';
 import { Link } from 'react-router-dom';
 
 const useStyles = (theme) => ({
@@ -16,7 +16,9 @@ class Favours extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            searchInput: '',
             favours: [],
+            filteredFavours: [],
             favoursToShow: 'pending',
             selectedFavour: {}
         };
@@ -28,7 +30,8 @@ class Favours extends React.Component {
         axios.get(url)
             .then((res) => {
                 this.setState({
-                    favours: res.data
+                    favours: res.data,
+                    filteredFavours: res.data
                 })
             })
             .catch((err) => {
@@ -48,19 +51,38 @@ class Favours extends React.Component {
         })
     }
 
+    updateSearchInput = (input) => {
+        const filtered = this.state.favours.filter(favour => {
+            return favour.favourName.toLowerCase().includes(input.toLowerCase())
+        })
+        this.setState({
+            searchInput: input,
+            filteredFavours: filtered
+        })
+    }
+
     render() {
         const { classes } = this.props;
         let favours = [];
         if (this.state.favoursToShow === 'pending') {
-            favours = this.state.favours.filter(favour => !favour.isCompleted);
+            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted);
         }
         else if (this.state.favoursToShow === 'completed') {
-            favours = this.state.favours.filter(favour => favour.isCompleted);
+            favours = this.state.filteredFavours.filter(favour => favour.isCompleted);
         }
 
         return (
             <div className={classes.root}>
                 <h1>Favours</h1>
+                <TextField class="centre-this"
+                    id="standard-full-width"
+                    fullWidth
+                    placeholder="Search for a favour..."
+                    variant="outlined"
+                    value={this.searchInput}
+                    onChange={(e) => this.updateSearchInput(e.target.value)}
+                    style={{ marginBottom: 10 }}>
+                </TextField>
                 <div>
                     <Button variant="contained" onClick={() => this.updateShow('pending')}>I owe</Button>
                     <Button variant="contained" onClick={() => this.updateShow('pending')}>Owe me</Button>
@@ -68,7 +90,7 @@ class Favours extends React.Component {
                 </div>
                 <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} />
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
-            </div>
+            </div >
         )
     }
 }

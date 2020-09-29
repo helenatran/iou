@@ -1,4 +1,5 @@
 import React from 'react';
+import Time from 'react-time-format';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -30,12 +31,13 @@ export default function FavourList(props) {
                             <CardActionArea onClick={props.updateSelectedFavour.bind(this, item)} component={Link}
                                 to={{
                                     pathname: '/favours/' + item._id,
-                                    myCustomProps: item
+                                    myCustomProps: item,
+                                    state: { favour: item }
                                 }}>
                                 <CardContent>
                                     <Typography variant="h6">{item.favourName}</Typography>
                                     <Typography>Friend:</Typography>
-                                    <Typography>Date: {item.timeCreated}</Typography>
+                                    <Typography>Date: <Time value={item.timeCreated} format="DD/MM/YYYY" /></Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>
