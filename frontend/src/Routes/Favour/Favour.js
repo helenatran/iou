@@ -27,16 +27,18 @@ class Favours extends React.Component {
 
     componentDidMount() {
         const url = 'http://localhost:5000/api/favours';
-        axios.get(url)
-            .then((res) => {
+        (async () => {
+            try {
+                const res = await axios.get(url);
+                const { data } = await res;
                 this.setState({
-                    favours: res.data,
-                    filteredFavours: res.data
+                    favours: data,
+                    filteredFavours: data
                 })
-            })
-            .catch((err) => {
-                console.log(err);
-            })
+            } catch (e) {
+                console.log(e);
+            }
+        })();
     }
 
     updateShow = (showState) => {
