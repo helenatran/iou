@@ -2,6 +2,7 @@ import React from 'react';
 import Time from 'react-time-format';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Grid, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 const useStyles = (theme) => ({
     root: {
@@ -46,10 +47,14 @@ class FavourSingle extends React.Component {
                         </Grid>
                     </Grid>
                     <div className={classes.button}>
-                        <Button variant="contained">Update Favour</Button>
+                        <Link to={{
+                            pathname: '/favours/' + favour._id + '/update',
+                            myCustomProps: favour,
+                            state: { favour: favour },
+                        }}><Button variant="contained">Update Favour</Button></Link>
                     </div>
                     <div className={classes.button}>
-                        <Button variant="contained">Back to list</Button>
+                        <Link to={`/favours`}><Button variant="contained">Back to list</Button></Link>
                     </div>
                 </Paper>
             </div >
