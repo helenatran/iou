@@ -3,20 +3,20 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 //const User = require('../models/userModel');
 //const { registerUser } = require('../controllers/authController');
-require('../controllers/authController')
+const AuthController = require('../controllers/authController')
 
-//router.post('/register', registerUser)
+router.post('/register', AuthController.registerUser)
 
-router.post(
-    '/register',
-    passport.authenticate('register', { session: false }),
-    async (req, res, next) => {
-      res.json({
-        message: 'Signup successful',
-        user: req.user
-      });
-    }
- );
+// router.post(
+//     '/register',
+//     passport.authenticate('register', { session: false }),
+//     async (req, res, next) => {
+//       res.json({
+//         message: 'Signup successful',
+//         user: req.user
+//       });
+//     }
+//  );
 
 router.post(
     '/login',

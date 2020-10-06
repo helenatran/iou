@@ -4,17 +4,39 @@ const User = require('../models/userModel');
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-// module.exports.registerUser = async (req, res, next)  => {
-//   passport.authenticate('register', {
-//     session: false
-//   }),
-//   async (req, res, next) => {
-//     res.json({
-//       message: 'Signup successful',
-//       user: req.user
-//     });
-//   }
-// };
+module.exports.registerUser = async (req, res, next)  => {
+  try {
+    console.log("I've been hit!")
+    let userEmail = req.body.email;
+    console.log(userEmail)
+
+    let checkUser = await User.findOne({ 
+      email: userEmail 
+    })
+    console.log(checkUser)
+
+    if (checkUser)
+      return res.status(400).json({
+        Error: 'The email address you entered already exists in the system'
+      })
+    else {
+      passport.authenticate('register', {
+        session: false
+      }),
+      async (req, res, next) => {
+        res.json({
+          message: 'Signup successful',
+          user: req.user
+        })
+      console.log("I've finished!")
+    }}  
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
 
 passport.use(
     'register',
@@ -24,7 +46,7 @@ passport.use(
         passwordField: 'password',
         passReqToCallback: true
       },
-      async ( req,email, password, done) => {
+      async ( req, email, password, done) => {
         try {
           const firstName = req.body.firstName;
           const lastName = req.body.lastName;
