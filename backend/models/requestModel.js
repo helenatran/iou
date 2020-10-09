@@ -37,7 +37,8 @@ const RequestSchema = new Schema({
     requestExpiry: {
         type: Date,
         required: false
-    }
+    },
+    // todo - add rewards array of one array element required
 }, {
     collection: 'requests'
 });
