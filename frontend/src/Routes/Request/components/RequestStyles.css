@@ -1,0 +1,24 @@
+
+.searchbar {
+    margin-bottom: 20px;
+}
+
+.list-group-container {
+    margin: 20px auto;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-evenly; */
+    /* align-content: flex-start; */
+}
+
+.request-card {
+    width: 10vw;
+    min-width: 200px;
+    height: 150px;
+    display: inline-block;
+    margin: 3vh 1vw;
+    padding: 30px;
+}
+
