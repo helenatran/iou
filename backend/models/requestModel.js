@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const RequestSchema = new Schema ({
+const RequestSchema = new Schema({
     taskTitle: {
         type: String,
         required: true
@@ -12,21 +12,17 @@ const RequestSchema = new Schema ({
     },
     requesterUserID: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: true, 
         ref: 'User'
-    },
-    isClaimedCompleted: {
-        type: Boolean,
-        required: true
     },
     completerUserId: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: false,
         ref: 'User'
     },
     proof: {
         type: String,
-        required: true
+        required: false,
     },
     status: {
         type: String,
@@ -40,8 +36,10 @@ const RequestSchema = new Schema ({
     },
     requestExpiry: {
         type: Date,
-        required: true
+        required: false
     }
+}, {
+    collection: 'requests'
 });
 
 const Request = mongoose.model('Request', RequestSchema);
