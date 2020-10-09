@@ -5,10 +5,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const favourRoutes = require('./routes/favours')
 
-
-// import requestRoutes from './routes/requestRoutes';
-const requestRoutes = require('./routes/requestRoutes');
-
 // Environment variables
 require('dotenv').config();
 
@@ -25,18 +21,22 @@ mongoose.connect(URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
-})
+});
 
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB connection successful")
-})
+});
+
 // api imports ---------------------
 favourRoutes(app);
 const userRoute = require('./routes/users');
 const leaderRoute = require('./routes/leaderboardRoute')
+const requestRoute = require('./routes/requestRoutes');
 app.use('/api/leaderboard', leaderRoute)
 app.use('/api/users',  userRoute);
+app.use('/api/request',  requestRoute);
+
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
