@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-// import Card from '@material-ui/core/Card';
 
 import RequestListGroup from './components/RequestListGroup';
+import RequestDetails from './components/RequestDetails';
 
 class Requests extends Component {
     constructor(props) {
@@ -12,7 +12,7 @@ class Requests extends Component {
         this.state = {
             filters: ['All open requests', 'Pending Confirmation Requests', 'Your Requests', 'pls'],
             searchCriteria: '',
-            requests: [
+            requestsList: [
                 {
                     taskTitle: "my request",
                     taskDescription: "do this thing",
@@ -45,9 +45,9 @@ class Requests extends Component {
             ]
         }
 
-        //event function binders
-        this.handleFiltering = this.handleFiltering.bind(this);
-        this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
+        //event function binders - if event funcs are arrow functions in a var then binding not needed
+        // this.handleFiltering = this.handleFiltering.bind(this);
+        // this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
 
     }
     
@@ -55,7 +55,8 @@ class Requests extends Component {
         this.setState({searchCriteria: criteria.target.value});
     }
 
-    handleFiltering(filter) {
+    // WIP
+    handleFiltering = (filter) => {
         console.log(filter+ " was clicked");
         let results = this.state.requests;
 
@@ -66,7 +67,7 @@ class Requests extends Component {
     render() { 
         console.log(this.props);
         return ( 
-            <div className="page-content-container">
+            <div className="page-content-container">                
                 <div className="requests-header">
                     <h1>Requests</h1>
                     <form action='/requests/' className="searchbar" noValidate autoComplete="off">
@@ -74,13 +75,25 @@ class Requests extends Component {
                     </form>
                     <ButtonGroup>
                         {this.state.filters.map(filter => 
-                            <Button color="primary" onClick={this.handleFiltering({filter})} key={filter}>{filter}</Button>
+                            <Button 
+                                color="primary" 
+                                onClick={
+                                    (filter) => {
+                                        console.log(filter)
+                                    }
+                                } 
+                                key={filter}
+                                >
+                                    {filter}
+                                </Button>
+                            
+
                         )} 
                         {/* TODO - set the onclick for filter */}
                     </ButtonGroup>
                 </div>
 
-                <RequestListGroup value="hello"/>
+                <RequestListGroup requestsList={this.state.requestsList}/>
             </div> 
         );
     }

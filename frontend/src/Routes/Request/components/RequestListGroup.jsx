@@ -1,26 +1,20 @@
-import React, { Component, useState, useEffect } from "react";
+import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
 import Paper from "@material-ui/core/Paper";
 
+import RequestCard from './RequestCard';
 import "./RequestStyles.css";
-import { getAllRequests } from "../../../../../backend/controllers/requestController";
+// import { getAllRequests } from "../../../../../backend/controllers/requestController";
 
-const axios = require('axios');
+// const axios = require('axios');
 
 class RequestListGroup extends Component {
 
     constructor(props) {
         super(props);
-        this.state
-    }
 
-    // const [RequestsList, setRequestsList] = useState([
-    //     "hello",
-    //     "uhhh",
-    //     "clean fridge pls",
-    //     "draw a tree on the whiteboard",
-    //     "make pasta"
-    // ]);
+        this.state = {};
+    }
 
 //   useEffect(() => {
 //     axios.get("/api/requests/viewrequests")
@@ -56,23 +50,27 @@ class RequestListGroup extends Component {
         console.log(filterObject);
     }
 
-
     render() {
         return (
             <React.Fragment>
                 <Paper elevation={5}>
                 <div className="list-group-container">
-                    {this.state.requestsList.map((requestInfo) => (
-                    <Card className="request-card" key={requestInfo}>
-                        {requestInfo}
-                    </Card>
-                    ))}
+                    { 
+                        this.props.requestsList.map(
+                            (requestInfo) => (
+                            //     <Card className="request-card" key={requestInfo}>
+                            //         Title = {requestInfo.taskTitle}
+                            //         Desc = {requestInfo.taskDescription}
+                            //     </Card>
+                                <RequestCard requestInfo={requestInfo} />
+                            )
+                        ) 
+                    }
                 </div>
                 </Paper>
             </React.Fragment>
         );
     }
-    
 }
 
 export default RequestListGroup;
