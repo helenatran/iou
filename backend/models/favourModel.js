@@ -23,6 +23,7 @@ const FavourSchema = new Schema({
     isCompleted: {
         type: Boolean,
         required: true,
+        default: false
     },
     oweMe: {
         type: Boolean,
@@ -30,11 +31,12 @@ const FavourSchema = new Schema({
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: 'pending'
     },
     proof: {
         type: String,
-        required: true
+        required: false
     },
     timeCreated: {
         type: Date,

@@ -76,7 +76,7 @@ class Favours extends React.Component {
         return (
             <div className={classes.root}>
                 <h1>Favours</h1>
-                <TextField class="centre-this"
+                <TextField className="centre-this"
                     id="standard-full-width"
                     fullWidth
                     placeholder="Search for a favour..."

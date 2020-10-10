@@ -34,7 +34,7 @@ class FavourSingle extends React.Component {
                 <Paper>
                     <Grid container spacing={2}>
                         <Grid item className={classes.gridItem}>
-                            <img src={favour.proof} />
+                            <img src={favour.proof} alt="favour proof" />
                         </Grid>
                         <Grid item className={classes.gridItem}>
                             <h1>Favour: {favour.favourName}</h1>
@@ -42,7 +42,7 @@ class FavourSingle extends React.Component {
                             <p><b>Friend:</b> {favour.oweUserId}</p>
                             <p><b>Type:</b></p>
                             <p><b>Status:</b> {favour.status}</p>
-                            <p><b>Comments:</b></p>
+                            <p><b>Comments:</b> {favour.favourComment}</p>
                             <p><b>Photo proof:</b><a href={favour.proof}>Proof</a></p>
                         </Grid>
                     </Grid>
