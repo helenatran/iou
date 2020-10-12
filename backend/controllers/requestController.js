@@ -9,7 +9,7 @@ const requestCollection = require('../models/requestModel');
 /**
  * Create a request
  * make post to endpoint in routes, including a request body:
- * {
+ * req body must contain the following fields {
  *      taskTitle: string,
  *      taskDescription: string,
  *      requesterId: objectID from user table,
@@ -42,16 +42,14 @@ module.exports.getAllRequests = (req,res) => {
 };
 
 //Get request by ID
+/**
+ * req.body should have request ID field
+ */
 module.exports.getARequest = (req, res) => {
-    console.log('hit get a req method');
-    const requestId = req.body.requestId;
-
-    console.log("GET - request " + requestId + " called");
-
+    // res.send('/user id of ' + req.params.id + ' being hit');
+    let requestId = req.params.id;
     requestCollection.findById(requestId, function(ex, request) {
         res.status(200).send(request);
-        console.log("GET - request " + requestId + " returned");
-        console.log(request);    
     })
     .catch((ex) => {
         res.status(400).json({ 'error': ex })
