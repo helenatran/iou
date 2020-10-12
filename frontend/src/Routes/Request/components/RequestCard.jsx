@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
 
+
 class RequestCard extends Component {
     constructor(props) {
         super(props);
@@ -15,16 +16,17 @@ class RequestCard extends Component {
         return (<p className="card-title">{text}</p>);
     }
 
-    renderRewardInfo() {
+     renderRewardInfo() {
         let rewards = this.props.requestInfo.rewards
-        let rewardsInfo = rewards[0].reward;
+       /*  let rewardsInfo = rewards[0].reward;
 
         if (rewards.length > 1) {
             rewardsInfo += " & " + (rewards.length-1) + " other rewards";
         }
 
-        return this.renderCardInfo(rewardsInfo);
-    }
+        return this.renderCardInfo(rewardsInfo); */
+        return(rewards);
+    } 
 
     render() { 
         let requestInfo = this.props.requestInfo;
@@ -34,9 +36,7 @@ class RequestCard extends Component {
                 {this.renderCardInfo(requestInfo.taskTitle)}
                 
                 {this.renderSmallCaps("Rewards (" + requestInfo.rewards.length + "):")}
-                {this.renderRewardInfo()}
-                
-                
+                 {this.renderRewardInfo()} 
             </Card>
          );
     }
