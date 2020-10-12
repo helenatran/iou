@@ -38,6 +38,10 @@ const RequestSchema = new Schema({
         type: Date,
         required: false
     },
+    rewards: {
+        type: Array,
+        required: true
+    }
     // todo - add rewards array of one array element required
 }, {
     collection: 'requests'
