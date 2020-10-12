@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Card from "@material-ui/core/Card";
+// import Card from "@material-ui/core/Card";
 import Paper from "@material-ui/core/Paper";
 
 import RequestCard from './RequestCard';
@@ -46,9 +46,9 @@ class RequestListGroup extends Component {
      * 
      * Returns list of filters
      */
-    getAllRequests(filterObject) {
-        console.log(filterObject);
-    }
+    // getAllRequests(filterObject) {
+    //     console.log(filterObject);
+    // }
 
     render() {
         return (
@@ -58,11 +58,7 @@ class RequestListGroup extends Component {
                     { 
                         this.props.requestsList.map(
                             (requestInfo) => (
-                            //     <Card className="request-card" key={requestInfo}>
-                            //         Title = {requestInfo.taskTitle}
-                            //         Desc = {requestInfo.taskDescription}
-                            //     </Card>
-                                <RequestCard requestInfo={requestInfo} />
+                                <RequestCard key={requestInfo.taskTitle} requestInfo={requestInfo} />
                             )
                         ) 
                     }
