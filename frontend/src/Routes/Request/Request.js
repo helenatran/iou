@@ -48,13 +48,12 @@ class Requests extends Component {
 
         //event function binders - if event funcs are arrow functions in a var then binding not needed
         // this.handleFiltering = this.handleFiltering.bind(this);
-        this.handleSearchBaspotrChange = this.handleSearchBarChange.bind(this);
+        this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
 
     }
     
     handleSearchBarChange(event) {
-        // this.setState({searchCriteria: event.target.search});
-        console.log(this.state.searchCriteria);
+        this.setState({searchCriteria: event.target.value});
     }
 
     render() { 
