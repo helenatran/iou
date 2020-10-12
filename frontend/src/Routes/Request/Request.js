@@ -46,18 +46,47 @@ class Requests extends Component {
             ]
         }
 
-        //event function binders - if event funcs are arrow functions in a var then binding not needed
-        // this.handleFiltering = this.handleFiltering.bind(this);
+        //stateful function binders
         this.handleSearchBarChange = this.handleSearchBarChange.bind(this);
+        this.filterRequests = this.filterRequests.bind(this);
+    }
 
+    matchesSearch(request, search) {
+        search = search.toLowerCase();
+
+        let rewardsIncludeSearch = false;
+        for (const rewardIndex in request.rewards) {
+            if (request.rewards[rewardIndex].reward.includes(search)){
+                rewardsIncludeSearch = true;
+                break
+            }
+        }
+        
+        return request.taskTitle.toLowerCase().includes(search) 
+            || request.taskDescription.toLowerCase().includes(search)
+            || request.status.toLowerCase().includes(search)
+            || rewardsIncludeSearch;
     }
     
+    filterRequests(criteria) {
+        let results = []
+        let requestsList = this.state.requestsList;
+        for (const request in requestsList) {
+            let requestObj = requestsList[request];
+            if (this.matchesSearch(requestObj, criteria)) {
+                results.push(requestObj);
+            }
+        }
+        return results;
+    }
+
     handleSearchBarChange(event) {
         this.setState({searchCriteria: event.target.value});
     }
 
+
+
     render() { 
-        console.log(this.props);
         return ( 
             <div className="page-content-container">                
                 <div className="requests-header">
@@ -65,20 +94,10 @@ class Requests extends Component {
                     <form action='/requests/' className="searchbar" noValidate autoComplete="off">
                         <TextField name="search" id="standard-basic" label="Search🔎" onChange={this.handleSearchBarChange} />
                     </form>
-                    {/* <ButtonGroup>
-                    <Button color="primary" className="active" onClick={() => {this.handleFiltering("All Requests")}}>
-                        All Open Requests
-                    </Button> */}
-                    {/* <Button color="primary" onClick={() => {this.handleFiltering("All Requests")}}>
-                        Your Requests
-                    </Button>
-                    <Button color="primary">Requests Pending Confirmation</Button> */}
-
-                        {/* TODO - set the onclick for filter */}
-                    {/* </ButtonGroup> */}
+                    
                 </div>
 
-                <RequestListGroup requestsList={this.state.requestsList}/>
+                <RequestListGroup requestsList={this.filterRequests(this.state.searchCriteria)}/>
             </div> 
         );
     }

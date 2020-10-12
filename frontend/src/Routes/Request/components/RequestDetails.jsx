@@ -11,7 +11,7 @@ class RequestDetails extends Component {
 
 
     render() { 
-        console.log('RENDER: recieved request detail: ' + this.props.requestDetails);
+        console.log('RENDER REQUEST DETAILS: recieved request detail: ' + this.props.requestDetails);
         return (
             <Card>
                 {this.props.requestDetails.taskTitle + " and " + this.props.requestDetails.taskDescription}
