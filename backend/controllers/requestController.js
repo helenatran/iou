@@ -82,4 +82,12 @@ module.exports.DeleteRequest = (req, res) => {
 
 };
 
+module.exports.getRequestbyId = (req, res) => {
+    requestCollection.findById(req.params.id)
+        .then((request) => {
+            res.status(200).send(request);
+        })
+        .catch(err => res.status(400).json({ 'error': err }));
+};
+
 
