@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
 // import ButtonGroup from "@material-ui/core/ButtonGroup";
 // import Button from "@material-ui/core/Button";
+import axios from 'axios';
 
 import RequestListGroup from './components/RequestListGroup';
 // import RequestDetails from './components/RequestDetails';
@@ -12,38 +13,8 @@ class Requests extends Component {
         this.state = {
             filters: ['All open requests', 'Pending Confirmation Requests', 'Your Requests', 'pls'],
             searchCriteria: "",
-            requestsList: [
-                {
-                    taskTitle: "my request",
-                    taskDescription: "do this thing",
-                    status: "Open",
-                    requestExpiry: "2020-10-01T11:59:00",
-                    rewards: [
-                        {rewarder: "alice", reward: "2 chocolates"}
-                    ]
-                },
-                {
-                    taskTitle: "second request",
-                    taskDescription: "do this other thing",
-                    status: "Open",
-                    requestExpiry: "2020-10-03T11:59:00",
-                    rewards: [
-                        {rewarder: "alice", reward: "2 chocolates"}, 
-                        {rewarder: "bob", reward: "1 chocolate"},
-                        {rewarder: "carol", reward: "1 tea drink"}
-                    ]
-                },
-                {
-                    taskTitle: "third request",
-                    taskDescription: "do the chicken dance",
-                    status: "Pending Confirmation",
-                    requestExpiry: "2020-10-05T11:59:00",
-                    rewards: [
-                        {rewarder: "alice", reward: "2 chocolates"}, 
-                        {rewarder: "bob", reward: "1 chocolate"}
-                    ]
-                }
-            ]
+            requestsList: [],
+            
         }
 
         //stateful function binders
@@ -51,6 +22,17 @@ class Requests extends Component {
         this.filterRequests = this.filterRequests.bind(this);
     }
 
+    componentDidMount() {
+        axios.get(`/api/request/viewrequests/`)
+        .then(res => {
+            this.setState({
+                requestsList: res.data
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+    }
     matchesSearch(request, search) {
         search = search.toLowerCase();
 

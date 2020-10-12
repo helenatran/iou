@@ -15,7 +15,7 @@ const requestController = require('../controllers/requestController');
 
 router.get('/viewrequests', requestController.getAllRequests);
 router.get('/viewdetails/', requestController.getARequest);
-
+router.get('/:id', requestController.getRequestbyId);
 router.post('/add', requestController.addNewRequest);
 
 module.exports = router;
