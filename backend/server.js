@@ -29,13 +29,15 @@ connection.once('open', () => {
     console.log("MongoDB connection successful")
 })
 // api imports ---------------------
-favourRoutes(app);
-const favourRoutes = require('./routes/favours')
+
+const favourRoute = require('./routes/favours');
+app.use('/api/favours', favourRoute);
+
 const userRoute = require('./routes/users');
 const leaderRoute = require('./routes/leaderboardRoute')
 
 app.use('/api/leaderboard', leaderRoute)
-app.use('/api/users', userRoute)
+app.use('/api/users', userRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));

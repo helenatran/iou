@@ -1,10 +1,12 @@
 import React from 'react';
+import Time from 'react-time-format';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     gridRoot: {
@@ -21,29 +23,21 @@ export default function FavourList(props) {
     const classes = useStyles();
 
     return (
-        // <div>
-        //     <ul>
-        //         {props.favours.map((item) => (
-        //             <li key={item._id}>{item.favourName} </li>
-        //         ))}
-        //     </ul>
-        // </div>
         <div>
             <Grid container className={classes.gridRoot} spacing={3}>
                 {props.favours.map((item) => (
-                    <Grid item>
+                    <Grid item key={item._id}>
                         <Card className={classes.cardRoot}>
-                            <CardActionArea>
+                            <CardActionArea onClick={props.updateSelectedFavour.bind(this, item)} component={Link}
+                                to={{
+                                    pathname: '/favours/' + item._id,
+                                    myCustomProps: item,
+                                    state: { favour: item }
+                                }}>
                                 <CardContent>
-                                    <Typography variant="h6" component="h2">
-                                        {item.favourName}
-                                    </Typography>
-                                    <Typography>
-                                        Friend:
-                                </Typography>
-                                    <Typography>
-                                        Date: {item.timeCreated}
-                                    </Typography>
+                                    <Typography variant="h6">{item.favourName}</Typography>
+                                    <Typography>Friend: {item.oweUserId}</Typography>
+                                    <Typography>Date: <Time value={item.timeCreated} format="DD/MM/YYYY" /></Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>

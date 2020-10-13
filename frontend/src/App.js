@@ -17,7 +17,10 @@ function App() {
           <Route path='/login' component={Routes.Login} />
           <Route path='/register' component={Routes.Register} />
           <Route path='/account' component={Routes.Account} />
-          <Route path='/favours' component={Routes.Favour} />
+          <Route path='/favours' exact component={Routes.Favour} />
+          <Route path='/favours/create' component={Routes.FavourForm} />
+          <Route path='/favours/:favourid/update' component={Routes.FavourUpdate} />
+          <Route path='/favours/:favourid' component={Routes.FavourSingle} />
           <Route path='/requests' component={Routes.Request} />
           <Route path='/leaderboard' component={Routes.Leaderboard} />
         </RouterSwitch>
