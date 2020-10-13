@@ -28,16 +28,16 @@ const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB connection successful")
 })
-// api imports ---------------------
 
-const favourRoute = require('./routes/favours');
-app.use('/api/favours', favourRoute);
-
-const userRoute = require('./routes/users');
+// api imports
 const leaderRoute = require('./routes/leaderboardRoute')
+const userRoute = require('./routes/users');
+const favourRoute = require('./routes/favours');
 
 app.use('/api/leaderboard', leaderRoute)
 app.use('/api/users', userRoute);
+app.use('/api/favours', favourRoute);
+
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
