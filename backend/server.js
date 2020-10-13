@@ -3,8 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const passport = require('passport');
-const favourRoutes = require('./routes/favours')
 
 
 // Environment variables
@@ -32,27 +30,15 @@ connection.once('open', () => {
 })
 // api imports ---------------------
 favourRoutes(app);
+const favourRoutes = require('./routes/favours')
 const userRoute = require('./routes/users');
 const leaderRoute = require('./routes/leaderboardRoute')
-const auth = require('./routes/auth');
-const secureAuth = require('./routes/auth-secure');
 
 app.use('/api/leaderboard', leaderRoute)
-app.use('/api/users', passport.authenticate('jwt',{
-    session:false,
-    userRoute
-}));
-app.use('/account', auth);
-app.use('/test', passport.authenticate('jwt', {
-    session:false,
-    secureAuth
-}))
+app.use('/api/users', userRoute)
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
-
-
-
 
 // Redirect to react build file
 app.get('*', (req, res) => {
