@@ -1,22 +1,40 @@
 const passport = require('passport');
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
-//const User = require('../models/userModel');
+const User = require('../models/userModel');
 //const { registerUser } = require('../controllers/authController');
 const AuthController = require('../controllers/authController')
 
-router.post('/register', AuthController.registerUser)
+//router.post('/register', AuthController.registerUser)
 
-// router.post(
-//     '/register',
-//     passport.authenticate('register', { session: false }),
-//     async (req, res, next) => {
-//       res.json({
-//         message: 'Signup successful',
-//         user: req.user
-//       });
-//     }
-//  );
+router.post(
+    '/register',
+    async (req, res, next) => {
+      try {
+        let userEmail = req.body.email;
+        console.log(userEmail);
+        let checkUser = await User.findOne({ email: userEmail })
+        console.log(checkUser)
+        if (checkUser != null)
+          return res.status(400).json({
+            Error: 'The email address you entered already exists in the system'
+          })
+        else {
+          passport.authenticate('register', { session: false }),
+            res.json({
+              message: 'Signup successful',
+              user: req.user
+            });
+        }
+      } 
+      catch (error) {
+        return res.status(500).json({
+          success: false,
+          message: error.message
+        })
+      }
+    }      
+ );
 
 router.post(
     '/login',

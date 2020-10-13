@@ -4,39 +4,35 @@ const User = require('../models/userModel');
 const JWTstrategy = require('passport-jwt').Strategy;
 const ExtractJWT = require('passport-jwt').ExtractJwt;
 
-module.exports.registerUser = async (req, res, next)  => {
-  try {
-    console.log("I've been hit!")
-    let userEmail = req.body.email;
-    console.log(userEmail)
+// module.exports.registerUser = async (req, res, next)  => {
+//   try {
+//     let userEmail = req.body.email;
+    
+//     let checkUser = await User.findOne({ 
+//       email: userEmail 
+//     })
 
-    let checkUser = await User.findOne({ 
-      email: userEmail 
-    })
-    console.log(checkUser)
-
-    if (checkUser)
-      return res.status(400).json({
-        Error: 'The email address you entered already exists in the system'
-      })
-    else {
-      passport.authenticate('register', {
-        session: false
-      }),
-      async (req, res, next) => {
-        res.json({
-          message: 'Signup successful',
-          user: req.user
-        })
-      console.log("I've finished!")
-    }}  
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: error.message
-    })
-  }
-}
+//     if (checkUser != null)
+//       return res.status(400).json({
+//         Error: 'The email address you entered already exists in the system'
+//       })
+//     else {
+//       passport.authenticate('register', {
+//         session: false
+//       }),
+//       async (req, res, next) => {
+//         res.json({
+//           message: 'Signup successful',
+//           user: req.user
+//         })
+//       }}
+//   } catch (error) {
+//     return res.status(500).json({
+//       success: false,
+//       message: error.message
+//     })
+//   }
+// }
 
 passport.use(
     'register',
@@ -52,10 +48,10 @@ passport.use(
           const lastName = req.body.lastName;
           const requestsCompleted = 0;
           const user = await User.create({ firstName, lastName, email, password, requestsCompleted });
-  
+
           return done(null, user);
         } catch (error) {
-          return (error);
+            return (error);
         }
       }
     )
