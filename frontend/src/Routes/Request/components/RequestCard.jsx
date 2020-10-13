@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
-
+import Request from './RequestInfo'
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 class RequestCard extends Component {
     constructor(props) {
@@ -37,6 +39,9 @@ class RequestCard extends Component {
                 
                 {this.renderSmallCaps("Rewards (" + requestInfo.rewards.length + "):")}
                  {this.renderRewardInfo()} 
+                 <Link to={requestInfo._id} Component={Request}>
+                    <Button  variant="contained" color="primary" > View Request </Button>
+                    </Link>
             </Card>
          );
     }
