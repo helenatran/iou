@@ -4,7 +4,6 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 
-
 // Environment variables
 require('dotenv').config();
 
@@ -22,7 +21,7 @@ mongoose.connect(URI, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true
-})
+});
 
 const connection = mongoose.connection;
 connection.once('open', () => {

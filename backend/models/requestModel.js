@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const requestSchema = new Schema ({
+const RequestSchema = new Schema({
     taskTitle: {
         type: String,
         required: true
@@ -12,21 +12,17 @@ const requestSchema = new Schema ({
     },
     requesterUserID: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: true, 
         ref: 'User'
-    },
-    isClaimedCompleted: {
-        type: Boolean,
-        required: true
     },
     completerUserId: {
         type: Schema.Types.ObjectId,
-        required: true,
+        required: false,
         ref: 'User'
     },
     proof: {
         type: String,
-        required: true
+        required: false,
     },
     status: {
         type: String,
@@ -40,10 +36,17 @@ const requestSchema = new Schema ({
     },
     requestExpiry: {
         type: Date,
+        required: false
+    },
+    rewards: {
+        type: Array,
         required: true
     }
+    // todo - add rewards array of one array element required
+}, {
+    collection: 'requests'
 });
 
-const Request = mongoose.model('Request', requestSchema);
+const Request = mongoose.model('Request', RequestSchema);
 
 module.exports = Request;

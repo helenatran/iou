@@ -4,10 +4,10 @@
   "description": "Express backend for the IOU system",
   "main": "server.js",
   "scripts": {
-    "test": "mocha ./tests/testRequests.js ./tests/testFavours.js ./tests/testUsers.js",
-    "test-favours": "mocha ./tests/testFavours.js",
-    "test-requests": "mocha ./tests/testRequests.js",
-    "test-users": "mocha ./tests/testUsers.js"
+    "test": "mocha ./tests/testRequests.js ./tests/testFavours.js ./tests/testUsers.js || true",
+    "test-favours": "mocha ./tests/testFavours.js || true",
+    "test-requests": "mocha ./tests/testRequests.js || true",
+    "test-users": "mocha ./tests/testUsers.js || true"
   },
   "author": "Stick bugged lol",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "mongoose": "^5.10.2"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "mocha": "^8.1.3"
   }
 }
