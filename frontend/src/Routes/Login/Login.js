@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {Button, Box, Paper, TextField} from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from '../../Context/userContext'
 
-const useStyles = theme => ({
+
+const useStyles = makeStyles((theme) => ({
     root: {
       display: 'flex',
       flexWrap: 'wrap',
@@ -15,75 +18,70 @@ const useStyles = theme => ({
         padding: theme.spacing(5,30,5,30),
       },
     },
-  });
+  }));
 
-class Login extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-        }
-        this.handleClick = this.handleClick.bind(this)
-    }
+
+
+export default function Login() {
+    const classes = useStyles();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    const { setUserDetails } = useContext(UserContext);
+    const history = useHistory();
     
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        })
-    }
-
-    onChangePassword(e) {
-        this.setState({
-            password: e.target.value
-        })
-    }
-
-    handleClick() {
-        const newUser = {
-            email: this.state.email,
-            password: this.state.password,
+    const submitForm = async (e) => {
+        e.preventDefault();
+        try {
+            const userLogin = { email, password };
+            const login = await axios.post('/api/user/login', userLogin);
+            setUserDetails({
+                token: login.data.success.token,
+                user: login.data.success.user,
+            });
+            localStorage.setItem("token", login.data.success.token);
+            history.push("/");
+        } catch (error) {
+            console.log(error)
         }
+    };
 
-        axios.post('/api/user/login', newUser)
-            .then(console.log(this.state))
-            .catch(err => console.log(err))
-    }
-    
-    render() {
-        const { classes } = this.props
-        return (
-            <div 
-            //className={classes.root} 
-            justifyContent="center" 
-            alignItems="center">
-                <Paper >
+    return (
+        <div 
+        className={classes.root} 
+        justifyContent="center" 
+        alignItems="center">
+            <form onSubmit={submitForm}>
+                <Paper>
                     <Box display="flex" justifyContent="center" >
                         <h1>Login</h1>
                     </Box>
                     <Box display="flex" justifyContent="center" margin="1vw">
-                        <TextField
-                            value={this.state.email}
-                            onChange={this.onChangeEmail.bind(this)}
+                        <TextField 
                             id="outlined-basic" 
-                            label="Email" 
-                            variant="outlined" />
+                            label="Username"
+                            type="email" 
+                            variant="outlined" 
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
                     </Box>
                     <Box display="flex" justifyContent="center" margin="1vw">
                         <TextField 
-                            value={this.state.password}
-                            onChange={this.onChangePassword.bind(this)}
-                            type="password"
                             id="outlined-basic" 
-                            label="Password" 
-                            variant="outlined" />
+                            label="Password"
+                            type="password"
+                            variant="outlined"
+                            onChange={(e) => setPassword(e.target.value)} 
+                            required
+                        />
                     </Box>
                     <Box display="flex" justifyContent="center" >
                         <Button 
-                            onClick={() => this.handleClick()}
                             variant="contained" 
                             color="primary" 
-                            margin="1vw">
+                            margin="1vw"
+                            type="submit">
                             Log in
                         </Button>
                     </Box>
@@ -91,9 +89,8 @@ class Login extends React.Component {
                         <p>Don't have an account yet? <Link to="/register">Register here.</Link></p>
                     </Box>
                 </Paper>
-            </div>
-        )
-    }
+            </form>
+        </div>
+     
+    )
 }
-
-export default Login;

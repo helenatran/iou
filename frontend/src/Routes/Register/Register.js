@@ -1,84 +1,83 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { Button, Form } from 'semantic-ui-react'
-import './register.css'
+import './register.css';
+import { useHistory } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from '../../Context/userContext';
 
-class Register extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: ''
+const Register = props => {
+    const [firstName, setFirstName] = useState();
+    const [lastName, setLastName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    //const { setUserDetails } = useContext(UserContext);
+    const history = useHistory();
+
+    const submitForm = async (e) => {
+        e.preventDefault();
+
+        try {
+            const requestsCompleted = 0;
+            const newRegisteredUser = { firstName, lastName, email, password, requestsCompleted }
+            await axios.post('/api/user/register', newRegisteredUser)
+                .then(
+                    history.push('/login')
+                )
+                .catch(function (err) {
+                    console.log(err)
+                })
+        } catch (err) {
+            console.log(err)
         }
-        this.handleClick = this.handleClick.bind(this);
     }
 
-    onChangeFirstName(e) {
-        this.setState({
-            firstName: e.target.value
-        })
-    }
-
-    onChangeLastName(e) {
-        this.setState({
-            lastName: e.target.value
-        })
-    }
-
-    onChangeEmail(e) {
-        this.setState({
-            email: e.target.value
-        })
-    }
-
-    onChangePassword(e) {
-        this.setState({
-            password: e.target.value
-        })
-    }
-
-    handleClick() {
-        const newUser = {
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            password: this.state.password,
-            requestsCompleted: 0
-        }
-
-        axios.post('/api/user/register', newUser)
-            .then(console.log(this.state))
-            .catch(err => console.log(err))
-    }
-
-    render() {
-        return (
-            <div className="centre">
-              <div className="ui middle aligned center aligned grid">
-                  <div className="column">  
-                      <h1>Register</h1>
-                      <Form >
-                          <Form.Field>
-                              <Form.Input value={this.state.firstName} onChange={this.onChangeFirstName.bind(this)} required label='First name' placeholder='First Name' />
-                          </Form.Field>
-                          <Form.Field>
-                              <Form.Input value={this.state.lastName} onChange={this.onChangeLastName.bind(this)} required label='Last name' placeholder='Last Name' />
-                          </Form.Field>
-                          <Form.Field>
-                              <Form.Input value={this.state.email} onChange={this.onChangeEmail.bind(this)} type="email" required label='Email' placeholder='Email' />
-                          </Form.Field>
-                          <Form.Field>
-                              <Form.Input value={this.state.password} onChange={this.onChangePassword.bind(this)} type="password" required label='Password' placeholder='Password'/>
-                          </Form.Field>
-                          <Button onClick={() => this.handleClick()} type='submit'>Submit</Button>
-                      </Form>
-                  </div> 
-              </div> 
-          </div>
-          )
-    }
+    return (
+        <div className="centre">
+            <div class="ui middle aligned center aligned grid">
+                <div className="column">  
+                    <h1>Register</h1>
+                    <Form onSubmit={submitForm}>
+                        <Form.Field>
+                            <Form.Input 
+                                required 
+                                label='First name' 
+                                placeholder='First Name'
+                                onChange={(e) => setFirstName(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                required 
+                                label='Last name' 
+                                placeholder='Last Name' 
+                                onChange={(e) => setLastName(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                type="email" 
+                                required 
+                                label='Email' 
+                                placeholder='Email' 
+                                onChange={(e) => setEmail(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                type="password" 
+                                required 
+                                label='Password' 
+                                placeholder='Password'
+                                onChange={(e) => setPassword(e.target.value)}
+                            /> 
+                        </Form.Field>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                </div> 
+            </div> 
+        </div>
+        )
 }
 
 export default Register;

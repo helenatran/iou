@@ -53,6 +53,9 @@ module.exports.loginUser = async (req, res) => {
     res.json({
         success: {
             token,
+            user: {
+                id: user._id
+            },
             message: 'Successful Authentication'
         }
     })
