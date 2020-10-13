@@ -19,8 +19,9 @@ function App() {
           <Route path='/account' component={Routes.Account} />
           <Route path='/favours' component={Routes.Favour} />
           <Route path='/requests' component={Routes.Request} />
-          <Route path='/:id' component={Routes.RequestInfo} />
           <Route path='/leaderboard' component={Routes.Leaderboard} />
+          <Route path='/:id' component={Routes.RequestInfo} />
+          
         </RouterSwitch>
       </BrowserRouter>
     </div>
