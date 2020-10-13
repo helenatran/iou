@@ -1,6 +1,8 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Button, Checkbox, TextField } from '@material-ui/core';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Link } from 'react-router-dom';
 
 const useStyles = (theme) => ({
@@ -32,10 +34,19 @@ class FavourUpdate extends React.Component {
             <div className={classes.root}>
                 <Paper>
                     <h1>Update Favour: {favour.favourName}</h1>
-                    <p>Friend: </p>
-                    <label>I confirm the favour has been completed:
-                    <Checkbox color="primary"
-                            inputProps={{ 'aria-label': 'primary checkbox' }}></Checkbox></label>
+                    <p>Friend: {favour.oweUserId}</p>
+                    <FormGroup row>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    color="primary"
+                                />
+                            }
+                            label="I confirm the favour has been completed:"
+                            labelPlacement="start"
+
+                        />
+                    </FormGroup>
                     <TextField
                         id="outlined-multiline-static"
                         label="Comments"

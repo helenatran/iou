@@ -11,6 +11,8 @@ const favours = [
     { name: 'Coffee' },
     { name: 'Chocolate' },
     { name: 'Dessert' },
+    { name: 'Fast Food' },
+    { name: 'Donuts' }
 ];
 
 export default function FavourFormFavours(props) {

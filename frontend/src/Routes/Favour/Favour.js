@@ -19,8 +19,9 @@ class Favours extends React.Component {
             searchInput: '',
             favours: [],
             filteredFavours: [],
-            favoursToShow: 'pending',
-            selectedFavour: {}
+            favoursToShow: 'pendingIOwe',
+            selectedFavour: {},
+            typeOweMe: true,
         };
         this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
     }
@@ -43,7 +44,7 @@ class Favours extends React.Component {
 
     updateShow = (showState) => {
         this.setState({
-            favoursToShow: showState
+            favoursToShow: showState,
         })
     }
 
@@ -66,8 +67,11 @@ class Favours extends React.Component {
     render() {
         const { classes } = this.props;
         let favours = [];
-        if (this.state.favoursToShow === 'pending') {
-            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted);
+        if (this.state.favoursToShow === 'pendingIOwe') {
+            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted && favour.oweMe === false);
+        }
+        else if (this.state.favoursToShow === 'pendingOweMe') {
+            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted && favour.oweMe === true);
         }
         else if (this.state.favoursToShow === 'completed') {
             favours = this.state.filteredFavours.filter(favour => favour.isCompleted);
@@ -86,8 +90,8 @@ class Favours extends React.Component {
                     style={{ marginBottom: 10 }}>
                 </TextField>
                 <div>
-                    <Button variant="contained" onClick={() => this.updateShow('pending')}>I owe</Button>
-                    <Button variant="contained" onClick={() => this.updateShow('pending')}>Owe me</Button>
+                    <Button variant="contained" onClick={() => this.updateShow('pendingIOwe')}>I owe</Button>
+                    <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
                 <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} />

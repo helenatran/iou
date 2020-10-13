@@ -36,7 +36,7 @@ export default function FavourList(props) {
                                 }}>
                                 <CardContent>
                                     <Typography variant="h6">{item.favourName}</Typography>
-                                    <Typography>Friend:</Typography>
+                                    <Typography>Friend: {item.oweUserId}</Typography>
                                     <Typography>Date: <Time value={item.timeCreated} format="DD/MM/YYYY" /></Typography>
                                 </CardContent>
                             </CardActionArea>

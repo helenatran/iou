@@ -28,6 +28,11 @@ const useStyles = (theme) => ({
 class FavourSingle extends React.Component {
     render() {
         const favour = this.props.location.state.favour;
+        let type = '';
+        if (favour.oweMe) {
+            type = 'Owe me';
+        }
+        else { type = 'I owe'; }
         const { classes } = this.props;
         return (
             <div className={classes.root}>
@@ -38,12 +43,12 @@ class FavourSingle extends React.Component {
                         </Grid>
                         <Grid item className={classes.gridItem}>
                             <h1>Favour: {favour.favourName}</h1>
-                            <p><b>Date Created:</b> <Time value={favour.timeCreated} format="DD/MM/YYYY" /></p>
-                            <p><b>Friend:</b> {favour.oweUserId}</p>
-                            <p><b>Type:</b></p>
-                            <p><b>Status:</b> {favour.status}</p>
-                            <p><b>Comments:</b> {favour.favourComment}</p>
-                            <p><b>Photo proof:</b><a href={favour.proof}>Proof</a></p>
+                            <p><b>Date Created: </b><Time value={favour.timeCreated} format="DD/MM/YYYY" /></p>
+                            <p><b>Friend: </b>{favour.oweUserId}</p>
+                            <p><b>Type: </b>{type}</p>
+                            <p><b>Status: </b>{favour.status}</p>
+                            <p><b>Comments: </b>{favour.favourComment}</p>
+                            <p><b>Photo proof: </b><a href={favour.proof}>Proof</a></p>
                         </Grid>
                     </Grid>
                     <div className={classes.button}>
