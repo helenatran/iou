@@ -32,10 +32,12 @@ connection.once('open', () => {
 const leaderRoute = require('./routes/leaderboardRoute')
 const userRoute = require('./routes/users');
 const favourRoute = require('./routes/favours');
+const requestRoute = require('./routes/requestRoutes');
 
 app.use('/api/leaderboard', leaderRoute)
-app.use('/api/users', userRoute);
+app.use('/api/user', userRoute);
 app.use('/api/favours', favourRoute);
+app.use('/api/request', requestRoute);
 
 
 // Static build files for React deployment

@@ -45,7 +45,7 @@ class Login extends React.Component {
             password: this.state.password,
         }
 
-        axios.post('/account/login', newUser)
+        axios.post('/api/user/login', newUser)
             .then(console.log(this.state))
             .catch(err => console.log(err))
     }

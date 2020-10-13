@@ -48,7 +48,7 @@ class Register extends React.Component {
             requestsCompleted: 0
         }
 
-        axios.post('/account/register', newUser)
+        axios.post('/api/user/register', newUser)
             .then(console.log(this.state))
             .catch(err => console.log(err))
     }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 
 
-export default class User extends Component {
+class RequestInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -49,4 +49,6 @@ export default class User extends Component {
 
         )
     } 
-}                                                                                                                          
+}               
+
+export default RequestInfo;
