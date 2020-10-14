@@ -11,7 +11,7 @@ export default class User extends Component {
             taskDescription: '',
             timeCreated: '',
             requestExpiry: '',
-            rewards: '',
+            rewards: [],
         };
     }
     componentDidMount = async () => {
@@ -34,7 +34,7 @@ export default class User extends Component {
 
  
     render() {
-        const{taskTitle, taskDescription, timeCreated, requestExpiry, rewards} = this.state
+        const {taskTitle, taskDescription, timeCreated, requestExpiry, rewards} = this.state
         return (
 
             <div>  
@@ -42,11 +42,17 @@ export default class User extends Component {
                 <br/>
                 Description: {taskDescription}
                 <br/>
-                Complete by: {requestExpiry}
+                Request expires on {requestExpiry} 
                 <br/>
-                Rewards: {rewards}
+                Rewards: 
+                <ul>
+                    {this.state.rewards.map((reward) => <li key={reward.rewarderId}>{reward.rewardItem}</li>)}
+                </ul>
             </div>  
 
         )
+        // TODO - get the name of the user in reward
+        // TODO - render the date better - ie. "Request expires on Wednesday 14th OCtober (5 days left)"
+        // TODO - styling
     } 
 }                                                                                                                          
