@@ -10,7 +10,7 @@ const RequestSchema = new Schema({
         type: String,
         required: true
     },
-    requesterUserID: {
+    requesterUserId: {
         type: Schema.Types.ObjectId,
         required: true, 
         ref: 'User'
