@@ -1,38 +1,81 @@
-import React from 'react'
-import { Grid, Container, Button, Form } from 'semantic-ui-react'
-import './register.css'
+import React, { useState } from 'react'
+import { Button, Form } from 'semantic-ui-react'
+import './register.css';
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 const Register = props => {
+    const [firstName, setFirstName] = useState();
+    const [lastName, setLastName] = useState();
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    const history = useHistory();
+
+    const submitForm = async (e) => {
+        e.preventDefault();
+
+        try {
+            const requestsCompleted = 0;
+            const newRegisteredUser = { firstName, lastName, email, password, requestsCompleted }
+            await axios.post('/api/user/register', newRegisteredUser)
+                .then(
+                    history.push('/login')
+                )
+                .catch(function (err) {
+                    console.log(err)
+                })
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     return (
-        
-      <div class="centre">
-        <div class="ui middle aligned center aligned grid">
-  <div class="column">  
-        <h1>Register</h1>
-        
-        <Form >
-            <Form.Field>
-                <Form.Input required label='First name' placeholder='First Name' />
-            </Form.Field>
-            <Form.Field>
-                <Form.Input required label='Last name' placeholder='Last Name' />
-            </Form.Field>
-            <Form.Field>
-            <Form.Input required label='Email' placeholder='Email' />
-            </Form.Field>
-            <Form.Field>
-            <Form.Input required label='Password' placeholder='Password'/>
-            </Form.Field>
-            
-            <Button type='submit'>Submit</Button>
-        </Form>
-        </div> 
-        </div> 
+        <div className="centre">
+            <div class="ui middle aligned center aligned grid">
+                <div className="column">  
+                    <h1>Register</h1>
+                    <Form onSubmit={submitForm}>
+                        <Form.Field>
+                            <Form.Input 
+                                required 
+                                label='First name' 
+                                placeholder='First Name'
+                                onChange={(e) => setFirstName(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                required 
+                                label='Last name' 
+                                placeholder='Last Name' 
+                                onChange={(e) => setLastName(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                type="email" 
+                                required 
+                                label='Email' 
+                                placeholder='Email' 
+                                onChange={(e) => setEmail(e.target.value)} 
+                            />
+                        </Form.Field>
+                        <Form.Field>
+                            <Form.Input 
+                                type="password" 
+                                required 
+                                label='Password' 
+                                placeholder='Password'
+                                onChange={(e) => setPassword(e.target.value)}
+                            /> 
+                        </Form.Field>
+                        <Button type='submit'>Submit</Button>
+                    </Form>
+                </div> 
+            </div> 
         </div>
-   
-       
-    )
+        )
 }
 
 export default Register;

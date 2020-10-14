@@ -6,22 +6,37 @@ const FavourSchema = new Schema({
         type: String,
         required: true
     },
+    userId: {
+        type: Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     oweUserId: {
         type: Schema.Types.ObjectId,
         required: true,
         ref: 'User'
     },
+    favourComment: {
+        type: String,
+        required: false
+    },
     isCompleted: {
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    oweMe: {
         type: Boolean,
         required: true,
     },
     status: {
         type: String,
-        required: true
+        required: true,
+        default: 'pending'
     },
     proof: {
         type: String,
-        required: true
+        required: false
     },
     timeCreated: {
         type: Date,

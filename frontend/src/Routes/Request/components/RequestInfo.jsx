@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 
 
-export default class User extends Component {
+class RequestInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -55,4 +55,6 @@ export default class User extends Component {
         // TODO - render the date better - ie. "Request expires on Wednesday 14th OCtober (5 days left)"
         // TODO - styling
     } 
-}                                                                                                                          
+}               
+
+export default RequestInfo;

@@ -3,7 +3,6 @@ const path = require('path');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const favourRoutes = require('./routes/favours')
 
 // Environment variables
 require('dotenv').config();
@@ -13,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 app.use(cors());
+app.use(bodyParser.urlencoded ({ extended: false }));
 app.use(bodyParser.json());
 
 // Connect to the MongoDB Database
@@ -27,23 +27,22 @@ mongoose.connect(URI, {
 const connection = mongoose.connection;
 connection.once('open', () => {
     console.log("MongoDB connection successful")
-});
+})
 
-// api imports ---------------------
-favourRoutes(app);
-const userRoute = require('./routes/users');
+// api imports
 const leaderRoute = require('./routes/leaderboardRoute')
+const userRoute = require('./routes/users');
+const favourRoute = require('./routes/favours');
 const requestRoute = require('./routes/requestRoutes');
+
 app.use('/api/leaderboard', leaderRoute)
-app.use('/api/users',  userRoute);
-app.use('/api/request',  requestRoute);
+app.use('/api/user', userRoute);
+app.use('/api/favours', favourRoute);
+app.use('/api/request', requestRoute);
 
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
-
-
-
 
 // Redirect to react build file
 app.get('*', (req, res) => {

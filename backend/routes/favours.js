@@ -1,10 +1,8 @@
-const getFavours = require('../controllers/favourControllers');
-const createFavour = require('../controllers/favourControllers');
+const router = require('express').Router();
+const favourController = require('../controllers/favourControllers');
 
-const routes = (app) => {
-    app.route('/favoursList')
-        .get(getFavours)
-        .post(createFavour)
-}
+router.get('/', favourController.getFavours);
+router.post('/', favourController.createFavour);
+router.get('/:FavourId', favourController.getFavourWithID);
 
-module.exports = routes;
+module.exports = router;

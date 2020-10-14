@@ -29,11 +29,7 @@ const Leaderboard = props => {
     return (
       <>
       <div class="leaderboard">
-       
-          <h1 class="centre-this">Leaderboard</h1>
-        
-          
-  
+        <h1 class="centre-this">Leaderboard</h1>
           <TextField class="centre-this"
           id="standard-full-width" 
           fullWidth
