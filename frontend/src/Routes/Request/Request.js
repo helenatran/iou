@@ -32,21 +32,23 @@ class Requests extends Component {
             console.log(error);
         })
     }
+
     matchesSearch(request, search) {
         search = search.toLowerCase();
 
-        let rewardsIncludeSearch = false;
+        if (request.taskTitle.toLowerCase().includes(search) 
+            ||  request.taskDescription.toLowerCase().includes(search) 
+            || request.status.toLowerCase().includes(search)) {
+            return true;
+        }
+
         for (const rewardIndex in request.rewards) {
-            if (request.rewards[rewardIndex].reward.includes(search)){
-                rewardsIncludeSearch = true;
-                break
+            if (request.rewards[rewardIndex].rewardItem.includes(search)){
+                return true;
             }
         }
-        
-        return request.taskTitle.toLowerCase().includes(search) 
-            || request.taskDescription.toLowerCase().includes(search)
-            || request.status.toLowerCase().includes(search)
-            || rewardsIncludeSearch;
+
+        return false;
     }
     
     filterRequests(criteria) {

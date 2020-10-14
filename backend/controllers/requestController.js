@@ -1,85 +1,85 @@
-// requestController is for interfacing between the db and the frontend
-// import mongoose from 'mongoose';
-const mongoose = require('mongoose');
 const requestCollection = require('../models/requestModel');
-
-
-
 
 /**
  * Create a request
- * make post to endpoint in routes, including a request body:
- * req body must contain the following fields {
- *      taskTitle: string,
- *      taskDescription: string,
- *      requesterId: objectID from user table,
- *      status: "Open",
- * }
+ * POST request - requires a requestobject field in the body containing minimum:
+ * "requestObject": {
+        "taskTitle":String,
+        "taskDescription":String,
+        "requesterUserId" : String of user id,
+        "status": "Open",
+        "requestExpiry":"", (optional)
+        "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
+    }
+    Other fields not mentioned: proof, completerId
  */
-module.exports.addNewRequest = (req,res) => {
-    // need to add user IDs
-    let newRequest = new requestCollection(req.body);
-    console.log("request object", newRequest);
+module.exports.CreateRequest = (req,res) => {
+    let newRequest = new requestCollection(req.body.requestObject);
     
     newRequest.save((err, requestObject) => {
-        if (ex) {
-            res.status(400).send(ex + " u did a fucky wucky :/"); 
+        if (err) {
+            res.status(400).send(err); 
         }
         res.status(200).json(requestObject);
     });
 };
 
-// Get a list of requests
+/**
+ * Get all requests
+ * GET request - no need for params/body fields
+ */
 module.exports.getAllRequests = (req,res) => {
-    console.log("GET - all requests called");
     requestCollection.find().then((requests) => {
         res.status(200).send(requests);
-        console.log("GET - all requests returned");
     }) 
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
+    .catch((err) => {
+        res.status(400).json({ 'error': err })
     });
 };
 
-//Get request by ID
 /**
- * req.body should have request ID field
+ * Update Request
+ * PATCH request - requires:
+ *  - RequestChanges object in the body with all the fields that have changed
+ *  - requestID field in the body with string of request's object id
  */
-module.exports.getARequest = (req, res) => {
-    // res.send('/user id of ' + req.params.id + ' being hit');
-    let requestId = req.params.id;
-    requestCollection.findById(requestId, function(ex, request) {
-        res.status(200).send(request);
-    })
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
-    });
-};
-
-module.exports.SearchRequests = (req, res) => {
-    console.log("GET - search requests called")
-    //grab criteria from params
-
-    //db find with conditions, return that
-    // conditions: tasktitle, taskDecription or rewards contains keyword
-};
-
 module.exports.UpdateRequest = (req, res) => {
-    console.log("POST - update requests called")
+    let update = req.body.requestChanges;
 
-    //gets the id from body
+    requestCollection.findByIdAndUpdate(
+        { _id: req.body.requestId },
+        update,
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
+
 };
 
+/**
+ * Delete Request
+ * DELETE request - requires requestId field in the body
+ */
 module.exports.DeleteRequest = (req, res) => {
-    console.log("POST - delete requests called")
-
-    //get the id from body
-    
-    //check user id of request matches requester's user id
-
-
+    requestCollection.findByIdAndDelete(
+        { _id: req.body.requestId },
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
 };
 
+
+/**
+ * Get Request by ID
+ * GET request - requires id in the params
+ */
 module.exports.getRequestbyId = (req, res) => {
     requestCollection.findById(req.params.id)
         .then((request) => {
