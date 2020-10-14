@@ -1,10 +1,8 @@
 // requestController is for interfacing between the db and the frontend
 // import mongoose from 'mongoose';
+const { request } = require('express');
 const mongoose = require('mongoose');
 const requestCollection = require('../models/requestModel');
-
-
-
 
 /**
  * Create a request
@@ -14,16 +12,16 @@ const requestCollection = require('../models/requestModel');
  *      taskDescription: string,
  *      requesterId: objectID from user table,
  *      status: "Open",
+ *      reward: array of {rewarderId: object id for user, rewarditem}
  * }
  */
-module.exports.addNewRequest = (req,res) => {
+module.exports.CreateRequest = (req,res) => {
     // need to add user IDs
-    let newRequest = new requestCollection(req.body);
-    console.log("request object", newRequest);
+    let newRequest = new requestCollection(req.body.requestObject);
     
     newRequest.save((err, requestObject) => {
-        if (ex) {
-            res.status(400).send(ex + " u did a fucky wucky :/"); 
+        if (err) {
+            res.status(400).send(err); 
         }
         res.status(200).json(requestObject);
     });
@@ -31,13 +29,11 @@ module.exports.addNewRequest = (req,res) => {
 
 // Get a list of requests
 module.exports.getAllRequests = (req,res) => {
-    console.log("GET - all requests called");
     requestCollection.find().then((requests) => {
         res.status(200).send(requests);
-        console.log("GET - all requests returned");
     }) 
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
+    .catch((err) => {
+        res.status(400).json({ 'error': err })
     });
 };
 
@@ -46,38 +42,45 @@ module.exports.getAllRequests = (req,res) => {
  * req.body should have request ID field
  */
 module.exports.getARequest = (req, res) => {
-    // res.send('/user id of ' + req.params.id + ' being hit');
     let requestId = req.params.id;
     requestCollection.findById(requestId, function(ex, request) {
         res.status(200).send(request);
     })
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
+    .catch((err) => {
+        res.status(400).json({ 'error': err })
     });
 };
 
-module.exports.SearchRequests = (req, res) => {
-    console.log("GET - search requests called")
-    //grab criteria from params
-
-    //db find with conditions, return that
-    // conditions: tasktitle, taskDecription or rewards contains keyword
-};
-
+/**
+ * request body must have the fields of the request that have changed
+ */
 module.exports.UpdateRequest = (req, res) => {
-    console.log("POST - update requests called")
+    let update = req.body.requestChanges;
 
-    //gets the id from body
+    requestCollection.findByIdAndUpdate(
+        { _id: req.body.requestId },
+        update,
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
+
 };
 
 module.exports.DeleteRequest = (req, res) => {
-    console.log("POST - delete requests called")
-
-    //get the id from body
-    
-    //check user id of request matches requester's user id
-
-
+    // res.send("delete request endpoint hit");
+    requestCollection.findByIdAndDelete(
+        { _id: req.body.requestId },
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
 };
 
 module.exports.getRequestbyId = (req, res) => {
