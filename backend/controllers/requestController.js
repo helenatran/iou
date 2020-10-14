@@ -1,22 +1,19 @@
-// requestController is for interfacing between the db and the frontend
-// import mongoose from 'mongoose';
-const { request } = require('express');
-const mongoose = require('mongoose');
 const requestCollection = require('../models/requestModel');
 
 /**
  * Create a request
- * make post to endpoint in routes, including a request body:
- * req body must contain the following fields {
- *      taskTitle: string,
- *      taskDescription: string,
- *      requesterId: objectID from user table,
- *      status: "Open",
- *      reward: array of {rewarderId: object id for user, rewarditem}
- * }
+ * POST request - requires a requestobject field in the body containing minimum:
+ * "requestObject": {
+        "taskTitle":String,
+        "taskDescription":String,
+        "requesterUserId" : String of user id,
+        "status": "Open",
+        "requestExpiry":"", (optional)
+        "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
+    }
+    Other fields not mentioned: proof, completerId
  */
 module.exports.CreateRequest = (req,res) => {
-    // need to add user IDs
     let newRequest = new requestCollection(req.body.requestObject);
     
     newRequest.save((err, requestObject) => {
@@ -27,7 +24,10 @@ module.exports.CreateRequest = (req,res) => {
     });
 };
 
-// Get a list of requests
+/**
+ * Get all requests
+ * GET request - no need for params/body fields
+ */
 module.exports.getAllRequests = (req,res) => {
     requestCollection.find().then((requests) => {
         res.status(200).send(requests);
@@ -37,22 +37,11 @@ module.exports.getAllRequests = (req,res) => {
     });
 };
 
-//Get request by ID
 /**
- * req.body should have request ID field
- */
-module.exports.getARequest = (req, res) => {
-    let requestId = req.params.id;
-    requestCollection.findById(requestId, function(ex, request) {
-        res.status(200).send(request);
-    })
-    .catch((err) => {
-        res.status(400).json({ 'error': err })
-    });
-};
-
-/**
- * request body must have the fields of the request that have changed
+ * Update Request
+ * PATCH request - requires:
+ *  - RequestChanges object in the body with all the fields that have changed
+ *  - requestID field in the body with string of request's object id
  */
 module.exports.UpdateRequest = (req, res) => {
     let update = req.body.requestChanges;
@@ -70,8 +59,11 @@ module.exports.UpdateRequest = (req, res) => {
 
 };
 
+/**
+ * Delete Request
+ * DELETE request - requires requestId field in the body
+ */
 module.exports.DeleteRequest = (req, res) => {
-    // res.send("delete request endpoint hit");
     requestCollection.findByIdAndDelete(
         { _id: req.body.requestId },
         function(err, result) {
@@ -83,6 +75,11 @@ module.exports.DeleteRequest = (req, res) => {
         }); 
 };
 
+
+/**
+ * Get Request by ID
+ * GET request - requires id in the params
+ */
 module.exports.getRequestbyId = (req, res) => {
     requestCollection.findById(req.params.id)
         .then((request) => {
