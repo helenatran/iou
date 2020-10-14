@@ -42,11 +42,13 @@ class RequestInfo extends Component {
                 <br/>
                 Description: {taskDescription}
                 <br/>
+                Created: {timeCreated}
+                <br/>
                 Request expires on {requestExpiry} 
                 <br/>
                 Rewards: 
                 <ul>
-                    {this.state.rewards.map((reward) => <li key={reward.rewarderId}>{reward.rewardItem}</li>)}
+                    {rewards.map((reward) => <li key={reward.rewarderId}>{reward.rewardItem}</li>)}
                 </ul>
             </div>  
 

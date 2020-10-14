@@ -27,7 +27,7 @@ const RequestSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ["Open", "Pending Requester Confirmation", "Closed"]
+        enum: ["Open", "Pending", "Closed"]
     },
     timeCreated: {
         type: Date,
