@@ -18,16 +18,15 @@ class RequestCard extends Component {
         return (<p className="card-title">{text}</p>);
     }
 
-     renderRewardInfo() {
-        let rewards = this.props.requestInfo.rewards
-       /*  let rewardsInfo = rewards[0].reward;
+    renderRewardInfo() {
+        let rewards = this.props.requestInfo.rewards;
+        let rewardsInfo = rewards[0].rewardItem;
 
         if (rewards.length > 1) {
             rewardsInfo += " & " + (rewards.length-1) + " other rewards";
         }
 
-        return this.renderCardInfo(rewardsInfo); */
-        return(rewards);
+        return this.renderCardInfo(rewardsInfo);
     } 
 
     render() { 
@@ -38,12 +37,13 @@ class RequestCard extends Component {
                 {this.renderCardInfo(requestInfo.taskTitle)}
                 
                 {this.renderSmallCaps("Rewards (" + requestInfo.rewards.length + "):")}
-                 {this.renderRewardInfo()} 
-                 <Link to={requestInfo._id} Component={Request}>
+                {this.renderRewardInfo()} 
+                <Link to={requestInfo._id}>
                     <Button  variant="contained" color="primary" > View Request </Button>
-                    </Link>
+                </Link>
             </Card>
          );
+         // TODO - style spacing so that the height of cards are the same
     }
 }
  
