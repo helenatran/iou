@@ -8,7 +8,6 @@ import {
   Switch as RouterSwitch
 } from 'react-router-dom';
 import * as Routes from './Routes/routes'
-import userContext from './Context/userContext';
 import axios from 'axios';
 
 function App() {
@@ -40,8 +39,8 @@ function App() {
           user: user.data,
         })
       }
-      isLoggedIn();
-    }
+    };
+    isLoggedIn();
   }, []);
 
   return (

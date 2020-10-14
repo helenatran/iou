@@ -1,9 +1,8 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { Button, Form } from 'semantic-ui-react'
 import './register.css';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import UserContext from '../../Context/userContext';
 
 const Register = props => {
     const [firstName, setFirstName] = useState();
@@ -11,7 +10,6 @@ const Register = props => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
 
-    //const { setUserDetails } = useContext(UserContext);
     const history = useHistory();
 
     const submitForm = async (e) => {
