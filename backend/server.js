@@ -30,16 +30,17 @@ connection.once('open', () => {
 })
 
 // api imports
-const leaderRoute = require('./routes/leaderboardRoute')
 const userRoute = require('./routes/users');
 const favourRoute = require('./routes/favours');
 const requestRoute = require('./routes/requestRoutes');
+const proofRoute = require('./routes/proofUpload');
+const leaderRoute = require('./routes/leaderboardRoute')
 
 app.use('/api/leaderboard', leaderRoute)
 app.use('/api/user', userRoute);
 app.use('/api/favours', favourRoute);
 app.use('/api/request', requestRoute);
-
+app.use('/api/proof', proofRoute);
 
 // Static build files for React deployment
 app.use(express.static(path.resolve(__dirname, "../frontend", "build")));
