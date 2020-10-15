@@ -51,8 +51,8 @@ export default function Login() {
         className={classes.root} 
         justifyContent="center" 
         alignItems="center">
-            <form onSubmit={submitForm}>
                 <Paper>
+                    <form onSubmit={submitForm}>
                     <Box display="flex" justifyContent="center" >
                         <h1>Login</h1>
                     </Box>
@@ -88,8 +88,8 @@ export default function Login() {
                     <Box display="flex" justifyContent="center" margin = "1vw" >
                         <p>Don't have an account yet? <Link to="/register">Register here.</Link></p>
                     </Box>
+                    </form>
                 </Paper>
-            </form>
         </div>
      
     )
