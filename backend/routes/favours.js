@@ -1,8 +1,10 @@
 const router = require('express').Router();
 const favourController = require('../controllers/favourControllers');
+const checkAuth = require('../middleware/checkAuth')
 
-router.get('/', favourController.getFavours);
-router.post('/', favourController.createFavour);
-router.get('/:FavourId', favourController.getFavourWithID);
+router.get('/', checkAuth, favourController.getFavours);
+router.post('/', checkAuth, favourController.createFavour);
+router.get('/:FavourId', checkAuth, favourController.getFavourWithID);
+router.get('/user/:id', checkAuth, favourController.getUserFavours)
 
 module.exports = router;

@@ -7,15 +7,18 @@ const checkAuth = (req, res, next) => {
             return res.status(400).json({
                 error: 'No authentication token found'
             });
+
         const verified = jwt.verify(token, process.env.JWT_SECRET)
         if (!verified)
             return res.status(400).json({
                 error: 'Token is invalid'
-            })
+            });
+
         req.user = verified.id;
+        
         next();
     } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
             error: error
         });
     }
