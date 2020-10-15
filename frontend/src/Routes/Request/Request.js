@@ -1,17 +1,13 @@
 import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
-// import ButtonGroup from "@material-ui/core/ButtonGroup";
-// import Button from "@material-ui/core/Button";
 import axios from 'axios';
 
-import RequestListGroup from './Components/RequestListGroup';
-// import RequestDetails from './components/RequestDetails';
+import RequestListGroup from './components/RequestListGroup';
 
 class Requests extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filters: ['All open requests', 'Pending Confirmation Requests', 'Your Requests', 'pls'],
             searchCriteria: "",
             requestsList: [],
             
@@ -35,15 +31,15 @@ class Requests extends Component {
 
     matchesSearch(request, search) {
         search = search.toLowerCase();
-
+        
         if (request.taskTitle.toLowerCase().includes(search) 
-            ||  request.taskDescription.toLowerCase().includes(search) 
-            || request.status.toLowerCase().includes(search)) {
+        ||  request.taskDescription.toLowerCase().includes(search) 
+        || request.status.toLowerCase().includes(search)) {
             return true;
         }
-
+        
         for (const rewardIndex in request.rewards) {
-            if (request.rewards[rewardIndex].rewardItem.includes(search)){
+            if (request.rewards[rewardIndex].rewardItem.toLowerCase().includes(search)){
                 return true;
             }
         }

@@ -58,7 +58,7 @@ function App() {
             <Route path='/favours/:favourid' component={Routes.FavourSingle} />
             <Route path='/requests' component={Routes.Request} />
             <Route path='/leaderboard' component={Routes.Leaderboard} />
-            <Route path='/:id' component={Routes.RequestInfo} />
+            <Route path='/request/:id' component={Routes.RequestInfo} />
           </RouterSwitch>
         </UserContext.Provider>
       </BrowserRouter>
