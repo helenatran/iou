@@ -19,25 +19,6 @@ module.exports.getFavours = (req, res) => {
         .catch(err => res.status(400).json({ 'error': err }));
 };
 
-module.exports.getUserFavours = async (req, res) => {
-    try {
-        const userOwnedFavours = await Favour.find({
-            "userId": req.params.id
-        });
-        const userOwedFavours = await Favour.find({
-            "oweUserId": req.params.id
-        })
-        return res.status(200).json({
-            ownedFavours: userOwnedFavours,
-            owedFavours: userOwedFavours
-        })
-    } catch (error) {
-        res.status(400).json({
-            error: error
-        })
-    }
-}
-
 module.exports.getAllUserFavours = async (req, res) => {
     // Check that the user exists before we proceed
     const user = await User.findById(req.params.id)

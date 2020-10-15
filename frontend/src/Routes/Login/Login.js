@@ -4,7 +4,8 @@ import {Button, Box, Paper, TextField} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import UserContext from '../../Context/userContext'
+import UserContext from '../../Context/userContext';
+import ErrorAlert from '../Errors/Error'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -56,6 +57,7 @@ export default function Login() {
                     <Box display="flex" justifyContent="center" >
                         <h1>Login</h1>
                     </Box>
+                    <ErrorAlert />
                     <Box display="flex" justifyContent="center" margin="1vw">
                         <TextField 
                             id="outlined-basic" 
