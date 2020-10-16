@@ -5,23 +5,27 @@ import UserContext from './Context/userContext';
 import {
   BrowserRouter,
   Route,
-  Switch as RouterSwitch
+  Switch as RouterSwitch,
+  useHistory
 } from 'react-router-dom';
 import * as Routes from './Routes/routes'
 import axios from 'axios';
 
 function App() {
+  const history = useHistory();
   const [ userDetails, setUserDetails ] = useState({
     token: undefined,
     user: undefined,
   })
+  
 
   useEffect(() => {
     const isLoggedIn = async () => {
       let token = localStorage.getItem("token");
       if (token === null) {
-        localStorage.setItem("token", "");
-        token="";
+        //localStorage.setItem("token", "");
+        //token="";
+        history.push('/');
       }
       const tokenValid = await axios.post('api/user/validateToken', null, {
         headers: {

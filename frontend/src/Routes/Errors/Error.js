@@ -5,12 +5,12 @@ import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton';
 
 
-const ErrorAlert = () => {
+const ErrorAlert = props => {
     const [open, setOpen] = useState(true);
 
     return (
         <div>
-            <Collapse in={open}>
+            <Collapse in={open} onClick={props.clear}>
                 <Alert severity="error" action={
                     <IconButton
                         aria-label="close"
@@ -24,7 +24,7 @@ const ErrorAlert = () => {
                     </IconButton>
                 }
                 >
-                    Test
+                    <span>{props.message}</span>
                 </Alert>
             </Collapse>
         </div>

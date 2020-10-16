@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import UserContext from '../../Context/userContext';
-import ErrorAlert from '../Errors/Error'
+import ErrorNotice from '../Errors/Error'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,12 +27,16 @@ export default function Login() {
     const classes = useStyles();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [ error, setError ] = useState();
+    const [ errorState, setErrorState ] = useState();
 
     const { setUserDetails } = useContext(UserContext);
     const history = useHistory();
     
     const submitForm = async (e) => {
-        e.preventDefault();
+        e.preventDefault();        
+        setErrorState(false);
+
         try {
             const userLogin = { email, password };
             const login = await axios.post('/api/user/login', userLogin);
@@ -42,8 +46,9 @@ export default function Login() {
             });
             localStorage.setItem("token", login.data.success.token);
             history.push("/");
-        } catch (error) {
-            console.log(error)
+        } catch (err) {
+            err.response.data.error && setError(err.response.data.error)
+            setErrorState(true);
         }
     };
 
@@ -57,7 +62,7 @@ export default function Login() {
                     <Box display="flex" justifyContent="center" >
                         <h1>Login</h1>
                     </Box>
-                    <ErrorAlert />
+                    { errorState === true ? <ErrorNotice message={error} clear={() => setError(undefined)} /> : "" }
                     <Box display="flex" justifyContent="center" margin="1vw">
                         <TextField 
                             id="outlined-basic" 
