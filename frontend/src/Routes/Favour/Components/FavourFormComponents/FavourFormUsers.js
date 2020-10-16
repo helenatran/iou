@@ -19,7 +19,7 @@ class FavourFormUsers extends React.Component {
     }
 
     componentDidMount() {
-        const url = 'http://localhost:5000/api/users';
+        const url = '/api/user';
         (async () => {
             try {
                 const res = await axios.get(url);

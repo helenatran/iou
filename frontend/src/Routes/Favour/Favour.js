@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import FavourList from './Components/FavourList';
 import { Link } from 'react-router-dom';
+import getToken from '../../Helpers/getToken';
 
 const useStyles = (theme) => ({
     root: {
@@ -17,24 +18,35 @@ class Favours extends React.Component {
         super(props);
         this.state = {
             searchInput: '',
-            favours: [],
-            filteredFavours: [],
+            favoursOwned: [],
+            favoursOwed: [],
+            favoursCompleted: [],
+            filteredFavoursOwned: [],
+            filteredFavoursOwed: [],
+            filteredFavoursCompleted: [],
             favoursToShow: 'pendingIOwe',
             selectedFavour: {},
-            typeOweMe: true,
         };
         this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
     }
 
     componentDidMount() {
-        const url = 'http://localhost:5000/api/favours';
+        const url = `/api/favours/user/${getToken().id}`;
         (async () => {
             try {
-                const res = await axios.get(url);
+                const res = await axios.get(url, {
+                    headers: {
+                        "token": localStorage.getItem("token")
+                    }
+                });
                 const { data } = await res;
                 this.setState({
-                    favours: data,
-                    filteredFavours: data
+                    favoursOwned: data.owned,
+                    favoursOwed: data.owed,
+                    favoursCompleted: data.completed,
+                    filteredFavoursOwned: data.owned,
+                    filteredFavoursOwed: data.owed,
+                    filteredFavoursCompleted: data.completed,
                 })
             } catch (e) {
                 console.log(e);
@@ -55,26 +67,47 @@ class Favours extends React.Component {
     }
 
     updateSearchInput = (input) => {
-        const filtered = this.state.favours.filter(favour => {
-            return favour.favourName.toLowerCase().includes(input.toLowerCase())
-        })
-        this.setState({
-            searchInput: input,
-            filteredFavours: filtered
-        })
+        if (this.state.favoursToShow === 'pendingIOwe') {
+            const filtered = this.state.favoursOwed.filter(favour => {
+                return favour.favourName.toLowerCase().includes(input.toLowerCase())
+            })
+            this.setState({
+                searchInput: input,
+                filteredFavoursOwed: filtered
+            })
+        }
+        else if (this.state.favoursToShow === 'pendingOweMe') {
+            const filtered = this.state.favoursOwned.filter(favour => {
+                return favour.favourName.toLowerCase().includes(input.toLowerCase())
+            })
+            this.setState({
+                searchInput: input,
+                filteredFavoursOwned: filtered
+            })
+        }
+        else if (this.state.favoursToShow === 'completed') {
+            const filtered = this.state.favoursCompleted.filter(favour => {
+                return favour.favourName.toLowerCase().includes(input.toLowerCase())
+            })
+            this.setState({
+                searchInput: input,
+                filteredFavoursCompleted: filtered
+            })
+        }
+
     }
 
     render() {
         const { classes } = this.props;
         let favours = [];
         if (this.state.favoursToShow === 'pendingIOwe') {
-            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted && favour.oweMe === false);
+            favours = this.state.filteredFavoursOwed;
         }
         else if (this.state.favoursToShow === 'pendingOweMe') {
-            favours = this.state.filteredFavours.filter(favour => !favour.isCompleted && favour.oweMe === true);
+            favours = this.state.filteredFavoursOwned;
         }
         else if (this.state.favoursToShow === 'completed') {
-            favours = this.state.filteredFavours.filter(favour => favour.isCompleted);
+            favours = this.state.filteredFavoursCompleted;
         }
 
         return (

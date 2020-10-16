@@ -24,8 +24,8 @@ module.exports.registerUser = async (req, res) => {
             user: savedUser
         })
     } catch (error) {
-        return res.status(400).json({
-            error
+        return res.status(500).json({
+            error: 'There was an issue with registering your user, please try again'
         });
     };
 }
@@ -43,7 +43,7 @@ module.exports.loginUser = async (req, res) => {
         return res.status(400).json({
             error: 'That email or password was incorrect'
         })
-    
+
     const jwtPayload = {
         id: user._id,
     }
@@ -61,7 +61,7 @@ module.exports.loginUser = async (req, res) => {
     })
 }
 
-module.exports.validateToken = async(req, res) => {
+module.exports.validateToken = async (req, res) => {
     try {
         const token = req.header("token");
         if (!token)
@@ -85,25 +85,27 @@ module.exports.validateToken = async(req, res) => {
 
 module.exports.findUserByID = async (req, res) => {
     try {
-        const user = await User.findById(req.user);
+        let encodedUserID = req.header("token");
+        let decodedToken = jwt.verify(encodedUserID, process.env.JWT_SECRET)
+        const user = await User.findById(decodedToken.id);
         if (!user)
             return res.status(404).json({
-                message: 'User could not be found'
+                error: 'User could not be found'
             })
         return res.status(200).json({
             id: user._id,
         })
     } catch (error) {
         return res.status(500).json({
-            error: error
+            error: 'That user could not be found'
         })
     }
 }
 
-module.exports.getUsers = (req, res) => {
-    User.find()
+module.exports.getUsers = async (req, res) => {
+    await User.find()
         .then((users) => {
             res.status(200).send(users);
         })
-        .catch(err => res.status(400).json({'error': err}));
-}
+        .catch(err => res.status(400).json({ 'error': err }));
+} 
