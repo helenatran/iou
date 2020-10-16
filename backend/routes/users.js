@@ -4,9 +4,6 @@ const { loginUserValidator } = require('../middleware/userValidator')
 const { registerUserValidator } = require('../middleware/userValidator')
 const { runValidator } = require('../middleware/runValidator')
 
-
-
-
 router.get('/', userController.getUsers);
 router.get('/find', userController.findUserByID)
 router.post('/register', registerUserValidator, runValidator, userController.registerUser);

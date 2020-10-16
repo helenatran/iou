@@ -6,9 +6,17 @@ module.exports.runValidator = (req, res, next) => {
     if (!validationErrors.isEmpty()) {
         console.log(validationErrors)
         return res.status(422).json({
-            error: validationErrors
+            error: formatErrors(validationErrors.errors)
         })
     }
-    
     next();
+}
+
+function formatErrors(errors) {
+    return errors.map(err => {
+        return {
+            param: err.param,
+            msg: err.msg,
+        }
+    })
 }
