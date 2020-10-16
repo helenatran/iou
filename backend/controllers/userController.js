@@ -104,7 +104,8 @@ module.exports.findUserByID = async (req, res) => {
 
 module.exports.getUsers = (req, res) => {
     try {
-        let users = User.find();
+        const users = User.find();
+        console.log(users);
         return res.status(200).json({
             users: users,
         }) 
