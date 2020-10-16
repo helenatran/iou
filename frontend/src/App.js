@@ -6,13 +6,11 @@ import {
   BrowserRouter,
   Route,
   Switch as RouterSwitch,
-  useHistory
 } from 'react-router-dom';
 import * as Routes from './Routes/routes'
 import axios from 'axios';
 
 function App() {
-  const history = useHistory();
   const [ userDetails, setUserDetails ] = useState({
     token: undefined,
     user: undefined,
@@ -23,11 +21,10 @@ function App() {
     const isLoggedIn = async () => {
       let token = localStorage.getItem("token");
       if (token === null) {
-        //localStorage.setItem("token", "");
-        //token="";
-        history.push('/');
+        localStorage.setItem("token", "");
+        token="";
       }
-      const tokenValid = await axios.post('api/user/validateToken', null, {
+      const tokenValid = await axios.post('/api/user/validateToken', null, {
         headers: {
           "token": token
         }

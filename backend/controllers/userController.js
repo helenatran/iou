@@ -85,7 +85,9 @@ module.exports.validateToken = async(req, res) => {
 
 module.exports.findUserByID = async (req, res) => {
     try {
-        const user = await User.findById(req.user);
+        let encodedUserID = req.header("token");
+        let decodedToken = jwt.verify(encodedUserID, process.env.JWT_SECRET)
+        const user = await User.findById(decodedToken.id);
         if (!user)
             return res.status(404).json({
                 error: 'User could not be found'

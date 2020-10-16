@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Card from '@material-ui/core/Card';
-import Request from './RequestInfo'
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 
