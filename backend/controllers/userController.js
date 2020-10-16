@@ -102,8 +102,8 @@ module.exports.findUserByID = async (req, res) => {
     }
 }
 
-module.exports.getUsers = (req, res) => {
-    User.find()
+module.exports.getUsers = async (req, res) => {
+    await User.find()
         .then((users) => {
             res.status(200).send(users);
         })
