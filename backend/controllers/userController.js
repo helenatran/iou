@@ -43,7 +43,7 @@ module.exports.loginUser = async (req, res) => {
         return res.status(400).json({
             error: 'That email or password was incorrect'
         })
-    
+
     const jwtPayload = {
         id: user._id,
     }
@@ -61,7 +61,7 @@ module.exports.loginUser = async (req, res) => {
     })
 }
 
-module.exports.validateToken = async(req, res) => {
+module.exports.validateToken = async (req, res) => {
     try {
         const token = req.header("token");
         if (!token)
@@ -103,14 +103,9 @@ module.exports.findUserByID = async (req, res) => {
 }
 
 module.exports.getUsers = (req, res) => {
-    try {
-        let users = User.find();
-        return res.status(200).json({
-            users: users,
-        }) 
-    } catch(err) {
-        return res.status(400).json({
-            error: 'Could not return all users'
+    User.find()
+        .then((users) => {
+            res.status(200).send(users);
         })
-    }
-}
+        .catch(err => res.status(400).json({ 'error': err }));
+} 
