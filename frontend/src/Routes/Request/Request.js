@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
 import RequestListGroup from './components/RequestListGroup';
@@ -61,20 +64,21 @@ class Requests extends Component {
     }
 
     handleSearchBarChange(event) {
+        event.preventDefault();
         this.setState({ searchCriteria: event.target.value });
     }
 
-
-
-    render() {
-        return (
-            <div className="page-content-container">
+    render() { 
+        return ( 
+            <div className="page-content-container">                
                 <div className="requests-header">
                     <h1>Requests</h1>
                     <form action='/requests/' className="searchbar" noValidate autoComplete="off">
-                        <TextField name="search" id="standard-basic" label="Search🔎" onChange={this.handleSearchBarChange} />
+                        <TextField value={this.state.searchCriteria || ""} name="search" id="standard-basic" label="Search🔎" onChange={this.handleSearchBarChange} />
                     </form>
-
+                    <Link to={"/request/new"}>
+                        <Button variant="contained" color="primary">New Request</Button>
+                    </Link>
                 </div>
 
                 <RequestListGroup requestsList={this.filterRequests(this.state.searchCriteria)} />

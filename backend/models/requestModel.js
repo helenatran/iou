@@ -8,7 +8,7 @@ const RequestSchema = new Schema({
     },
     taskDescription: {
         type: String,
-        required: true
+        required: false
     },
     requesterUserId: {
         type: Schema.Types.ObjectId,

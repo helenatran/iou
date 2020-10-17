@@ -48,3 +48,14 @@
 .Pending {
     color: rgb(217, 181, 39)
 }
+
+form.request-form {
+    display: inline-block;
+    padding: 30px;
+}
+
+.rewards-table-container {
+    width: 50vw;
+    min-width: 500px;
+    margin: 3vh 3vw ;
+}
