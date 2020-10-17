@@ -19,8 +19,8 @@ class RequestListGroup extends Component {
                 <div className="list-group-container">
                     {
                         this.props.requestsList.map(
-                            (requestInfo) => (
-                                <RequestCard key={requestInfo.taskTitle} requestInfo={requestInfo} />
+                            (request) => (
+                                <RequestCard key={request._id} request={request} />
                             )
                         ) 
                     }
