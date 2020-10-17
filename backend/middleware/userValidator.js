@@ -4,7 +4,7 @@ const User = require('../models/userModel');
 module.exports.registerUserValidator = [
     check('firstName')
         .isLength({ min: 3, max: 50 })
-        .withMessage("Dirst name must be between 3 to 50 characters"),
+        .withMessage("First name must be between 3 to 50 characters"),
     check('lastName')
         .isLength({ min: 3, max: 50 })
         .withMessage("Last name must be between 3 to 50 characters"),
@@ -12,10 +12,8 @@ module.exports.registerUserValidator = [
         .isEmail()
         .withMessage("Email must be valid email address")
         .custom(async value => {
-            console.log(value);
             const user = await User.find({ email: value });
-            console.log(user)
-            if (user)
+            if (user.length > 0)
                 return Promise.reject('That email has already been registered');
         }),
     check('password')

@@ -21,7 +21,7 @@ module.exports.registerUser = async (req, res) => {
     try {
         const savedUser = await registeredUser.save();
         return res.status(200).json({
-            user: savedUser
+            message: 'User successfully registered'
         })
     } catch (error) {
         return res.status(500).json({
@@ -36,13 +36,15 @@ module.exports.loginUser = async (req, res) => {
     });
     if (!user)
         return res.status(400).json({
-            error: 'That email or password was incorrect'
-        })
+            error: [{
+                error: 'That email or password was incorrect'
+            }]})
     const checkPassword = await bcrypt.compare(req.body.password, user.password);
     if (!checkPassword)
         return res.status(400).json({
-            error: 'That email or password was incorrect'
-        })
+            error: [{
+                error: 'That email or password was incorrect'
+            }]})
     
     const jwtPayload = {
         id: user._id,

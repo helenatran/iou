@@ -27,14 +27,15 @@ export default function Login() {
     const classes = useStyles();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [ error, setError ] = useState();
+    const [ error, setError ] = useState([]);
     const [ errorState, setErrorState ] = useState();
 
     const { setUserDetails } = useContext(UserContext);
     const history = useHistory();
     
     const submitForm = async (e) => {
-        e.preventDefault();        
+        e.preventDefault();
+        //setError([]);        
         setErrorState(false);
 
         try {
@@ -62,7 +63,7 @@ export default function Login() {
                     <Box display="flex" justifyContent="center" >
                         <h1>Login</h1>
                     </Box>
-                    { errorState === true ? <ErrorNotice message={error} clear={() => setError(undefined)} /> : "" }
+                    { errorState === true ? <ErrorNotice message={error} /> : "" }
                     <Box display="flex" justifyContent="center" margin="1vw">
                         <TextField 
                             id="outlined-basic" 

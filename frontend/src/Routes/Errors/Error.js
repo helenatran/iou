@@ -24,7 +24,11 @@ const ErrorAlert = props => {
                     </IconButton>
                 }
                 >
-                    <span>{props.message}</span>
+                    {props.message.map(errors =>
+                    <> 
+                        <ul>{errors.error}</ul><br />
+                    </>
+                    )}
                 </Alert>
             </Collapse>
         </div>

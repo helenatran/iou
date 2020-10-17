@@ -14,8 +14,7 @@ module.exports.runValidator = (req, res, next) => {
 function formatErrors(errors) {
     return errors.map(err => {
         return {
-            param: err.param,
-            msg: err.msg,
+            error: err.msg,
         }
     })
 }

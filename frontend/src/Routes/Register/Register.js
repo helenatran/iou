@@ -10,13 +10,14 @@ const Register = props => {
     const [ lastName, setLastName ] = useState();
     const [ email, setEmail ] = useState();
     const [ password, setPassword ] = useState();
-    const [ error, setError ] = useState();
+    const [ error, setError ] = useState([]);
     const [ errorState, setErrorState ] = useState();
 
     const history = useHistory();
 
     const submitForm = async (e) => {
         e.preventDefault();
+        //setError([]);        
         setErrorState(false);
         try {
             const requestsCompleted = 0;
@@ -31,10 +32,10 @@ const Register = props => {
 
     return (
         <div className="centre">
+            { errorState === true ? <ErrorNotice message={error} /> : "" }
             <div class="ui middle aligned center aligned grid">
                 <div className="column">  
                     <h1>Register</h1>
-                    { errorState === true ? <ErrorNotice message={error} clear={() => setError(undefined)} /> : "" }
                     <Form onSubmit={submitForm}>
                         <Form.Field>
                             <Form.Input 
@@ -72,6 +73,7 @@ const Register = props => {
                         </Form.Field>
                         <Button type='submit'>Submit</Button>
                     </Form>
+                    {/* clear={() => setError([undefined])} */}
                 </div> 
             </div> 
         </div>
