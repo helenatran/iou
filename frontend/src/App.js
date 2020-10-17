@@ -53,11 +53,11 @@ function App() {
           <RouterSwitch>
             <Route path='/login' component={Routes.Login} />
             <Route path='/register' component={Routes.Register} />
-            <Route path='/account' component={Routes.Account} />
+            <PrivateRoute path='/account' component={Routes.Account} />
             <PrivateRoute path='/favours' exact component={Routes.Favour} />
-            <Route path='/favours/create' component={Routes.FavourForm} />
-            <Route path='/favours/:favourid/update' component={Routes.FavourUpdate} />
-            <Route path='/favours/:favourid' component={Routes.FavourSingle} />
+            <PrivateRoute path='/favours/create' component={Routes.FavourForm} />
+            <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
+            <PrivateRoute path='/favours/:favourid' component={Routes.FavourSingle} />
             <Route path='/requests' component={Routes.Request} />
             <Route path='/leaderboard' component={Routes.Leaderboard} />
             <Route path='/:id' component={Routes.RequestInfo} />
