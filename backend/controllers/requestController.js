@@ -28,7 +28,7 @@ module.exports.CreateRequest = (req,res) => {
  * GET request - no need for params/body fields
  */
 module.exports.getAllRequests = (req,res) => {
-    requestCollection.find().sort({"timeCreated": "asc"}).then((requests) => {
+    requestCollection.find().sort({"timeCreated": "desc"}).then((requests) => {
         res.status(200).send(requests);
     }) 
     .catch((err) => {
