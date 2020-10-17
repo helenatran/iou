@@ -26,7 +26,7 @@ const ErrorAlert = props => {
                 >
                     {props.message.map(errors =>
                     <> 
-                        <ul>{errors.error}</ul><br />
+                        <ul key={errors.error.toString()}>{errors.error}</ul><br />
                     </>
                     )}
                 </Alert>

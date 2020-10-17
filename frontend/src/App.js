@@ -9,6 +9,7 @@ import {
 } from 'react-router-dom';
 import * as Routes from './Routes/routes'
 import axios from 'axios';
+import PrivateRoute from './Helpers/PrivateRoute';
 
 function App() {
   const [ userDetails, setUserDetails ] = useState({
@@ -53,7 +54,7 @@ function App() {
             <Route path='/login' component={Routes.Login} />
             <Route path='/register' component={Routes.Register} />
             <Route path='/account' component={Routes.Account} />
-            <Route path='/favours' exact component={Routes.Favour} />
+            <PrivateRoute path='/favours' exact component={Routes.Favour} />
             <Route path='/favours/create' component={Routes.FavourForm} />
             <Route path='/favours/:favourid/update' component={Routes.FavourUpdate} />
             <Route path='/favours/:favourid' component={Routes.FavourSingle} />
