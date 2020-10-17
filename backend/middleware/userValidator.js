@@ -1,27 +1,30 @@
 const { check } = require('express-validator');
+const User = require('../models/userModel');
 
 module.exports.registerUserValidator = [
     check('firstName')
-        .notEmpty()
         .isLength({ min: 3, max: 50 })
-        .withMessage("Your first name must not be empty and between 3 and 50 characters"),
+        .withMessage("Dirst name must be between 3 to 50 characters"),
     check('lastName')
-        .notEmpty()
         .isLength({ min: 3, max: 50 })
-        .withMessage("Your last name must not be empty and between 3 and 50 characters"),
+        .withMessage("Last name must be between 3 to 50 characters"),
     check('email')
-        .notEmpty()
         .isEmail()
-        .withMessage("Your email must not be empty and must be valid"),
+        .withMessage("Email must be valid email address")
+        .custom(async value => {
+            console.log(value);
+            const user = await User.find({ email: value });
+            console.log(user)
+            if (user)
+                return Promise.reject('That email has already been registered');
+        }),
     check('password')
-        .notEmpty()
         .isLength({ min: 8 })
         .withMessage("Password must be at least 8 characters long")
 ]
 
 module.exports.loginUserValidator = [
     check('email')
-        .notEmpty()
         .isEmail()
         .withMessage("Must be a valid email"),
     check('password')

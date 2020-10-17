@@ -3,13 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports.registerUser = async (req, res) => {
-    const submittedEmail = await User.findOne({
-        email: req.body.email
-    });
-    if (submittedEmail)
-        return res.status(400).json({
-            error: 'That email has already been registered'
-        });
+    // const submittedEmail = await User.findOne({
+    //     email: req.body.email
+    // });
+    // if (submittedEmail)
+    //     return res.status(400).json({
+    //         error: 'That email has already been registered'
+    //     });
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
