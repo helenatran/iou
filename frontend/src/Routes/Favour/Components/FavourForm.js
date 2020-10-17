@@ -35,7 +35,7 @@ class FavourForm extends React.Component {
             selectedUserR: {},
             comments: '',
             oweMe: false,
-            proof: '',
+            proof: null,
             proofUrl: '',
             proofConfirmation: ''
         }
@@ -88,18 +88,20 @@ class FavourForm extends React.Component {
     async submitFavour(event) {
         event.preventDefault();
 
-        const data = new FormData();
-        data.append("file", this.state.proof, this.state.proofConfirmation);
+        if (this.state.proof) {
+            const data = new FormData();
+            data.append("file", this.state.proof, this.state.proofConfirmation);
 
-        await axios.post('http://localhost:5000/api/proof/upload', data)
-            .then((response) => {
-                console.log(response.data.data.Location);
-                this.setState({
-                    proofUrl: response.data.data.Location
+            await axios.post('/api/proof/upload', data)
+                .then((response) => {
+                    this.setState({
+                        proofUrl: response.data.data.Location
+                    })
+                    console.log(response);
+                    console.log(this.state.proofUrl);
                 })
-                console.log(this.state.proofUrl);
-            })
-            .catch(err => console.log(err));
+                .catch(err => console.log(err));
+        }
 
         const newFavour = {
             userId: this.state.selectedUserL,
@@ -110,7 +112,13 @@ class FavourForm extends React.Component {
             proof: this.state.proofUrl
         }
 
-        await axios.post('http://localhost:5000/api/favours', newFavour)
+        console.log(newFavour);
+
+        await axios.post('/api/favours', newFavour, {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        })
             .then(response => {
                 console.log(response);
                 console.log(newFavour);

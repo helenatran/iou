@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
-// import ButtonGroup from "@material-ui/core/ButtonGroup";
-// import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
+
 import axios from 'axios';
 
-import RequestListGroup from './Components/RequestListGroup';
+import RequestListGroup from './components/RequestListGroup';
 // import RequestDetails from './components/RequestDetails';
 
 class Requests extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            filters: ['All open requests', 'Pending Confirmation Requests', 'Your Requests', 'pls'],
             searchCriteria: "",
             requestsList: [],
 
@@ -41,7 +41,7 @@ class Requests extends Component {
             || request.status.toLowerCase().includes(search)) {
             return true;
         }
-
+        
         for (const rewardIndex in request.rewards) {
             if (request.rewards[rewardIndex].rewardItem.includes(search)) {
                 return true;
@@ -64,20 +64,21 @@ class Requests extends Component {
     }
 
     handleSearchBarChange(event) {
+        event.preventDefault();
         this.setState({ searchCriteria: event.target.value });
     }
 
-
-
-    render() {
-        return (
-            <div className="page-content-container">
+    render() { 
+        return ( 
+            <div className="page-content-container">                
                 <div className="requests-header">
                     <h1>Requests</h1>
                     <form action='/requests/' className="searchbar" noValidate autoComplete="off">
-                        <TextField name="search" id="standard-basic" label="Search🔎" onChange={this.handleSearchBarChange} />
+                        <TextField value={this.state.searchCriteria || ""} name="search" id="standard-basic" label="Search🔎" onChange={this.handleSearchBarChange} />
                     </form>
-
+                    <Link to={"/request/new"}>
+                        <Button variant="contained" color="primary">New Request</Button>
+                    </Link>
                 </div>
 
                 <RequestListGroup requestsList={this.filterRequests(this.state.searchCriteria)} />

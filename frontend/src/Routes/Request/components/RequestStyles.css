@@ -30,3 +30,32 @@
     text-align: center;
     margin-bottom: 5px;
 }
+
+.status { 
+    display: inline;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.Open {
+    color: rgb(75, 184, 61);
+}
+
+.Closed {
+    color: rgb(224, 95, 70);
+}
+
+.Pending {
+    color: rgb(217, 181, 39)
+}
+
+form.request-form {
+    display: inline-block;
+    padding: 30px;
+}
+
+.rewards-table-container {
+    width: 50vw;
+    min-width: 500px;
+    margin: 3vh 3vw ;
+}
