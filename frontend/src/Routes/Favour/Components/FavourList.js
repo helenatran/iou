@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function FavourList(props) {
     const classes = useStyles();
-    const friendType = props.friendType;
 
     return (
         <div>
@@ -37,8 +36,9 @@ export default function FavourList(props) {
                                 }}>
                                 <CardContent>
                                     <Typography variant="h6">{item.favourName}</Typography>
+                                    <Typography>{item.isCompleted ? (item.oweMe ? ('Type: Owe me') : ('Type: I owe')) : ('')}</Typography>
                                     <Typography>Friend: {item.oweMe ? (item.owner.firstName) : (item.ower.firstName)}</Typography>
-                                    <Typography>Date: <Time value={item.timeCreated} format="DD/MM/YYYY" /></Typography>
+                                    <Typography>{item.timeCompleted == null ? (<span>Date Created: <Time value={item.timeCreated} format="DD/MM/YYYY" /></span>) : (<span>Date Completed: <Time value={item.timeCompleted} format="DD/MM/YYYY" /></span>)}</Typography>
                                 </CardContent>
                             </CardActionArea>
                         </Card>

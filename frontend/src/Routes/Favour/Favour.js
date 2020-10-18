@@ -68,21 +68,21 @@ class Favours extends React.Component {
 
     updateSearchInput = (input) => {
         if (this.state.favoursToShow === 'pendingIOwe') {
-            const filtered = this.state.favoursOwed.filter(favour => {
-                return favour.favourName.toLowerCase().includes(input.toLowerCase())
-            })
-            this.setState({
-                searchInput: input,
-                filteredFavoursOwed: filtered
-            })
-        }
-        else if (this.state.favoursToShow === 'pendingOweMe') {
             const filtered = this.state.favoursOwned.filter(favour => {
                 return favour.favourName.toLowerCase().includes(input.toLowerCase())
             })
             this.setState({
                 searchInput: input,
                 filteredFavoursOwned: filtered
+            })
+        }
+        else if (this.state.favoursToShow === 'pendingOweMe') {
+            const filtered = this.state.favoursOwed.filter(favour => {
+                return favour.favourName.toLowerCase().includes(input.toLowerCase())
+            })
+            this.setState({
+                searchInput: input,
+                filteredFavoursOwed: filtered
             })
         }
         else if (this.state.favoursToShow === 'completed') {
@@ -100,14 +100,11 @@ class Favours extends React.Component {
     render() {
         const { classes } = this.props;
         let favours = [];
-        let friendType = '';
         if (this.state.favoursToShow === 'pendingIOwe') {
-            favours = this.state.filteredFavoursOwed;
-            friendType = 'owner';
+            favours = this.state.filteredFavoursOwned;
         }
         else if (this.state.favoursToShow === 'pendingOweMe') {
-            favours = this.state.filteredFavoursOwned;
-            friendType = 'ower';
+            favours = this.state.filteredFavoursOwed;
         }
         else if (this.state.favoursToShow === 'completed') {
             favours = this.state.filteredFavoursCompleted;
@@ -130,7 +127,7 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} friendType={friendType}/>
+                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} />
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
             </div >
         )

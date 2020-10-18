@@ -2,6 +2,7 @@ const Favour = require('../models/favourModel');
 const User = require('../models/userModel');
 
 module.exports.createFavour = (req, res) => {
+    console.log(req.body);
     let newFavour = new Favour(req.body);
     newFavour.save((err, Favour) => {
         if (err) {
@@ -69,6 +70,7 @@ module.exports.getAllUserFavours = async (req, res) => {
                 favourComment: favour.favourComment,
                 proof: favour.proof,
                 timeCreated: favour.timeCreated,
+                timeCompleted: favour.timeCompleted
             };
         })
 
@@ -85,9 +87,10 @@ module.exports.getAllUserFavours = async (req, res) => {
 
     // Filter the mergedFavours object and filter it based on whatever criteria you want
     // Good idea to decide if you want to return only the completed favours the user owes or also completed favours the user is owed
-    const owned = mergedFavours.filter(favour => favour.oweMe === false)
-    const owed = mergedFavours.filter(favour => favour.oweMe === true)
-    const completed = mergedFavours.filter(favour => favour.isCompleted === true && favour.oweMe === false)
+    const owned = mergedFavours.filter(favour => favour.oweMe === false && favour.isCompleted === false)
+    const owed = mergedFavours.filter(favour => favour.oweMe === true && favour.isCompleted === false)
+    const completed = mergedFavours.filter(favour => favour.isCompleted === true)
+    //remove for now '&& favour.oweMe === false'
 
     // Send it :D
     try {
@@ -109,4 +112,12 @@ module.exports.getFavourWithID = (req, res) => {
             res.status(200).send(favour);
         })
         .catch(err => res.status(400).json({ 'error': err }));
+};
+
+module.exports.updateFavour = async (req, res) => {
+    await Favour.findOneAndUpdate({ _id: req.params.FavourId }, req.body, { new: true })
+        .then((favour) => {
+            res.status(200).send(favour);
+        })
+        .catch(err => res.status(400).json({ 'error': err }))
 };
