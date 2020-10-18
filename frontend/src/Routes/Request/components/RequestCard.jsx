@@ -17,9 +17,17 @@ class RequestCard extends Component {
         return (<p className="card-title">{text}</p>);
     }
 
+    renderStatus = () => {
+        let status = this.props.request.status;
+        return (<span className={"status smallCaps " + status}>{status}</span>);
+    }
+
     renderRewardInfo() {
-        let rewards = this.props.requestInfo.rewards;
-        let rewardsInfo = rewards[0].rewardItem;
+        
+        let rewards = this.props.request.rewards;
+        let rewardsInfo = "rewards"; // temporary
+
+        // console.log(this.props.request.rewards[0].rewardItem);
 
         if (rewards.length > 1) {
             rewardsInfo += " & " + (rewards.length-1) + " other rewards";
@@ -29,15 +37,16 @@ class RequestCard extends Component {
     } 
 
     render() { 
-        let requestInfo = this.props.requestInfo;
+        let request = this.props.request;
         return ( 
             <Card className="request-card">
-                {this.renderSmallCaps("Request:")}
-                {this.renderCardInfo(requestInfo.taskTitle)}
+                {this.renderSmallCaps("Request: ")} 
+                {this.renderStatus()}
+                {this.renderCardInfo(request.taskTitle)}
                 
-                {this.renderSmallCaps("Rewards (" + requestInfo.rewards.length + "):")}
+                {this.renderSmallCaps("Rewards (" + request.rewards.length + "):")}
                 {this.renderRewardInfo()} 
-                <Link to={requestInfo._id}>
+                <Link to={"/request/" + request._id}>
                     <Button  variant="contained" color="primary" > View Request </Button>
                 </Link>
             </Card>

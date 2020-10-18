@@ -2,19 +2,18 @@ const requestCollection = require('../models/requestModel');
 
 /**
  * Create a request
- * POST request - requires a requestobject field in the body containing minimum:
- * "requestObject": {
-        "taskTitle":String,
-        "taskDescription":String,
-        "requesterUserId" : String of user id,
-        "status": "Open",
-        "requestExpiry":"", (optional)
-        "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
-    }
+ * POST request - requires minimum these fields in body:
+    "taskTitle":String,
+    "taskDescription":String,
+    "requesterUserId" : String of user id,
+    "status": "Open",
+    "requestExpiry":"", (optional)
+    "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
+    
     Other fields not mentioned: proof, completerId
  */
 module.exports.CreateRequest = (req,res) => {
-    let newRequest = new requestCollection(req.body.requestObject);
+    let newRequest = new requestCollection(req.body);
     
     newRequest.save((err, requestObject) => {
         if (err) {
@@ -25,16 +24,30 @@ module.exports.CreateRequest = (req,res) => {
 };
 
 /**
- * Get all requests
+ * Get all requests (sorted by latest first)
  * GET request - no need for params/body fields
  */
 module.exports.getAllRequests = (req,res) => {
-    requestCollection.find().then((requests) => {
+    requestCollection.find().sort({"timeCreated": "desc"}).then((requests) => {
         res.status(200).send(requests);
     }) 
     .catch((err) => {
         res.status(400).json({ 'error': err })
     });
+};
+
+/**
+ * Get Request by ID
+ * GET request - requires id in the params
+ */
+module.exports.getRequestbyId = (req, res) => {
+    console.log('get a request:')
+    console.log(req.params.id);
+    requestCollection.findById(req.params.id)
+        .then((request) => {
+            res.status(200).send(request);
+        })
+        .catch(err => res.status(400).json({ 'error': err }));
 };
 
 /**
@@ -47,7 +60,7 @@ module.exports.UpdateRequest = (req, res) => {
     let update = req.body.requestChanges;
 
     requestCollection.findByIdAndUpdate(
-        { _id: req.body.requestId },
+        { _id: req.body._id },
         update,
         function(err, result) {
             if (err) {
@@ -75,17 +88,5 @@ module.exports.DeleteRequest = (req, res) => {
         }); 
 };
 
-
-/**
- * Get Request by ID
- * GET request - requires id in the params
- */
-module.exports.getRequestbyId = (req, res) => {
-    requestCollection.findById(req.params.id)
-        .then((request) => {
-            res.status(200).send(request);
-        })
-        .catch(err => res.status(400).json({ 'error': err }));
-};
 
 

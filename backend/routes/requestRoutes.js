@@ -3,7 +3,7 @@ const requestController = require('../controllers/requestController');
 
 router.get('/', requestController.getAllRequests);
 router.get('/:id', requestController.getRequestbyId);
-router.post('/add', requestController.CreateRequest);
+router.post('/create', requestController.CreateRequest);
 router.patch('/update', requestController.UpdateRequest);
 router.delete('/delete', requestController.DeleteRequest);
 
