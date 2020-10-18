@@ -61,10 +61,10 @@ function App() {
             <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
             <PrivateRoute path='/favours/:favourid' component={Routes.FavourSingle} />
             <PrivateRoute path='/request/new' component={Routes.RequestForm} />
-            <PublicRoute path='/request/:id' component={Routes.RequestInfo} />
-            <PublicRoute path='/' component={Routes.Request} />
-            <PublicRoute path='/request/' component={Routes.Request} />
-            <PublicRoute path='/leaderboard' component={Routes.Leaderboard} />
+            <Route path='/request/:id' component={Routes.RequestInfo} />
+            <Route path='/' component={Routes.Request} />
+            <Route path='/request/' component={Routes.Request} />
+            <Route path='/leaderboard' component={Routes.Leaderboard} />
             
           </RouterSwitch>
         </UserContext.Provider>
