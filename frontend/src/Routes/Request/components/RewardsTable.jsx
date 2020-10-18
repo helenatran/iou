@@ -8,7 +8,6 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 
-import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 
@@ -51,7 +50,7 @@ class RewardsTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.props.rewards.map((rewardObj) => {
+                            {this.props.rewards.map((rewardObj, i) => {
                                 let indexKey = this.props.rewards.indexOf(rewardObj);
                                 return (
                                     <TableRow key={indexKey}>
@@ -59,12 +58,12 @@ class RewardsTable extends Component {
                                             {rewardObj.rewardItem} from {rewardObj.rewarderId}
                                         </TableCell>
                                         <TableCell>
-                                            <IconButton 
-                                                onClick={this.props.handleChangeReward} 
-                                                aria-label="delete"
-                                            >
-                                                <DeleteIcon />
-                                            </IconButton>
+                                            <Button onClick={(event) => {
+                                                this.props.handleDeleteReward(indexKey);
+                                            }
+                                            } aria-label="delete">
+                                                <DeleteIcon color="action" />
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 );

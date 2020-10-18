@@ -12,12 +12,14 @@ class RequestInfo extends Component {
             taskDescription: "",
             timeCreated: "",
             requestExpiry: "",
-            rewards: []
+            rewards: [],
+            requestChanges: {}
         };
 
         this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
         this.handleDeleteReward = this.handleDeleteReward.bind(this);
-
+        this.saveRequestUpdates = this.saveRequestUpdates.bind(this);
+        this.updateRequestChanges = this.updateRequestChanges.bind(this);
     }
 
     componentDidMount = async () => {
@@ -43,10 +45,39 @@ class RequestInfo extends Component {
         console.log(this.state.rewards);
     }
 
-    handleDeleteReward(event) {
-        console.log("HANDLE DELETE REWARD");
-        console.log("*changes the reward array*");
-        console.log(event.target.value);
+    handleDeleteReward(index) { // update state and request object
+        let rewards = this.state.rewards;
+        rewards.splice(index, 1);
+        this.setState({rewards: rewards});
+
+        this.updateRequestChanges("rewards", this.state.rewards);
+
+        this.saveRequestUpdates();
+    }
+
+    updateRequestChanges(fieldName, value) {
+        let requestChanges = this.state.requestChanges;
+        requestChanges[fieldName] = value;
+        this.setState({requestChanges: requestChanges});
+    }
+
+    saveRequestUpdates() {
+        const { requestChanges } = this.state;
+
+        if (Object.keys(requestChanges).length !== 0) {
+            const payload = {
+                _id: this.state.id,
+                requestChanges: requestChanges
+            }
+
+            axios.patch(`/api/request/update/`, payload)    // get request by id
+            .then(res => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
     }
  
     render() {
@@ -69,6 +100,7 @@ class RequestInfo extends Component {
                 <RewardsTable 
                     rewards={this.state.rewards}
                     handleChangeReward={this.handleChangeReward}
+                    handleDeleteReward={this.handleDeleteReward}
                     handleSubmit={this.handleSubmitRequest}
                     />
 
