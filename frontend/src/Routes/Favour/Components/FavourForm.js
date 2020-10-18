@@ -48,9 +48,11 @@ class FavourForm extends React.Component {
     }
 
     updateFavour(object, value) {
-        this.setState({
-            favour: value.name
-        })
+        if (value !== null) {
+            this.setState({
+                favour: value.name
+            })
+        }
     }
 
     updateComments(event) {
@@ -60,9 +62,11 @@ class FavourForm extends React.Component {
     }
 
     updateFriend(object, value) {
-        this.setState({
-            friend: value._id
-        })
+        if (value !== null) {
+            this.setState({
+                friend: value._id
+            })
+        }
     }
 
     updateOweMe(event) {

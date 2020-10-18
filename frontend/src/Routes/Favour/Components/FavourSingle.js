@@ -28,18 +28,31 @@ const useStyles = (theme) => ({
 class FavourSingle extends React.Component {
     render() {
         const favour = this.props.location.state.favour;
+
         let type = '';
         if (favour.oweMe) {
             type = 'Owe me';
         }
         else { type = 'I owe'; }
+
+        let sourceImage = '';
+        if (favour.favourName === 'Breakfast') { sourceImage = '/favourImages/breakfast.jpg' }
+        if (favour.favourName === 'Brunch') { sourceImage = '/favourImages/brunch.jpg' }
+        if (favour.favourName === 'Bubble Tea') { sourceImage = '/favourImages/bubbletea.jpg' }
+        if (favour.favourName === 'Coffee') { sourceImage = '/favourImages/coffee.png' }
+        if (favour.favourName === 'Dessert') { sourceImage = '/favourImages/dessert.png' }
+        if (favour.favourName === 'Dinner') { sourceImage = '/favourImages/dinner.png' }
+        if (favour.favourName === 'Donuts') { sourceImage = '/favourImages/donuts.jpg' }
+        if (favour.favourName === 'Drinks') { sourceImage = '/favourImages/drinks.png' }
+        if (favour.favourName === 'Fast Food') { sourceImage = '/favourImages/fastfood.png' }
+
         const { classes } = this.props;
         return (
             <div className={classes.root}>
                 <Paper>
                     <Grid container spacing={2}>
                         <Grid item className={classes.gridItem}>
-                            <img src={favour.proof} alt="favour proof" width="225" height="225" />
+                            <img src={sourceImage} alt="favour proof" width="225" height="225" />
                         </Grid>
                         <Grid item className={classes.gridItem}>
                             <h1>Favour: {favour.favourName}</h1>
