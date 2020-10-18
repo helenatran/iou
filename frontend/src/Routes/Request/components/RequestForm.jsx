@@ -83,7 +83,7 @@ class RequestForm extends Component {
                 <h1>Create a New Request</h1>
                 <Card>
                     <form className="request-form" onSubmit={this.handleSubmit}>
-                        <TextField defaultValue="abc" onChange={this.handleChangeTaskTitle} label="Request" required id="standard-required" />
+                        <TextField onChange={this.handleChangeTaskTitle} label="Request" required id="standard-required" />
                         <br />
                         <TextField onChange={this.handleChangeTaskDescription} label="Description" id="outlined-multiline-flexible" />
                         <br />
