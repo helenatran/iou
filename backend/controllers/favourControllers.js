@@ -2,6 +2,7 @@ const Favour = require('../models/favourModel');
 const User = require('../models/userModel');
 
 module.exports.createFavour = (req, res) => {
+    console.log(req.body);
     let newFavour = new Favour(req.body);
     newFavour.save((err, Favour) => {
         if (err) {
