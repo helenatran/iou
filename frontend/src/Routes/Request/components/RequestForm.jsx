@@ -26,12 +26,7 @@ class RequestForm extends Component {
         this.handleChangeTaskDescription = this.handleChangeTaskDescription.bind(this);
         this.handleChangeExpiry = this.handleChangeExpiry.bind(this);
         this.handleChangeRewardSelection = this.handleChangeRewardSelection.bind(this);
-
         this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        //TODO - check for user
     }
 
     handleChangeTaskTitle = (event) => { this.setState({ taskTitle: event.target.value }); }
@@ -53,7 +48,6 @@ class RequestForm extends Component {
         
     }
 
-
     handleSubmit = (event) => {
         event.preventDefault();
         const newRequest = {
@@ -64,13 +58,8 @@ class RequestForm extends Component {
             rewards: [].concat(this.state.newReward),
             requesterUserId: this.state.requesterUserId
         }
-        console.log(newRequest);
         axios.post('/api/request/create', newRequest)
             .then(response => {
-                console.log("create req response: ");
-                console.log(response);
-                console.log("New request ID");
-                console.log(response.data._id);
                 window.location = '/request/' + (response.data._id || "");
             })
             .catch(err => console.log(err));

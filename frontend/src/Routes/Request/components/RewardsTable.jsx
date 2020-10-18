@@ -14,30 +14,28 @@ import Button from '@material-ui/core/Button';
 import RewardSelectField from "./RewardSelectField";
 import './RequestStyles.css';
 
-// const axios = require('axios');
-
 class RewardsTable extends Component {
     constructor(props) {
         super(props);
+
+        /**
+         * props required:
+         * rewards array ({rewarderId, rewardItem} elements)
+         * handleDeleteReward function
+         * handleSubmitReward(rewardSelection: string) function
+        */
+
         this.state = {
-            rewards: [],
             newReward: "",
         }
 
-        this.onChangeNewReward = this.onChangeNewReward.bind(this);
+        this.handleChangeReward = this.handleChangeReward.bind(this);
+    }
+
+    handleChangeReward(event) {
+        this.setState({newReward: event.target.value});
     }
     
-    componentDidMount() {
-        // load Rewards into changeable state
-        this.setState({rewards: this.props.rewards});
-    }
-
-    onChangeNewReward(event) {
-        this.setState({
-            newReward: event.target.value
-        });
-    }
-
     render() { 
         return ( 
             <><div className="rewards-table-container">
@@ -58,10 +56,10 @@ class RewardsTable extends Component {
                                             {rewardObj.rewardItem} from {rewardObj.rewarderId}
                                         </TableCell>
                                         <TableCell>
-                                            <Button onClick={(event) => {
-                                                this.props.handleDeleteReward(indexKey);
-                                            }
-                                            } aria-label="delete">
+                                            <Button 
+                                                onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
+                                                aria-label="delete"
+                                            >
                                                 <DeleteIcon color="action" />
                                             </Button>
                                         </TableCell>
@@ -71,10 +69,12 @@ class RewardsTable extends Component {
                         </TableBody>    
                     </Table>
 
-                    <form onSubmit={this.props.handleSubmit}>
-
-                        <label>Select a Reward to add: </label>
-                        <RewardSelectField handleChangeReward={this.handleChangeReward} />
+                    <form onSubmit={(event) => {
+                        event.preventDefault();
+                        this.props.handleSubmitReward(this.state.newReward);
+                    }}>
+                        <label>Select a Reward to add:   </label>
+                        <RewardSelectField name="reward" handleChangeReward={this.handleChangeReward} />
 
                         <br/>
                         <Button 
