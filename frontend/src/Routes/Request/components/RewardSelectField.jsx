@@ -10,8 +10,7 @@ class RewardSelectField extends Component {
         super(props);
         /**
          * props required: 
-         * label: text field label eg "select reward"
-         * handleChangeReward: event handler
+         * handleChangeReward: event handler for changing state of rewardselection
          */
         
         this.state = { 
@@ -25,7 +24,7 @@ class RewardSelectField extends Component {
     render() { 
         return (
                 <Select
-                    onChange={this.props.handleChangeRewardSelection} required
+                    onChange={this.props.handleChangeReward} required
                 >
                     {this.state.types.map((option) => (
                         <MenuItem key={option} value={option}>
