@@ -52,6 +52,7 @@ function App() {
         <UserContext.Provider value={{ userDetails, setUserDetails }}>
           <ButtonAppBar />
           <RouterSwitch>
+          
             <PublicRoute path='/login' component={Routes.Login} />
             <PublicRoute path='/register' component={Routes.Register} />
             <PrivateRoute path='/account' component={Routes.Account} />
@@ -59,11 +60,12 @@ function App() {
             <PrivateRoute path='/favours/create' component={Routes.FavourForm} />
             <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
             <PrivateRoute path='/favours/:favourid' component={Routes.FavourSingle} />
-            <Route path='/requests' component={Routes.Request} />
-            <Route path='/leaderboard' component={Routes.Leaderboard} />
-            <Route path='/request/new' component={Routes.RequestForm} />
-            <Route path='/request/:id' component={Routes.RequestInfo} />
-
+            <PrivateRoute path='/request/new' component={Routes.RequestForm} />
+            <PublicRoute path='/request/:id' component={Routes.RequestInfo} />
+            <PublicRoute path='/' component={Routes.Request} />
+            <PublicRoute path='/request/' component={Routes.Request} />
+            <PublicRoute path='/leaderboard' component={Routes.Leaderboard} />
+            
           </RouterSwitch>
         </UserContext.Provider>
       </BrowserRouter>
