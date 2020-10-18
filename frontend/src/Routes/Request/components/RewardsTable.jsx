@@ -21,7 +21,7 @@ class RewardsTable extends Component {
         /**
          * props required:
          * rewards array ({rewarderId, rewardItem} elements)
-         * handleDeleteReward function
+         * handleDeleteReward(indexkey) function
          * handleSubmitReward(rewardSelection: string) function
         */
 
@@ -48,41 +48,47 @@ class RewardsTable extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {this.props.rewards.map((rewardObj, i) => {
-                                let indexKey = this.props.rewards.indexOf(rewardObj);
-                                return (
-                                    <TableRow key={indexKey}>
-                                        <TableCell>
-                                            {rewardObj.rewardItem} from {rewardObj.rewarderId}
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button 
-                                                onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
-                                                aria-label="delete"
-                                            >
-                                                <DeleteIcon color="action" />
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                );
-                            })}
+                            {
+                                this.props.rewards.length === 0 
+                                ?
+                                <TableRow><h5>There are no rewards yet. Select and Add a Reward below</h5></TableRow>
+                                :
+                                this.props.rewards.map((rewardObj, i) => {
+                                    let indexKey = this.props.rewards.indexOf(rewardObj);
+                                    return (
+                                        <TableRow key={indexKey}>
+                                            <TableCell>
+                                                {rewardObj.rewardItem} from {rewardObj.rewarderId}
+                                            </TableCell>
+                                            <TableCell>
+                                                <Button 
+                                                    onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
+                                                    aria-label="delete"
+                                                >
+                                                    <DeleteIcon color="action" />
+                                                </Button>
+                                            </TableCell>
+                                        </TableRow>
+                                    );
+                                })
+                            }
                         </TableBody>    
                     </Table>
 
-                    <form onSubmit={(event) => {
-                        event.preventDefault();
-                        this.props.handleSubmitReward(this.state.newReward);
-                    }}>
+                    <div>
                         <label>Select a Reward to add:   </label>
-                        <RewardSelectField name="reward" handleChangeReward={this.handleChangeReward} />
+                        <RewardSelectField handleChangeReward={this.handleChangeReward} />
 
                         <br/>
                         <Button 
+                            onClick={(event) => {
+                                event.preventDefault();
+                                this.props.handleAddReward(this.state.newReward);
+                            }}
                             variant="contained" 
                             color="primary" 
-                            type="submit"
                         >Add Reward</Button>
-                    </form>
+                    </div>
                 </TableContainer>
             </div></>
         );

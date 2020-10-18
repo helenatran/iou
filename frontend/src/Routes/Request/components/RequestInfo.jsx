@@ -107,7 +107,7 @@ class RequestInfo extends Component {
                 <RewardsTable 
                     rewards={this.state.rewards}
                     handleDeleteReward={this.handleDeleteReward}
-                    handleSubmitReward={this.handleSubmitReward}
+                    handleAddReward={this.handleSubmitReward}
                 />
 
             </div>  
