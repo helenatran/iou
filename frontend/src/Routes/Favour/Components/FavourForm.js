@@ -5,6 +5,7 @@ import FavourFormUsers from './FavourFormComponents/FavourFormUsers';
 import FavourFormButtons from './FavourFormComponents/FavourFormButtons';
 import FavourFormComments from './FavourFormComponents/FavourFormComments';
 import FavourFormSwitch from './FavourFormComponents/FavourFormSwitch';
+import FavourFormProofUpload from './FavourFormComponents/FavourFormProofUpload';
 import { withStyles, Paper } from '@material-ui/core';
 
 const useStyles = (theme) => ({
@@ -35,6 +36,7 @@ class FavourForm extends React.Component {
             comments: '',
             oweMe: false,
             proof: '',
+            proofUrl: '',
             proofConfirmation: ''
         }
         this.updateFavour = this.updateFavour.bind(this);
@@ -77,25 +79,38 @@ class FavourForm extends React.Component {
     }
 
     updateProof(event) {
-        console.log(event.target.files[0])
-
         this.setState({
             proof: event.target.files[0],
             proofConfirmation: event.target.files[0].name
         })
     }
 
-    submitFavour(event) {
+    async submitFavour(event) {
+        event.preventDefault();
+
+        const data = new FormData();
+        data.append("file", this.state.proof, this.state.proofConfirmation);
+
+        await axios.post('http://localhost:5000/api/proof/upload', data)
+            .then((response) => {
+                console.log(response.data.data.Location);
+                this.setState({
+                    proofUrl: response.data.data.Location
+                })
+                console.log(this.state.proofUrl);
+            })
+            .catch(err => console.log(err));
+
         const newFavour = {
             userId: this.state.selectedUserL,
             oweUserId: this.state.selectedUserR,
             favourName: this.state.favour,
             favourComment: this.state.comments,
             oweMe: this.state.oweMe,
-            proof: this.state.proof
+            proof: this.state.proofUrl
         }
-        event.preventDefault();
-        axios.post('http://localhost:5000/api/favours', newFavour)
+
+        await axios.post('http://localhost:5000/api/favours', newFavour)
             .then(response => {
                 console.log(response);
                 console.log(newFavour);
@@ -117,7 +132,8 @@ class FavourForm extends React.Component {
                         />
                         <FavourFormFavours updateFavour={this.updateFavour} />
                         <FavourFormComments comments={this.state.comments} updateComments={this.updateComments} />
-                        <FavourFormButtons updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} submitFavour={this.submitFavour} />
+                        <FavourFormProofUpload updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />
+                        <FavourFormButtons submitFavour={this.submitFavour} />
                     </form>
                 </Paper>
             </div >

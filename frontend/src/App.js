@@ -5,7 +5,7 @@ import UserContext from './Context/userContext';
 import {
   BrowserRouter,
   Route,
-  Switch as RouterSwitch
+  Switch as RouterSwitch,
 } from 'react-router-dom';
 import * as Routes from './Routes/routes'
 import axios from 'axios';
@@ -15,6 +15,7 @@ function App() {
     token: undefined,
     user: undefined,
   })
+  
 
   useEffect(() => {
     const isLoggedIn = async () => {
@@ -23,7 +24,7 @@ function App() {
         localStorage.setItem("token", "");
         token="";
       }
-      const tokenValid = await axios.post('api/user/validateToken', null, {
+      const tokenValid = await axios.post('/api/user/validateToken', null, {
         headers: {
           "token": token
         }
