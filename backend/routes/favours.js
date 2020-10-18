@@ -5,6 +5,7 @@ const checkAuth = require('../middleware/checkAuth')
 router.get('/', checkAuth, favourController.getFavours);
 router.post('/', checkAuth, favourController.createFavour);
 router.get('/:FavourId', checkAuth, favourController.getFavourWithID);
+router.put('/:FavourId', checkAuth, favourController.updateFavour);
 router.get('/user/:id', checkAuth, favourController.getAllUserFavours);
 
 

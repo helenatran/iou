@@ -121,7 +121,7 @@ class FavourForm extends React.Component {
         })
             .then(response => {
                 console.log(response);
-                console.log(newFavour);
+                window.location = '/favours';
             })
             .catch(err => console.log(err))
     }

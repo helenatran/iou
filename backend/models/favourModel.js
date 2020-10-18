@@ -48,6 +48,9 @@ const FavourSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    timeCompleted: {
+        type: Date,
     }
 });
 

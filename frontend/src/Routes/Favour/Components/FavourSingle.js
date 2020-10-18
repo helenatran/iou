@@ -43,20 +43,20 @@ class FavourSingle extends React.Component {
                         </Grid>
                         <Grid item className={classes.gridItem}>
                             <h1>Favour: {favour.favourName}</h1>
-                            <p><b>Date Created: </b><Time value={favour.timeCreated} format="DD/MM/YYYY" /></p>
-                            <p><b>Friend: </b>{favour.owner.firstName}</p>
+                            <p>{favour.timeCompleted == null ? (<span><b>Date Created: </b><Time value={favour.timeCreated} format="DD/MM/YYYY" /></span>) : (<span><b>Date Completed: </b><Time value={favour.timeCompleted} format="DD/MM/YYYY" /></span>)}</p>
+                            <p><b>Friend: </b>{favour.oweMe ? (favour.owner.firstName) : (favour.ower.firstName)}</p>
                             <p><b>Type: </b>{type}</p>
                             <p><b>Status: </b>{favour.status}</p>
-                            <p>{favour.favourComment !== "" ? (<p><b>Comments: </b>{favour.favourComment}</p>) : ('')}</p>
-                            <p>{favour.proof !== "" ? (<p><b>Photo proof: </b><a href={favour.proof}>Proof</a></p>) : ('')}</p>
+                            <p>{favour.favourComment !== "" ? (<span><b>Comments: </b>{favour.favourComment}</span>) : ('')}</p>
+                            <p>{favour.proof !== "" ? (<span><b>Photo proof: </b><a href={favour.proof}>Proof</a></span>) : ('')}</p>
                         </Grid>
                     </Grid>
                     <div className={classes.button}>
-                        <Link to={{
+                        {favour.isCompleted ? ('') : (<Link to={{
                             pathname: '/favours/' + favour._id + '/update',
                             myCustomProps: favour,
                             state: { favour: favour },
-                        }}><Button variant="contained">Update Favour</Button></Link>
+                        }}><Button variant="contained">Update Favour</Button></Link>)}
                     </div>
                     <div className={classes.button}>
                         <Link to={`/favours`}><Button variant="contained">Back to list</Button></Link>

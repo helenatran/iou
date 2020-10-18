@@ -100,14 +100,11 @@ class Favours extends React.Component {
     render() {
         const { classes } = this.props;
         let favours = [];
-        let friendType = '';
         if (this.state.favoursToShow === 'pendingIOwe') {
             favours = this.state.filteredFavoursOwed;
-            friendType = 'owner';
         }
         else if (this.state.favoursToShow === 'pendingOweMe') {
             favours = this.state.filteredFavoursOwned;
-            friendType = 'ower';
         }
         else if (this.state.favoursToShow === 'completed') {
             favours = this.state.filteredFavoursCompleted;
@@ -130,7 +127,7 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} friendType={friendType}/>
+                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour}/>
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
             </div >
         )
