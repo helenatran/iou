@@ -44,11 +44,11 @@ class FavourSingle extends React.Component {
                         <Grid item className={classes.gridItem}>
                             <h1>Favour: {favour.favourName}</h1>
                             <p><b>Date Created: </b><Time value={favour.timeCreated} format="DD/MM/YYYY" /></p>
-                            <p><b>Friend: </b>{favour.oweUserId}</p>
+                            <p><b>Friend: </b>{favour.owner.firstName}</p>
                             <p><b>Type: </b>{type}</p>
                             <p><b>Status: </b>{favour.status}</p>
-                            <p><b>Comments: </b>{favour.favourComment}</p>
-                            <p><b>Photo proof: </b><a href={favour.proof}>Proof</a></p>
+                            <p>{favour.favourComment !== "" ? (<p><b>Comments: </b>{favour.favourComment}</p>) : ('')}</p>
+                            <p>{favour.proof !== "" ? (<p><b>Photo proof: </b><a href={favour.proof}>Proof</a></p>) : ('')}</p>
                         </Grid>
                     </Grid>
                     <div className={classes.button}>

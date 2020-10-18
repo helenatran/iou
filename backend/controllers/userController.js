@@ -3,13 +3,13 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports.registerUser = async (req, res) => {
-    const submittedEmail = await User.findOne({
-        email: req.body.email
-    });
-    if (submittedEmail)
-        return res.status(400).json({
-            error: 'That email has already been registered'
-        });
+    // const submittedEmail = await User.findOne({
+    //     email: req.body.email
+    // });
+    // if (submittedEmail)
+    //     return res.status(400).json({
+    //         error: 'That email has already been registered'
+    //     });
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -21,7 +21,7 @@ module.exports.registerUser = async (req, res) => {
     try {
         const savedUser = await registeredUser.save();
         return res.status(200).json({
-            user: savedUser
+            message: 'User successfully registered'
         })
     } catch (error) {
         return res.status(500).json({
@@ -36,14 +36,16 @@ module.exports.loginUser = async (req, res) => {
     });
     if (!user)
         return res.status(400).json({
-            error: 'That email or password was incorrect'
-        })
+            error: [{
+                error: 'That email or password was incorrect'
+            }]})
     const checkPassword = await bcrypt.compare(req.body.password, user.password);
     if (!checkPassword)
         return res.status(400).json({
-            error: 'That email or password was incorrect'
-        })
-
+            error: [{
+                error: 'That email or password was incorrect'
+            }]})
+    
     const jwtPayload = {
         id: user._id,
     }
