@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import RequestListGroup from './Components/RequestListGroup';
+import RequestListGroup from './components/RequestListGroup';
 
 class Requests extends Component {
     constructor(props) {
