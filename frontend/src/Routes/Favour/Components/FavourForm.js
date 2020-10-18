@@ -7,6 +7,7 @@ import FavourFormComments from './FavourFormComponents/FavourFormComments';
 import FavourFormSwitch from './FavourFormComponents/FavourFormSwitch';
 import FavourFormProofUpload from './FavourFormComponents/FavourFormProofUpload';
 import { withStyles, Paper } from '@material-ui/core';
+import getToken from '../../../Helpers/getToken';
 
 const useStyles = (theme) => ({
     root: {
@@ -31,8 +32,7 @@ class FavourForm extends React.Component {
         super(props);
         this.state = {
             favour: {},
-            selectedUserL: {},
-            selectedUserR: {},
+            friend: {},
             comments: '',
             oweMe: false,
             proof: null,
@@ -41,8 +41,7 @@ class FavourForm extends React.Component {
         }
         this.updateFavour = this.updateFavour.bind(this);
         this.updateComments = this.updateComments.bind(this);
-        this.updateSelectedUserL = this.updateSelectedUserL.bind(this);
-        this.updateSelectedUserR = this.updateSelectedUserR.bind(this);
+        this.updateFriend = this.updateFriend.bind(this);
         this.updateOweMe = this.updateOweMe.bind(this);
         this.updateProof = this.updateProof.bind(this);
         this.submitFavour = this.submitFavour.bind(this);
@@ -60,15 +59,9 @@ class FavourForm extends React.Component {
         })
     }
 
-    updateSelectedUserL(object, value) {
+    updateFriend(object, value) {
         this.setState({
-            selectedUserL: value._id
-        })
-    }
-
-    updateSelectedUserR(object, value) {
-        this.setState({
-            selectedUserR: value._id
+            friend: value._id
         })
     }
 
@@ -103,9 +96,21 @@ class FavourForm extends React.Component {
                 .catch(err => console.log(err));
         }
 
+        let userId = '';
+        let oweUserId = ''
+
+        if (this.state.oweMe) {
+            userId = this.state.friend;
+            oweUserId = getToken().id;
+        }
+        else {
+            userId = getToken().id;
+            oweUserId = this.state.friend;
+        }
+
         const newFavour = {
-            userId: this.state.selectedUserL,
-            oweUserId: this.state.selectedUserR,
+            userId: userId,
+            oweUserId: oweUserId,
             favourName: this.state.favour,
             favourComment: this.state.comments,
             oweMe: this.state.oweMe,
@@ -121,6 +126,7 @@ class FavourForm extends React.Component {
         })
             .then(response => {
                 console.log(response);
+                console.log(response.data)
                 window.location = '/favours';
             })
             .catch(err => console.log(err))
@@ -135,8 +141,8 @@ class FavourForm extends React.Component {
                     <form noValidate autoComplete="off">
                         <FavourFormSwitch oweMe={this.state.oweMe} updateOweMe={this.updateOweMe} />
                         <FavourFormUsers
-                            updateSelectedUserL={this.updateSelectedUserL}
-                            updateSelectedUserR={this.updateSelectedUserR}
+                            oweMe={this.state.oweMe}
+                            updateFriend={this.updateFriend}
                         />
                         <FavourFormFavours updateFavour={this.updateFavour} />
                         <FavourFormComments comments={this.state.comments} updateComments={this.updateComments} />
