@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 
 import axios from 'axios';
 
-import RequestListGroup from './components/RequestListGroup';
-// import RequestDetails from './components/RequestDetails';
+import RequestListGroup from './Components/RequestListGroup';
 
 class Requests extends Component {
     constructor(props) {
