@@ -37,37 +37,59 @@ class FavourFormUsers extends React.Component {
         const { classes } = this.props;
         return (
             <Box className={classes.root}>
-                <Autocomplete
-                    id="combo-box-UserL"
-                    options={this.state.users}
-                    getOptionLabel={option => option.firstName}
-                    onChange={this.props.updateSelectedUserL}
-                    style={{ width: 300, marginRight: 10 }}
-                    renderInput={(params) =>
-                        <TextField {...params}
-                            label="Select a user"
-                            variant="outlined"
-                            required
-                            margin="normal"
+                <div>{this.props.oweMe ? (
+                    <Autocomplete
+                        id="combo-box-left-friend"
+                        options={this.state.users}
+                        getOptionLabel={option => option.firstName}
+                        onChange={this.props.updateFriend}
+                        style={{ width: 300, marginRight: 10 }}
+                        renderInput={(params) =>
+                            <TextField {...params}
+                                label="Select a user"
+                                variant="outlined"
+                                required
+                                margin="normal"
+                                fullWidth
+                            />}
+                    />
+                ) : (
+                        <TextField
+                            id="iOwe"
+                            label="I"
                             fullWidth
-                        />}
-                />
-                <p style={{ marginTop: 30 }}>Owes</p>
-                <Autocomplete
-                    id="combo-box-UserR"
-                    options={this.state.users}
-                    getOptionLabel={option => option.firstName}
-                    onChange={this.props.updateSelectedUserR}
-                    style={{ width: 300, marginLeft: 10 }}
-                    renderInput={(params) =>
-                        <TextField {...params}
-                            label="Select a user"
-                            variant="outlined"
-                            required
+                            disabled
                             margin="normal"
-                            fullWidth
-                        />}
-                />
+                            variant="outlined"
+                            style={{ width: 300, marginRight: 10 }} />
+                    )}</div>
+                <p style={{ marginTop: 30 }}>{this.props.oweMe ? "Owes" : "Owe"}</p>
+                <div>{this.props.oweMe ? (
+                    <TextField
+                        id="oweMe"
+                        label="Me"
+                        fullWidth
+                        disabled
+                        margin="normal"
+                        variant="outlined"
+                        style={{ width: 300, marginLeft: 10 }} />
+                ) : (
+                        <Autocomplete
+                            id="combo-box-right-friend"
+                            options={this.state.users}
+                            getOptionLabel={option => option.firstName}
+                            onChange={this.props.updateFriend}
+                            style={{ width: 300, marginLeft: 10 }}
+                            renderInput={(params) =>
+                                <TextField {...params}
+                                    label="Select a user"
+                                    variant="outlined"
+                                    required
+                                    margin="normal"
+                                    fullWidth
+                                />}
+                        />
+                    )}</div>
             </Box>
         );
     }
