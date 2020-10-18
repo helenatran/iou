@@ -16,6 +16,12 @@ const FavourSchema = new Schema({
         required: true,
         ref: 'User'
     },
+    owner: {
+        type: Object
+    },
+    ower: {
+        type: Object
+    },
     favourComment: {
         type: String,
         required: false

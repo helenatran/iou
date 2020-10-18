@@ -4,7 +4,7 @@ import TextField from "@material-ui/core/TextField";
 // import Button from "@material-ui/core/Button";
 import axios from 'axios';
 
-import RequestListGroup from './Components/RequestListGroup';
+import RequestListGroup from './components/RequestListGroup';
 // import RequestDetails from './components/RequestDetails';
 
 class Requests extends Component {
