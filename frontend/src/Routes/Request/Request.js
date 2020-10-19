@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-
 import axios from 'axios';
-
-import RequestListGroup from './components/RequestListGroup';
+import RequestListGroup from './Components/RequestListGroup';
 
 class Requests extends Component {
     constructor(props) {
