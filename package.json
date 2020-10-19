@@ -2,6 +2,9 @@
   "name": "iou",
   "version": "1.0.0",
   "description": "Advanced Internet Programming Assessment 2, Group 2",
+  "engines": {
+    "node": "12.x"  
+  },
   "main": "index.js",
   "scripts": {
     "start": "cd backend && node server.js",
