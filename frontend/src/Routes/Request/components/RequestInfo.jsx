@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Link from 'react-router-dom/Link';
+
 import axios from "axios";
+import getToken from "../../../Helpers/getToken";
 import RewardsTable from './RewardsTable';
 import { getCurrentYYYYMMDDDate } from '../../../Helpers/dateFormatter';
 
@@ -7,7 +11,7 @@ class RequestInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            hardCodedUserId: "5f58e18452ae84695c5105d4",
+            userId: "",
             id: this.props.match.params.id,
             taskTitle: "",
             taskDescription: "",
@@ -24,6 +28,9 @@ class RequestInfo extends Component {
     }
 
     componentDidMount = async () => {
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
+
         const { id } = this.state
         axios.get(`/api/request/${id}`)    // get request by id
         .then(res => {
@@ -43,7 +50,7 @@ class RequestInfo extends Component {
     handleSubmitReward(newReward) {
         // make request object and update state
         const rewardObj = {
-            rewarderId: this.state.hardCodedUserId,
+            rewarderId: this.state.userId,
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
@@ -114,7 +121,7 @@ class RequestInfo extends Component {
                     handleDeleteReward={this.handleDeleteReward}
                     handleAddReward={this.handleSubmitReward}
                 />
-
+                <Link to={'/requests'}><Button variant="contained">Back to all Requests</Button></Link>
             </div>  
         )
     }   
