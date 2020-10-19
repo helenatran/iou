@@ -8,9 +8,9 @@ const RequestSchema = new Schema({
     },
     taskDescription: {
         type: String,
-        required: true
+        required: false
     },
-    requesterUserID: {
+    requesterUserId: {
         type: Schema.Types.ObjectId,
         required: true, 
         ref: 'User'
@@ -27,7 +27,7 @@ const RequestSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ["Open", "Pending Requester Confirmation", "Closed"]
+        enum: ["Open", "Closed", "Expired"],
     },
     timeCreated: {
         type: Date,

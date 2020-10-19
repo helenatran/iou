@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const leaderboard = require('../controllers/leaderboard');
+const leaderboard = require('../controllers/leaderboardController');
 
 router.get('/', leaderboard.getRank);
 

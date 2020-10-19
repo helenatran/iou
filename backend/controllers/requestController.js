@@ -1,85 +1,90 @@
-// requestController is for interfacing between the db and the frontend
-// import mongoose from 'mongoose';
-const mongoose = require('mongoose');
 const requestCollection = require('../models/requestModel');
-
-
-
 
 /**
  * Create a request
- * make post to endpoint in routes, including a request body:
- * {
- *      taskTitle: string,
- *      taskDescription: string,
- *      requesterId: objectID from user table,
- *      status: "Open",
- * }
+ * POST request - requires minimum these fields in body:
+    "taskTitle":String,
+    "taskDescription":String,
+    "requesterUserId" : String of user id,
+    "status": "Open",
+    "requestExpiry":"", (optional)
+    "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
+    
+    Other fields not mentioned: proof, completerId
  */
-module.exports.addNewRequest = (req,res) => {
-    // need to add user IDs
+module.exports.CreateRequest = (req,res) => {
     let newRequest = new requestCollection(req.body);
-    console.log("request object", newRequest);
     
     newRequest.save((err, requestObject) => {
-        if (ex) {
-            res.status(400).send(ex + " u did a fucky wucky :/"); 
+        if (err) {
+            res.status(400).send(err); 
         }
         res.status(200).json(requestObject);
     });
 };
 
-// Get a list of requests
+/**
+ * Get all requests (sorted by latest first)
+ * GET request - no need for params/body fields
+ */
 module.exports.getAllRequests = (req,res) => {
-    console.log("GET - all requests called");
-    requestCollection.find().then((requests) => {
+    const query  = requestCollection.where({ status: 'Open' });
+    query.find().sort({"timeCreated": "desc"}).then((requests) => {
         res.status(200).send(requests);
-        console.log("GET - all requests returned");
     }) 
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
+    .catch((err) => {
+        res.status(400).json({ 'error': err })
     });
 };
 
-//Get request by ID
-module.exports.getARequest = (req, res) => {
-    console.log('hit get a req method');
-    const requestId = req.body.requestId;
-
-    console.log("GET - request " + requestId + " called");
-
-    requestCollection.findById(requestId, function(ex, request) {
-        res.status(200).send(request);
-        console.log("GET - request " + requestId + " returned");
-        console.log(request);    
-    })
-    .catch((ex) => {
-        res.status(400).json({ 'error': ex })
-    });
+/**
+ * Get Request by ID
+ * GET request - requires id in the params
+ */
+module.exports.getRequestbyId = (req, res) => {
+    console.log('get a request:')
+    console.log(req.params.id);
+    requestCollection.findById(req.params.id)
+        .then((request) => {
+            res.status(200).send(request);
+        })
+        .catch(err => res.status(400).json({ 'error': err }));
 };
 
-module.exports.SearchRequests = (req, res) => {
-    console.log("GET - search requests called")
-    //grab criteria from params
-
-    //db find with conditions, return that
-    // conditions: tasktitle, taskDecription or rewards contains keyword
-};
-
+/**
+ * Update Request
+ * PATCH request - requires:
+ *  - RequestChanges object in the body with all the fields that have changed
+ *  - requestID field in the body with string of request's object id
+ */
 module.exports.UpdateRequest = (req, res) => {
-    console.log("POST - update requests called")
+    let update = req.body.requestChanges;
 
-    //gets the id from body
+    requestCollection.findByIdAndUpdate(
+        { _id: req.body._id },
+        update,
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
+
 };
 
+/**
+ * Delete Request
+ * DELETE request - requires requestId field in the body
+ */
 module.exports.DeleteRequest = (req, res) => {
-    console.log("POST - delete requests called")
-
-    //get the id from body
-    
-    //check user id of request matches requester's user id
-
-
+    requestCollection.findByIdAndDelete(
+        { _id: req.body.requestId },
+        function(err, result) {
+            if (err) {
+                res.status(400).json({ 'error': err });
+            } else {
+                res.status(200).send(result);
+            }
+        }); 
 };
-
-

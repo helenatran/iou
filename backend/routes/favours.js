@@ -1,10 +1,14 @@
-const getFavours = require('../controllers/favourControllers');
-const createFavour = require('../controllers/favourControllers');
+const router = require('express').Router();
+const favourController = require('../controllers/favourControllers');
+const checkAuth = require('../middleware/checkAuth')
+const { createFavourValidator } = require('../middleware/favourValidator')
+const { runValidator } = require('../middleware/runValidator')
 
-const routes = (app) => {
-    app.route('/favoursList')
-        .get(getFavours)
-        .post(createFavour)
-}
+router.get('/', checkAuth, favourController.getFavours);
+router.post('/', checkAuth, createFavourValidator, runValidator, favourController.createFavour);
+router.get('/:FavourId', checkAuth, favourController.getFavourWithID);
+router.put('/:FavourId', checkAuth, favourController.updateFavour);
+router.get('/user/:id', checkAuth, favourController.getAllUserFavours);
 
-module.exports = routes;
+
+module.exports = router;
