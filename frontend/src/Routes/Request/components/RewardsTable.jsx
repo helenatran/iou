@@ -35,13 +35,8 @@ class RewardsTable extends Component {
     }
 
     componentDidMount() {
-        let token = getToken();
-        if (token) {
-            this.setState({userId:token.id});
-        }
-        else {
-            this.setState({userId:null});
-        }
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
     }
 
     handleChangeReward(event) {
@@ -75,8 +70,13 @@ class RewardsTable extends Component {
             </div>
     }
     
+
+    isRewardByUser(indexKey) {
+        return this.state.userId === this.props.rewards[indexKey].rewarderId;
+    }
+
     renderDeleteRewardButton(indexKey) {
-        if (this.isLoggedIn()) {
+        if (this.isLoggedIn() && this.isRewardByUser(indexKey)) {
             return (
                 <Button 
                     onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 

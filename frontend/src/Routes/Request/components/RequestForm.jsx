@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 
 import RewardsTable from "./RewardsTable";
 import "./RequestStyles.css";
+import getToken from "../../../Helpers/getToken";
 
 const axios = require('axios');
 
@@ -14,7 +15,7 @@ class RequestForm extends Component {
         this.state = {
             taskTitle: "",
             taskDescription: "",
-            hardCodedUserId: "5f76f01f905dd3637d79a01d",
+            userId: "",
             requestExpiry: new Date(),
             rewards: [],
             newRewardObj: {}
@@ -27,6 +28,11 @@ class RequestForm extends Component {
         this.handleAddReward = this.handleAddReward.bind(this);
         this.handleDeleteReward = this.handleDeleteReward.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
     }
 
     handleChangeTaskTitle(event) { 
@@ -45,7 +51,7 @@ class RequestForm extends Component {
     // === rewards table functions ===
     handleAddReward(newReward) { 
         const rewardObj = {
-            rewarderId: this.state.hardCodedUserId,
+            rewarderId: getToken().id,
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
@@ -67,7 +73,7 @@ class RequestForm extends Component {
             requestExpiry: this.state.requestExpiry,
             status:"Open",
             rewards: this.state.rewards,
-            requesterUserId: this.state.hardCodedUserId
+            requesterUserId: this.state.userId
         }
         axios.post('/api/request/create', newRequest)
             .then(response => {
@@ -75,6 +81,10 @@ class RequestForm extends Component {
             })
             .catch(err => console.log(err));
         
+    }
+
+    isLoggedIn() {
+        return this.state.userId != null; 
     }
 
     render() {
