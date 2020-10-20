@@ -14,6 +14,7 @@ import Button from '@material-ui/core/Button';
 import RewardSelectField from "./RewardSelectField";
 import getToken from '../../../Helpers/getToken';
 
+
 import './RequestStyles.css';
 
 class RewardsTable extends Component {
