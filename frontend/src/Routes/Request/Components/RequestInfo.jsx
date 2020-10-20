@@ -19,6 +19,7 @@ class RequestInfo extends Component {
             taskTitle: "",
             taskDescription: "",
             requesterUserId: "",
+            requesterUserName:"",
             timeCreated: "",
             requestExpiry: "",
             status: "",
@@ -26,10 +27,7 @@ class RequestInfo extends Component {
             proofUrl: "",
             proofConfirmation: "",  // file name
             completerUserId: "",
-            rewards: [],            
-            /** reward object in this array includes rewarderId and rewardItem 
-             * - if request is has completed status: favour Id of related favour
-             */
+            rewards: [],
             requestChanges: {}
         };
 
@@ -76,7 +74,7 @@ class RequestInfo extends Component {
         if (this.state.userId !== null) {
             axios.post('/api/user/name', null, {
                 headers: {
-                    "token": localStorage.getItem("token")
+                    "token": this.state.requesterUserId
                 }
             }).then(res => {
                 this.setState({
@@ -87,7 +85,21 @@ class RequestInfo extends Component {
                 console.log(error)
             )
         }
-        
+
+        // if (this.state.requesterUserId !== null) {
+        //     axios.post('/api/user/name', null, {
+        //         headers: {
+        //             "token": localStorage.getItem("token")
+        //         }
+        //     }).then(res => {
+        //         this.setState({
+        //             requesterUserName: res.data
+        //         })
+        //     })
+        //     .catch(error =>
+        //         console.log(error)
+        //     )
+        // }
 
     }
 
@@ -338,15 +350,15 @@ class RequestInfo extends Component {
     }
 
     render() {
-        const {taskTitle, taskDescription, userName, timeCreated, requestExpiry, status} = this.state;
+        const {taskTitle, taskDescription, requesterUserName, timeCreated, requestExpiry, status} = this.state;
         return (
             <Card className="request-info">  
                 <div className="centered">
                     Request: {taskTitle}
                     <br/>
                     Description: {taskDescription}
-                    <br/>
-                    Requested by: {userName}
+                    {/* <br/>
+                    Requested by: {requesterUserName} */}
                     <br/>
                     Created: {getCurrentYYYYMMDDDate(timeCreated)}
                     <br/>
