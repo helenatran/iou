@@ -67,7 +67,7 @@ export default function Login() {
                     <Box display="flex" justifyContent="center" margin="1vw">
                         <TextField 
                             id="outlined-basic" 
-                            label="Username"
+                            label="Email"
                             type="email" 
                             variant="outlined" 
                             onChange={(e) => setEmail(e.target.value)}
