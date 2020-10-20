@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const FavourFormButtons = (props) => {
+const FavourFormProofUpload = (props) => {
     const classes = useStyles();
 
     return (
@@ -38,4 +38,4 @@ const FavourFormButtons = (props) => {
     );
 }
 
-export default FavourFormButtons;
+export default FavourFormProofUpload;

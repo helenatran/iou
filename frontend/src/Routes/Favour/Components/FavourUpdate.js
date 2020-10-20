@@ -5,6 +5,7 @@ import { Paper, Button, Checkbox, TextField } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { Link } from 'react-router-dom';
+import ErrorNotice from '../../Errors/Error';
 
 const useStyles = (theme) => ({
     root: {
@@ -36,7 +37,9 @@ class FavourUpdate extends React.Component {
             comments: '',
             proof: null,
             proofUrl: '',
-            proofConfirmation: ''
+            proofConfirmation: '',
+            error: [],
+            errorState: false
         }
         this.handleCheck = this.handleCheck.bind(this);
         this.updateFavour = this.updateFavour.bind(this);
@@ -98,7 +101,14 @@ class FavourUpdate extends React.Component {
                 console.log(response);
                 window.location = '/favours'
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const error = err.response.data.error;
+                console.log(error);
+                this.setState({
+                    error: error,
+                    errorState: true
+                })
+            })
     }
 
     render() {
@@ -107,6 +117,7 @@ class FavourUpdate extends React.Component {
         return (
             <div className={classes.root}>
                 <Paper>
+                    {this.state.errorState === true ? <ErrorNotice message={this.state.error} /> : ""}
                     <h1>Update Favour: {this.state.favour.favourName}</h1>
                     <p>Friend: {this.state.favour.oweMe ? (this.state.favour.owner.firstName) : (this.state.favour.ower.firstName)}</p>
                     <FormGroup row>
