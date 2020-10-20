@@ -69,6 +69,8 @@ module.exports.UpdateRequest = (req, res) => {
             error: "The reward you are trying to add is invalid"
         })
     let update = req.body.requestChanges;
+    if (update.status === "Closed")
+        awardRequestCompleted(update.completerUserId);
     requestCollection.findByIdAndUpdate(
         { _id: req.body._id },
         update,
@@ -79,8 +81,24 @@ module.exports.UpdateRequest = (req, res) => {
                 res.status(200).send(result);
             }
         }); 
-
 };
+
+async function awardRequestCompleted(id) {
+    try {
+        const userId = mongoose.Types.ObjectId(id)
+        let user = await User.findById(userId);
+        if (!user)
+            console.log("User not found");
+        else {
+            user.status = user.status + 1;
+            user.save();
+            console.log("Successfully updated")
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+    
 
 function rewardsArrayValidator(rewardsArray) {
     const favours = [
