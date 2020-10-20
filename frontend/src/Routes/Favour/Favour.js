@@ -3,6 +3,7 @@ import axios from 'axios'
 import { withStyles } from '@material-ui/core/styles';
 import { Button, TextField } from '@material-ui/core';
 import FavourList from './Components/FavourList';
+import FavourPagination from './Components/FavourPagination';
 import { Link } from 'react-router-dom';
 import getToken from '../../Helpers/getToken';
 
@@ -26,8 +27,11 @@ class Favours extends React.Component {
             filteredFavoursCompleted: [],
             favoursToShow: 'pendingIOwe',
             selectedFavour: {},
+            currentPage: 1,
+            favoursPerPage: 15
         };
         this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
+        this.paginate = this.paginate.bind(this);
     }
 
     componentDidMount() {
@@ -97,6 +101,12 @@ class Favours extends React.Component {
 
     }
 
+    paginate(pageNumber) {
+        this.setState({
+            currentPage: pageNumber
+        })
+    }
+
     render() {
         const { classes } = this.props;
         let favours = [];
@@ -109,6 +119,9 @@ class Favours extends React.Component {
         else if (this.state.favoursToShow === 'completed') {
             favours = this.state.filteredFavoursCompleted;
         }
+        const indexOfLastFavour = this.state.currentPage * this.state.favoursPerPage;
+        const indexOfFirstFavour = indexOfLastFavour - this.state.favoursPerPage;
+        const currentFavours = favours.slice(indexOfFirstFavour, indexOfLastFavour);
 
         return (
             <div className={classes.root}>
@@ -127,8 +140,9 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={favours} updateSelectedFavour={this.updateSelectedFavour} />
+                <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} />
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
+                <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
             </div >
         )
     }
