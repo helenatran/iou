@@ -4,11 +4,11 @@ const User = require('../models/userModel');
 module.exports.registerUserValidator = [
     check('firstName')
         .trim()
-        .isLength({ min: 3, max: 50 })
+        .isLength({ min: 2, max: 50 })
         .withMessage("First name must be between 3 to 50 characters"),
     check('lastName')
         .trim()
-        .isLength({ min: 3, max: 50 })
+        .isLength({ min: 2, max: 50 })
         .withMessage("Last name must be between 3 to 50 characters"),
     check('email')
         .trim()
