@@ -15,6 +15,7 @@ class RequestInfo extends Component {
         this.state = {
             userId: "",
             id: this.props.match.params.id,
+            userName: "",
             taskTitle: "",
             taskDescription: "",
             requesterUserId: "",
@@ -22,20 +23,31 @@ class RequestInfo extends Component {
             requestExpiry: "",
             status: "",
             proof: "",
+            proofUrl: "",
+            proofConfirmation: "",  // file name
             completerUserId: "",
-            rewards: [],
-            requestChanges: {},
+            rewards: [],            
+            /** reward object in this array includes rewarderId and rewardItem 
+             * - if request is has completed status: favour Id of related favour
+             */
+            requestChanges: {}
         };
 
-        //TODO - ONLY EVENT HANDLER FUNCTIONS NEED TO BE BOUND
         this.handleDeleteReward = this.handleDeleteReward.bind(this);
         this.handleAddReward = this.handleAddReward.bind(this);
         
         this.handleChangeProof = this.handleChangeProof.bind(this);
         this.handleSubmitProof = this.handleSubmitProof.bind(this);
-        
+
+        this.completeRequest = this.completeRequest.bind(this);
+        this.makeRewardFavoursOnRequestCompletion = this.makeRewardFavoursOnRequestCompletion.bind(this);
+        this.makeFavour = this.makeFavour.bind(this);
+        this.addFavourIdToReward = this.addFavourIdToReward.bind(this);
+
+        this.updateRequestChanges = this.updateRequestChanges.bind(this);
         this.saveRequestUpdates = this.saveRequestUpdates.bind(this);
-        this.updateRequest = this.updateRequest.bind(this);
+
+        this.renderProofUploadForm = this.renderProofUploadForm.bind(this);
     }
 
     componentDidMount = async () => {
@@ -60,29 +72,44 @@ class RequestInfo extends Component {
         .catch((error) => {
             console.log(error);
         })
+        
+        if (this.state.userId !== null) {
+            axios.post('/api/user/name', null, {
+                headers: {
+                    "token": localStorage.getItem("token")
+                }
+            }).then(res => {
+                this.setState({
+                    userName: res.data
+                })
+            })
+            .catch(error =>
+                console.log(error)
+            )
+        }
+        
+
     }
 
-    handleChangeProof(event) {
-        this.setState({
-            proof: event.target.files[0],
-            proofConfirmation: event.target.files[0].name
-        })
-    }
+    //#region Add/Delete to Rewards
 
-    handleAddReward(newReward) {
+    async handleAddReward(newReward) {
         // make request object and update state
         const rewardObj = {
             rewarderId: this.state.userId,
+            rewarderName: this.state.userName,
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
         this.setState({rewards: rewards});
 
-        this.updateRequest("rewards", this.state.rewards);
+        await this.updateRequestChanges("rewards", this.state.rewards);
+        console.log(this.state.rewards);
+        console.log(this.state.requestChanges);
         this.saveRequestUpdates();
     }
 
-    handleDeleteReward(index) { // update state and request object
+    async handleDeleteReward(index) { // update state and request object
         let rewards = this.state.rewards;
         if (rewards.length === 1) {
             axios.delete(`/api/request/delete/${this.state.id}`)
@@ -94,25 +121,109 @@ class RequestInfo extends Component {
         else {
             rewards.splice(index, 1);
             this.setState({rewards: rewards});
-            this.updateRequest("rewards", this.state.rewards)
+            await this.updateRequestChanges("rewards", this.state.rewards);
+            this.saveRequestUpdates();
         }
     }
-    
-    handleSubmitProof(event) {
-        this.updateRequest("proof", this.state.proof);
-        this.updateRequest("proofConfirmation", this.state.proofConfirmation);
-        this.updateRequest("status", "Closed");
-        
-        this.saveRequestUpdates();
-    }
-    
-    updateRequest(fieldName, value) {
-        let requestChanges = this.state.requestChanges;
-        requestChanges[fieldName] = value;
-        this.setState({requestChanges: requestChanges});
+
+    //#endregion 
+
+    //#region submitting proof, completing requests, making favours
+
+    handleChangeProof(event) {
+        this.setState({
+            proof: event.target.files[0],
+            proofConfirmation: event.target.files[0].name
+        })
     }
 
-    saveRequestUpdates() {
+    handleSubmitProof(event) {
+        event.preventDefault();
+        if (this.state.proof) {
+            //save to uploads collection
+            const data = new FormData();
+            data.append("file", this.state.proof, this.state.proofConfirmation);
+
+            axios.post('/api/proof/upload', data)
+            .then((response) => {
+                this.setState({
+                    proofUrl: response.data.data.Location
+                })
+                
+                this.completeRequest();
+            })
+            .catch(err => console.log(err));
+        }
+    }
+
+    async completeRequest() { // sets proof, sets/saves status 
+        await this.setState({status: "Closed"})
+        await this.updateRequestChanges("status", this.state.status);
+
+        await this.setState({completerUserId: this.state.userId})
+        await this.updateRequestChanges("completerUserId", this.state.userId);
+        
+        await this.updateRequestChanges("proof", this.state.proofUrl);
+    
+        this.saveRequestUpdates(this.makeRewardFavoursOnRequestCompletion);
+    }   
+
+    makeRewardFavoursOnRequestCompletion() {
+        const rewards = this.state.rewards;
+        for (const rewardIndex in rewards) {
+            const reward = rewards[rewardIndex];
+            const favourPayload = {
+                userId: reward.rewarderId,
+                oweUserId: this.state.completerUserId,
+                favourName: reward.rewardItem,
+                favourComment: `for completing the request "${this.state.taskTitle}"`,
+                oweMe: true,
+                proof: this.state.proofUrl
+            }
+            this.makeFavour(favourPayload, rewardIndex);
+        }
+    }
+
+    makeFavour(favourPayload, rewardIndex) {
+        let url = '/api/favours/withProof';
+
+        axios.post(url, favourPayload, {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        })
+        .then(response => {
+            //unused - keep for later ebttering of UI
+            this.addFavourIdToReward(response._id, rewardIndex);
+        })
+        .catch(err => {
+            const error = err.response.data.error;
+            console.log(err.response.data.error);
+            this.setState({
+                error: error,
+                errorState: true
+            })
+        })
+    }
+
+    //unused - keep for later bettering of UI
+    addFavourIdToReward(favourId, rewardIndex) {
+        let rewards = this.state.rewards;
+        rewards[rewardIndex]["favourId"] = favourId;
+        this.setState({rewards: rewards});
+    }
+
+    //#endregion
+
+    //#region request changes and request changes saving
+
+    async updateRequestChanges(fieldName, value) {
+        let requestChanges = this.state.requestChanges;
+        requestChanges[fieldName] = value;
+        await this.setState({requestChanges: requestChanges});
+    }
+
+    async saveRequestUpdates(onRequestClosureFunction) {
         const { requestChanges } = this.state;
 
         if (Object.keys(requestChanges).length !== 0) {
@@ -121,15 +232,21 @@ class RequestInfo extends Component {
                 requestChanges: requestChanges
             }
 
-            axios.patch(`/api/request/update/`, payload)
+            await axios.patch(`/api/request/update/`, payload)
             .then(res => {
-                console.log(res);
+                if (onRequestClosureFunction) {
+                    onRequestClosureFunction();
+                }
             })
             .catch((error) => {
                 console.log(error);
             })
         }
     }
+
+    //#endregion
+
+    //#region User checks
 
     isLoggedIn() {
         return getToken() !== null;
@@ -154,9 +271,11 @@ class RequestInfo extends Component {
         return false;
     }
 
+    //#endregion
+
     renderProofUploadForm() {
         const status = this.state.status;
-        if (status === "Expired" || status === "Closed"){
+        if (status !== "Open"){ 
             return (
                 <div>This request is {status} and can no longer be completed.</div>
             );
@@ -196,7 +315,7 @@ class RequestInfo extends Component {
         else {
             return (
                 <div>
-                    Log in or Register to be able to complete requests and get rewards    
+                    Log in or Register to be able to complete requests and get rewards,    
                 </div>
             );
         }
@@ -221,6 +340,7 @@ class RequestInfo extends Component {
                     <br/>
                     rewards table: 
                     <RewardsTable 
+                        requestStatus={this.state.status}
                         rewards={this.state.rewards}
                         handleDeleteReward={this.handleDeleteReward}
                         handleAddReward={this.handleAddReward}
