@@ -47,7 +47,6 @@ class RequestForm extends Component {
         this.setState({ requestExpiry: event.target.value });
     }
     
-
     // === rewards table functions ===
     handleAddReward(newReward) { 
         const rewardObj = {
@@ -75,7 +74,11 @@ class RequestForm extends Component {
             rewards: this.state.rewards,
             requesterUserId: this.state.userId
         }
-        axios.post('/api/request/create', newRequest)
+        axios.post('/api/request/create', newRequest, {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        })
             .then(response => {
                 window.location = '/request'
             })

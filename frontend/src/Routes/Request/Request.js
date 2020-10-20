@@ -4,7 +4,6 @@ import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import RequestListGroup from './Components/RequestListGroup';
-// import RequestDetails from './components/RequestDetails';
 
 class Requests extends Component {
     constructor(props) {
