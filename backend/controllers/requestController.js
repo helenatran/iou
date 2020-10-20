@@ -68,8 +68,10 @@ module.exports.UpdateRequest = (req, res) => {
         return res.status(422).json({
             error: "The reward you are trying to add is invalid"
         })
-    let update = req.body.requestChanges;
-    requestCollection.findByIdAndUpdate(
+        let update = req.body.requestChanges;
+        if (update.status === "Closed")
+            awardRequestCompleted(update.completerUserId);
+        requestCollection.findByIdAndUpdate(
         { _id: req.body._id },
         update,
         function(err, result) {
@@ -81,6 +83,24 @@ module.exports.UpdateRequest = (req, res) => {
         }); 
 
 };
+
+async function awardRequestCompleted(id) {
+    User.findById(id, function(err, user) {
+        if(!user) {  // not found
+            console.log("User not found");
+        }
+        console.log("before:" + user.requestsCompleted)
+        user.requestsCompleted = user.requestsCompleted + 1;
+        console.log("after:" + user.requestsCompleted)
+        user.save()
+            .then(user => {
+                console.log("Updated Requests Completed")
+            })
+            .catch(err => {
+                console.log("Could not update the thing")
+            });
+    });
+}
 
 function rewardsArrayValidator(rewardsArray) {
     const favours = [
