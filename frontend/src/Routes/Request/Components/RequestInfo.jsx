@@ -293,8 +293,8 @@ class RequestInfo extends Component {
                 <>
                     <div>This request is Closed and can no longer be completed.
                     <br/>
-                    Proof: <a href={this.state.proof}>Image Link</a></div>
-                    <img width="60%" src={this.state.proof} alt="Request Completion Proof"/>
+                    Proof: <a href={this.state.proofUrl}>Image Link</a></div>
+                    <img width="60%" src={this.state.proofUrl} alt="Request Completion Proof"/>
                 </>  
             );
         }
