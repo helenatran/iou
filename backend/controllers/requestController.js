@@ -84,19 +84,21 @@ module.exports.UpdateRequest = (req, res) => {
 };
 
 async function awardRequestCompleted(id) {
-    try {
-        const userId = mongoose.Types.ObjectId(id)
-        let user = await User.findById(userId);
-        if (!user)
+    User.findById(id, function(err, user) {
+        if(!user) {  // not found
             console.log("User not found");
-        else {
-            user.status = user.status + 1;
-            user.save();
-            console.log("Successfully updated")
         }
-    } catch (error) {
-        console.log(error)
-    }
+        console.log("before:" + user.requestsCompleted)
+        user.requestsCompleted = user.requestsCompleted + 1;
+        console.log("after:" + user.requestsCompleted)
+        user.save()
+            .then(user => {
+                console.log("Updated Requests Completed")
+            })
+            .catch(err => {
+                console.log("Could not update the thing")
+            });
+    });
 }
     
 
