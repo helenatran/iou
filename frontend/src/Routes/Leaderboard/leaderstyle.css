@@ -1,0 +1,21 @@
+.leaderboard{
+    margin: 5vw;
+}
+
+.centre-this{
+    text-align:center;
+}
+
+.name {
+    font-size: 4vw;
+    font-weight:bold;
+    line-height: 4vw;
+    list-style-type:none;
+    
+}
+
+.request {
+    font-size: 1.5vw;
+    
+    font-weight:normal;
+}
