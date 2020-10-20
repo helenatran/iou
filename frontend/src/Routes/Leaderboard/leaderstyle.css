@@ -1,5 +1,11 @@
 .leaderboard{
-    margin: 5vw;
+    margin-left: 5vw;
+    
+}
+
+.userList {
+
+    margin-bottom:5vw;
 }
 
 .centre-this{
@@ -7,15 +13,23 @@
 }
 
 .name {
-    font-size: 4vw;
+    font-size: 1.5vw;
     font-weight:bold;
-    line-height: 4vw;
+    line-height: 2vw;
     list-style-type:none;
     
 }
 
 .request {
-    font-size: 1.5vw;
-    
+    font-size: 1vw;
     font-weight:normal;
+}
+
+.paginationButton {
+    padding:1vw;
+
+}
+
+.spaceButton {
+    padding:1vw;
 }

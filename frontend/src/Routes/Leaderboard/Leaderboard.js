@@ -29,17 +29,19 @@ const Leaderboard = props => {
  
    return (
    
-     <div className="centre-this">
-
- 
-      <PaginationLeaderboard usersPerPage = {usersPerPage} 
+     <div className="leaderboard">
+       <br/>
+    <h1>Leaderboard</h1>
+    <p>Showing users with the most requests completed!</p>
+     
+    <PaginationLeaderboard usersPerPage = {usersPerPage} 
        totalUsers = {users.length} 
        paginate={paginate}
        currentPage = {currentPage}/>
       
-      
        
        <Users users = {currentUsers} currentPage = {currentPage}/>
+    
     
      </div>
      
