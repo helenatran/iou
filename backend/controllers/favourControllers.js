@@ -120,3 +120,11 @@ module.exports.updateFavour = async (req, res) => {
         })
         .catch(err => res.status(400).json({ 'error': err }))
 };
+
+module.exports.deleteFavour = async (req, res) => {
+    await Favour.deleteOne({ _id: req.params.FavourId })
+        .then((favour) => {
+            res.json({ message: 'Successfully deleted favour' });
+        })
+        .catch(err => res.status(400).json({ 'error': err }))
+}
