@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 import { Link } from 'react-router-dom';
-
 import axios from 'axios';
-
 import RequestListGroup from './Components/RequestListGroup';
 // import RequestDetails from './components/RequestDetails';
 
@@ -41,7 +39,7 @@ class Requests extends Component {
             || request.status.toLowerCase().includes(search)) {
             return true;
         }
-        
+
         for (const rewardIndex in request.rewards) {
             if (request.rewards[rewardIndex].rewardItem.includes(search)) {
                 return true;
@@ -68,9 +66,9 @@ class Requests extends Component {
         this.setState({ searchCriteria: event.target.value });
     }
 
-    render() { 
-        return ( 
-            <div className="page-content-container">                
+    render() {
+        return (
+            <div className="page-content-container">
                 <div className="requests-header">
                     <h1>Requests</h1>
                     <form action='/requests/' className="searchbar" noValidate autoComplete="off">

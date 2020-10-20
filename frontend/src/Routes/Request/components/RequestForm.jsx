@@ -3,9 +3,9 @@ import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
 
-import { getCurrentYYYYMMDDDate } from '../../../Helpers/dateFormatter';
-import RewardSelectField from "./RewardSelectField";
+import RewardsTable from "./RewardsTable";
 import "./RequestStyles.css";
+import getToken from "../../../Helpers/getToken";
 
 const axios = require('axios');
 
@@ -15,44 +15,55 @@ class RequestForm extends Component {
         this.state = {
             taskTitle: "",
             taskDescription: "",
-            requesterUserId: "5f76f01f905dd3637d79a01d",
-            requestExpiry: getCurrentYYYYMMDDDate(),
+            userId: "",
+            requestExpiry: new Date(),
             rewards: [],
-            newReward: {}
+            newRewardObj: {}
         };
 
         //event handler bindings
         this.handleChangeTaskTitle = this.handleChangeTaskTitle.bind(this);
         this.handleChangeTaskDescription = this.handleChangeTaskDescription.bind(this);
         this.handleChangeExpiry = this.handleChangeExpiry.bind(this);
-        this.handleChangeRewardSelection = this.handleChangeRewardSelection.bind(this);
-
+        this.handleAddReward = this.handleAddReward.bind(this);
+        this.handleDeleteReward = this.handleDeleteReward.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     componentDidMount() {
-        //TODO - check for user
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
     }
 
-    handleChangeTaskTitle = (event) => { this.setState({ taskTitle: event.target.value }); }
+    handleChangeTaskTitle(event) { 
+        this.setState({ taskTitle: event.target.value });
+    }
 
-    handleChangeTaskDescription = (event) => { this.setState({ taskDescription: event.target.value }); }
+    handleChangeTaskDescription(event) {
+        this.setState({ taskDescription: event.target.value });
+    }
     
-    handleChangeExpiry = (event) => { this.setState({ requestExpiry: event.target.value }); }
+    handleChangeExpiry(event) { 
+        this.setState({ requestExpiry: event.target.value });
+    }
     
-    handleChangeRewardSelection = (event) => { 
-        this.setState({ newReward: {
-            rewarderId: this.state.requesterUserId,
-            rewardItem: event.target.value
-        }});
+
+    // === rewards table functions ===
+    handleAddReward(newReward) { 
+        const rewardObj = {
+            rewarderId: getToken().id,
+            rewardItem: newReward
+        }
+        let rewards = this.state.rewards.concat(rewardObj);
+        this.setState({rewards: rewards});
     }
 
-    componentDidUpdate() {
-        console.log("state:")
-        console.log(this.state);
-        
+    handleDeleteReward(index) {
+        let rewards = this.state.rewards;
+        rewards.splice(index, 1);
+        this.setState({rewards: rewards});
+        console.log("delete reward" + index);
     }
-
 
     handleSubmit = (event) => {
         event.preventDefault();
@@ -61,20 +72,19 @@ class RequestForm extends Component {
             taskDescription: this.state.taskDescription,
             requestExpiry: this.state.requestExpiry,
             status:"Open",
-            rewards: [].concat(this.state.newReward),
-            requesterUserId: this.state.requesterUserId
+            rewards: this.state.rewards,
+            requesterUserId: this.state.userId
         }
-        console.log(newRequest);
         axios.post('/api/request/create', newRequest)
             .then(response => {
-                console.log("create req response: ");
-                console.log(response);
-                console.log("New request ID");
-                console.log(response.data._id);
-                window.location = '/request/' + (response.data._id || "");
+                window.location = '/request'
             })
             .catch(err => console.log(err));
         
+    }
+
+    isLoggedIn() {
+        return this.state.userId != null; 
     }
 
     render() {
@@ -83,7 +93,7 @@ class RequestForm extends Component {
                 <h1>Create a New Request</h1>
                 <Card>
                     <form className="request-form" onSubmit={this.handleSubmit}>
-                        <TextField defaultValue="abc" onChange={this.handleChangeTaskTitle} label="Request" required id="standard-required" />
+                        <TextField calue="hello" onChange={this.handleChangeTaskTitle} label="Request" required id="standard-required" />
                         <br />
                         <TextField onChange={this.handleChangeTaskDescription} label="Description" id="outlined-multiline-flexible" />
                         <br />
@@ -91,9 +101,10 @@ class RequestForm extends Component {
 
                         <label>Reward: </label>
                         
-                        <RewardSelectField 
-                            value={this.state.rewardSelection || ""} 
-                            handleChangeRewardSelection={this.handleChangeRewardSelection}
+                        <RewardsTable 
+                            rewards={this.state.rewards}
+                            handleDeleteReward={this.handleDeleteReward}
+                            handleAddReward={this.handleAddReward}
                         />
 
                         <br/>

@@ -10,6 +10,7 @@ import {
 import * as Routes from './Routes/routes'
 import axios from 'axios';
 import PrivateRoute from './Helpers/PrivateRoute';
+import PublicRoute from './Helpers/PublicRoute';
 
 function App() {
   const [ userDetails, setUserDetails ] = useState({
@@ -51,18 +52,21 @@ function App() {
         <UserContext.Provider value={{ userDetails, setUserDetails }}>
           <ButtonAppBar />
           <RouterSwitch>
-            <Route path='/login' component={Routes.Login} />
-            <Route path='/register' component={Routes.Register} />
+          
+            <PublicRoute path='/login' component={Routes.Login} />
+            <PublicRoute path='/register' component={Routes.Register} />
             <PrivateRoute path='/account' component={Routes.Account} />
             <PrivateRoute path='/favours' exact component={Routes.Favour} />
             <PrivateRoute path='/favours/create' component={Routes.FavourForm} />
             <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
             <PrivateRoute path='/favours/:favourid' component={Routes.FavourSingle} />
-            <Route path='/requests' component={Routes.Request} />
+            <PrivateRoute path='/request/new' component={Routes.RequestForm} />
             <Route path='/leaderboard' component={Routes.Leaderboard} />
-            <Route path='/request/new' component={Routes.RequestForm} />
             <Route path='/request/:id' component={Routes.RequestInfo} />
-
+            <Route path='/' component={Routes.Request} />
+            <Route path='/request/' component={Routes.Request} />
+            
+            
           </RouterSwitch>
         </UserContext.Provider>
       </BrowserRouter>

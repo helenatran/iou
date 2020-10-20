@@ -23,16 +23,20 @@ class RequestCard extends Component {
     }
 
     renderRewardInfo() {
-        
         let rewards = this.props.request.rewards;
-        let rewardsInfo = "rewards"; // temporary
-
-        // console.log(this.props.request.rewards[0].rewardItem);
-
-        if (rewards.length > 1) {
+        let rewardsInfo;
+        if (rewards.length === 0)
+            rewardsInfo = "No rewards";
+        else if (rewards.length === 1)
+            rewardsInfo = this.props.request.rewards[0].rewardItem;
+        else if (rewards.length === 2) {
+            rewardsInfo = this.props.request.rewards[0].rewardItem;
+            rewardsInfo += " & " + (rewards.length-1) + " other reward";
+        }
+        else if (rewards.length > 2) {
+            rewardsInfo = this.props.request.rewards[0].rewardItem;
             rewardsInfo += " & " + (rewards.length-1) + " other rewards";
         }
-
         return this.renderCardInfo(rewardsInfo);
     } 
 

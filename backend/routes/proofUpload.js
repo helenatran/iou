@@ -13,7 +13,6 @@ const upload = multer({ storage: storage });
 // In upload.single("file") - the name inside the single-quote is the name of the field that is going to be uploaded.
 router.post("/upload", upload.single("file"), function (req, res) {
     const file = req.file;
-    const s3FileURL = process.env.AWS_Uploaded_File_URL_LINK;
 
     let s3bucket = new AWS.S3({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,

@@ -1,5 +1,5 @@
 const requestCollection = require('../models/requestModel');
-
+const mongoose = require('mongoose');
 /**
  * Create a request
  * POST request - requires minimum these fields in body:
@@ -28,7 +28,8 @@ module.exports.CreateRequest = (req,res) => {
  * GET request - no need for params/body fields
  */
 module.exports.getAllRequests = (req,res) => {
-    requestCollection.find().sort({"timeCreated": "desc"}).then((requests) => {
+    const query  = requestCollection.where({ status: 'Open' });
+    query.find().sort({"timeCreated": "desc"}).then((requests) => {
         res.status(200).send(requests);
     }) 
     .catch((err) => {
@@ -76,17 +77,16 @@ module.exports.UpdateRequest = (req, res) => {
  * Delete Request
  * DELETE request - requires requestId field in the body
  */
-module.exports.DeleteRequest = (req, res) => {
-    requestCollection.findByIdAndDelete(
-        { _id: req.body.requestId },
-        function(err, result) {
-            if (err) {
-                res.status(400).json({ 'error': err });
-            } else {
-                res.status(200).send(result);
-            }
-        }); 
+module.exports.DeleteRequest = async (req, res) => {
+    await requestCollection.findById(req.params.id, function(err, request) {
+        if(!request)
+            return res.status(400).json({ message: "That request could not be found"})
+        request.deleteOne()
+            .then(request => {
+                res.status(200).json({ message: "The request has been successfully deleted"})
+            })
+            .catch(err => {
+                return res.status(400).json({ error: "The request could not be deleted"})
+            })
+    })
 };
-
-
-

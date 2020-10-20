@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Link from 'react-router-dom/Link';
+
 import axios from "axios";
+import getToken from "../../../Helpers/getToken";
 import RewardsTable from './RewardsTable';
 import { getCurrentYYYYMMDDDate } from '../../../Helpers/dateFormatter';
 
@@ -7,20 +11,26 @@ class RequestInfo extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: "",
             id: this.props.match.params.id,
             taskTitle: "",
             taskDescription: "",
             timeCreated: "",
             requestExpiry: "",
-            rewards: []
+            rewards: [],
+            requestChanges: {}
         };
 
-        this.handleSubmitRequest = this.handleSubmitRequest.bind(this);
         this.handleDeleteReward = this.handleDeleteReward.bind(this);
-
+        this.saveRequestUpdates = this.saveRequestUpdates.bind(this);
+        this.updateRequestChanges = this.updateRequestChanges.bind(this);
+        this.handleSubmitReward = this.handleSubmitReward.bind(this);
     }
 
     componentDidMount = async () => {
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
+
         const { id } = this.state
         axios.get(`/api/request/${id}`)    // get request by id
         .then(res => {
@@ -37,16 +47,59 @@ class RequestInfo extends Component {
         })
     }
 
-    handleSubmitRequest(event) {
-        event.preventDefault();
-        console.log('SUBMIT REQUEST HIT');
-        console.log(this.state.rewards);
+    handleSubmitReward(newReward) {
+        // make request object and update state
+        const rewardObj = {
+            rewarderId: this.state.userId,
+            rewardItem: newReward
+        }
+        let rewards = this.state.rewards.concat(rewardObj);
+        this.setState({rewards: rewards});
+
+        this.updateRequestChanges("rewards", this.state.rewards);
     }
 
-    handleDeleteReward(event) {
-        console.log("HANDLE DELETE REWARD");
-        console.log("*changes the reward array*");
-        console.log(event.target.value);
+    handleDeleteReward(index) { // update state and request object
+        let rewards = this.state.rewards;
+        if (rewards.length === 1) {
+            axios.delete(`/api/request/delete/${this.state.id}`)
+            .then(window.location = '/')
+            .catch(err => {
+                console.log(err);
+            })
+        }
+        else {
+            rewards.splice(index, 1);
+            this.setState({rewards: rewards});
+            this.updateRequestChanges("rewards", this.state.rewards)
+        }
+    }
+
+    updateRequestChanges(fieldName, value) {
+        let requestChanges = this.state.requestChanges;
+        requestChanges[fieldName] = value;
+        this.setState({requestChanges: requestChanges});
+
+        this.saveRequestUpdates();
+    }
+
+    saveRequestUpdates() {
+        const { requestChanges } = this.state;
+
+        if (Object.keys(requestChanges).length !== 0) {
+            const payload = {
+                _id: this.state.id,
+                requestChanges: requestChanges
+            }
+
+            axios.patch(`/api/request/update/`, payload)
+            .then(res => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        }
     }
  
     render() {
@@ -68,10 +121,10 @@ class RequestInfo extends Component {
                 rewards table: 
                 <RewardsTable 
                     rewards={this.state.rewards}
-                    handleChangeReward={this.handleChangeReward}
-                    handleSubmit={this.handleSubmitRequest}
-                    />
-
+                    handleDeleteReward={this.handleDeleteReward}
+                    handleAddReward={this.handleSubmitReward}
+                />
+                <Link to={'/requests'}><Button variant="contained">Back to all Requests</Button></Link>
             </div>  
         )
     }   

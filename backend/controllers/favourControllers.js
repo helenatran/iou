@@ -26,14 +26,14 @@ module.exports.getAllUserFavours = async (req, res) => {
         return res.status(400).json({
             error: 'The user could not be found'
         })
-    
+
     // Get a list of all the users in the database
     let users = await User.find();
 
     // Get a list of all the favours that the user is owed
-    let userOwns = await Favour.find({ 
+    let userOwns = await Favour.find({
         "userId": req.params.id
-    }) 
+    })
 
     // Get a list of all the favours that the user owes
     let userOwed = await Favour.find({
@@ -56,7 +56,7 @@ module.exports.getAllUserFavours = async (req, res) => {
     }
 
     // Construct a data object to send to the front end, we assign the object returned from getUserNames in the owner and ower
-    const favourPayload = list => 
+    const favourPayload = list =>
         list.map(favour => {
             return {
                 _id: favour._id,
@@ -67,10 +67,12 @@ module.exports.getAllUserFavours = async (req, res) => {
                 ower: getUserNames(favour.oweUserId, users),
                 favourName: favour.favourName,
                 favourComment: favour.favourComment,
+                proof: favour.proof,
                 timeCreated: favour.timeCreated,
+                timeCompleted: favour.timeCompleted
             };
         })
-    
+
     // Create two new variables that contain the payload of the favours the user owes and is owed
     let favoursOwned = favourPayload(userOwns);
     let favoursOwed = favourPayload(userOwed);
@@ -84,9 +86,10 @@ module.exports.getAllUserFavours = async (req, res) => {
 
     // Filter the mergedFavours object and filter it based on whatever criteria you want
     // Good idea to decide if you want to return only the completed favours the user owes or also completed favours the user is owed
-    const owned = mergedFavours.filter(favour => favour.oweMe === false)
-    const owed = mergedFavours.filter(favour => favour.oweMe === true)
-    const completed = mergedFavours.filter(favour => favour.isCompleted === true && favour.oweMe === false)
+    const owned = mergedFavours.filter(favour => favour.oweMe === false && favour.isCompleted === false)
+    const owed = mergedFavours.filter(favour => favour.oweMe === true && favour.isCompleted === false)
+    const completed = mergedFavours.filter(favour => favour.isCompleted === true)
+    //remove for now '&& favour.oweMe === false'
 
     // Send it :D
     try {
@@ -108,4 +111,12 @@ module.exports.getFavourWithID = (req, res) => {
             res.status(200).send(favour);
         })
         .catch(err => res.status(400).json({ 'error': err }));
+};
+
+module.exports.updateFavour = async (req, res) => {
+    await Favour.findOneAndUpdate({ _id: req.params.FavourId }, req.body, { new: true })
+        .then((favour) => {
+            res.status(200).send(favour);
+        })
+        .catch(err => res.status(400).json({ 'error': err }))
 };

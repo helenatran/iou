@@ -16,6 +16,12 @@ const FavourSchema = new Schema({
         required: true,
         ref: 'User'
     },
+    owner: {
+        type: Object
+    },
+    ower: {
+        type: Object
+    },
     favourComment: {
         type: String,
         required: false
@@ -42,6 +48,9 @@ const FavourSchema = new Schema({
         type: Date,
         required: true,
         default: Date.now
+    },
+    timeCompleted: {
+        type: Date,
     }
 });
 
