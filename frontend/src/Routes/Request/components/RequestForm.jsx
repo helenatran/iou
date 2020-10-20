@@ -47,7 +47,6 @@ class RequestForm extends Component {
         this.setState({ requestExpiry: event.target.value });
     }
     
-
     // === rewards table functions ===
     handleAddReward(newReward) { 
         const rewardObj = {
