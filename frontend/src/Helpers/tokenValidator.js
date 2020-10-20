@@ -2,12 +2,12 @@ import axios from 'axios';
 
 async function validateToken() {
     try {
-        await axios.post('/api/user/validateToken', null, {
+        const tokenCheck = await axios.post('/api/user/validateToken', null, {
             headers: {
               "token": localStorage.getItem('token')
             }
           });
-        return true
+        return(tokenCheck.data ? true : false)
     } catch (err) {
         return false;
     }
