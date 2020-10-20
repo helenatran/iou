@@ -46,30 +46,32 @@ class RewardsTable extends Component {
     }
 
     renderAddRewardForm() {
-        if (this.props.requestStatus !== "Open") {
-            return (
-                <div>
-                    <label>This request is {this.props.requestStatus} and can no longer have rewards added to it.</label>
-                </div>
-            );
-        }
         if (this.isLoggedIn()) {
-            return (
-                <div>
-                    <label>Select a Reward to add:   </label>
-                    <RewardSelectField handleChangeReward={this.handleChangeReward} />
+            if (this.props.requestStatus === "Open" ) {
+                return (
+                    <div>
+                        <label>Select a Reward to add:   </label>
+                        <RewardSelectField handleChangeReward={this.handleChangeReward} />
 
-                    <br/>
-                    <Button 
-                        onClick={(event) => {
-                            event.preventDefault();
-                            this.props.handleAddReward(this.state.newReward);
-                        }}
-                        variant="contained" 
-                        color="primary" 
-                    >Add Reward</Button>
-                </div>
-            );
+                        <br/>
+                        <Button 
+                            onClick={(event) => {
+                                event.preventDefault();
+                                this.props.handleAddReward(this.state.newReward);
+                            }}
+                            variant="contained" 
+                            color="primary" 
+                        >Add Reward</Button>
+                    </div>
+                );
+            }
+            else {
+                return (
+                    <div>
+                        <label>This request is {this.props.requestStatus} and can no longer have rewards added to it.</label>
+                    </div>
+                );
+            }
         }
         else {
             return (

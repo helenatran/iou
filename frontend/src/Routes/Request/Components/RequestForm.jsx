@@ -16,6 +16,7 @@ class RequestForm extends Component {
             taskTitle: "",
             taskDescription: "",
             userId: "",
+            status: "Open",
             requestExpiry: new Date(),
             rewards: [],
             newRewardObj: {}
@@ -70,7 +71,7 @@ class RequestForm extends Component {
             taskTitle: this.state.taskTitle,
             taskDescription: this.state.taskDescription,
             requestExpiry: this.state.requestExpiry,
-            status:"Open",
+            status: this.state.status,
             rewards: this.state.rewards,
             requesterUserId: this.state.userId
         }
@@ -105,6 +106,7 @@ class RequestForm extends Component {
                         <label>Reward: </label>
                         
                         <RewardsTable 
+                            requestStatus={this.state.status}
                             rewards={this.state.rewards}
                             handleDeleteReward={this.handleDeleteReward}
                             handleAddReward={this.handleAddReward}
