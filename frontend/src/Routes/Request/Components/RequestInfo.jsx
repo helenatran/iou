@@ -338,7 +338,7 @@ class RequestInfo extends Component {
     }
 
     render() {
-        const {taskTitle, taskDescription, requesterUserId, timeCreated, requestExpiry, status} = this.state;
+        const {taskTitle, taskDescription, userName, timeCreated, requestExpiry, status} = this.state;
         return (
             <Card className="request-info">  
                 <div className="centered">
@@ -346,7 +346,7 @@ class RequestInfo extends Component {
                     <br/>
                     Description: {taskDescription}
                     <br/>
-                    Requested by: {requesterUserId}
+                    Requested by: {userName}
                     <br/>
                     Created: {getCurrentYYYYMMDDDate(timeCreated)}
                     <br/>
