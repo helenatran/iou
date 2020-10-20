@@ -132,7 +132,16 @@ class FavourForm extends React.Component {
             proof: this.state.proofUrl
         }
 
-        await axios.post('/api/favours', newFavour, {
+        let url = ''
+
+        if (this.state.oweMe) {
+            url = '/api/favours/withProof'
+        }
+        else {
+            url = '/api/favours'
+        }
+
+        await axios.post(url, newFavour, {
             headers: {
                 "token": localStorage.getItem("token")
             }

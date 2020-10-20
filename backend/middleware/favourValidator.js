@@ -46,22 +46,61 @@ module.exports.createFavourValidator = [
     check('oweMe')
         .trim()
         .isBoolean()
+        .withMessage("The switch value is invalid, please try again")
+]
+
+module.exports.createFavourValidatorWithProof = [
+    check('userId')
+        .trim()
+        .isMongoId().withMessage("Please select a user in the list")
+        .custom(async value => {
+            if (value !== '') {
+                const userId = mongoose.Types.ObjectId(value)
+                const user = await User.find({ _id: userId });
+                if (!user.length > 0)
+                    return Promise.reject('That user does not exist, please select a valid user');
+            }
+        }),
+    check('oweUserId')
+        .trim()
+        .notEmpty().withMessage("Please select a user in the list")
+        .custom(async value => {
+            if (value !== '') {
+                const userId = mongoose.Types.ObjectId(value)
+                const user = await User.find({ _id: userId });
+                if (!user.length > 0)
+                    return Promise.reject('That user does not exist, please select a valid user');
+            }
+        }),
+    check('favourName')
+        .trim()
+        .isIn(favours)
+        .withMessage("Please select a favour in the list"),
+    check('oweMe')
+        .trim()
+        .isBoolean()
         .withMessage("The switch value is invalid, please try again"),
-    //Need errors when proof only for 'Owe Me'
-    // check('proof')
-    //     .trim()
-    //     .notEmpty()
-    //     .withMessage("Please upload a proof")
+    check('proof')
+        .trim()
+        .notEmpty()
+        .withMessage("Please upload a proof")
 ]
 
 module.exports.updateFavourValidator = [
-    // Need errors when the checkbox isn't checked and proof only for 'I Owe'
-    // check('isCompleted')
-    //     .trim()
-    //     .isBoolean(), //true?
-    // check('proof')
-    //     .trim()
-    //     .notEmpty()
-    //     .withMessage("Please upload a proof")
+    check('isCompleted')
+        .not()
+        .isIn([false])
+        .withMessage("Please tick the box to mark the favour as completed")
+]
+
+module.exports.updateFavourValidatorWithProof = [
+    check('isCompleted')
+        .not()
+        .isIn([false])
+        .withMessage("Please tick the box to mark the favour as completed"),
+    check('proof')
+        .trim()
+        .notEmpty()
+        .withMessage("Please upload a proof")
 ]
 

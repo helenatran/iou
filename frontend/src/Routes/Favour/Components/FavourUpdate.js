@@ -92,7 +92,15 @@ class FavourUpdate extends React.Component {
             timeCompleted: new Date().toLocaleString()
         }
 
-        await axios.put(`/api/favours/${this.state.favour._id}`, updatedFavour, {
+        let url = '';
+        if (this.state.favour.oweMe) {
+            url = `/api/favours/${this.state.favour._id}`;
+        }
+        else {
+            url = `/api/favours/${this.state.favour._id}/withProof`
+        }
+
+        await axios.put(url, updatedFavour, {
             headers: {
                 "token": localStorage.getItem("token")
             }
