@@ -176,7 +176,9 @@ class FavourForm extends React.Component {
                         />
                         <FavourFormFavours updateFavour={this.updateFavour} />
                         <FavourFormComments comments={this.state.comments} updateComments={this.updateComments} />
-                        <FavourFormProofUpload oweMe={this.state.oweMe} updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />
+                        {this.state.oweMe ?
+                            (<FavourFormProofUpload updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />)
+                            : ('')}
                         <FavourFormButtons submitFavour={this.submitFavour} />
                     </form>
                 </Paper>
