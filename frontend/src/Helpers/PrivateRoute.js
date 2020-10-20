@@ -1,15 +1,21 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-import UserContext from '../Context/userContext';
+//import axios from 'axios';
+import validateToken from '../Helpers/validateToken';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-    const { userDetails } = useContext(UserContext);
+    // const tokenValid = axios.post('/api/user/validateToken', null, {
+    //     headers: {
+    //       "token": localStorage.getItem('token')
+    //     }
+    //   });
+    const tokenValid = validateToken();
 
     return (
         <Route 
             {...rest}
             render = { props =>
-                userDetails.user ? ( 
+                tokenValid ? ( 
                     <Component {...props} /> 
                 ) : ( 
                     <Redirect 

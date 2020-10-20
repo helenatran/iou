@@ -45,6 +45,7 @@ class FavourSingle extends React.Component {
         if (favour.favourName === 'Donuts') { sourceImage = '/favourImages/donuts.jpg' }
         if (favour.favourName === 'Drinks') { sourceImage = '/favourImages/drinks.png' }
         if (favour.favourName === 'Fast Food') { sourceImage = '/favourImages/fastfood.png' }
+        if (favour.favourName === 'Chocolate') { sourceImage = '/favourImages/chocolate.png' }
 
         const { classes } = this.props;
         return (

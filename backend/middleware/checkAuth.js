@@ -10,7 +10,7 @@ const checkAuth = (req, res, next) => {
 
         const verified = jwt.verify(token, process.env.JWT_SECRET)
         if (!verified)
-            return res.status(400).json({
+            return res.status(401).json({
                 error: 'Token is invalid'
             });
 

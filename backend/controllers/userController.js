@@ -3,13 +3,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 module.exports.registerUser = async (req, res) => {
-    // const submittedEmail = await User.findOne({
-    //     email: req.body.email
-    // });
-    // if (submittedEmail)
-    //     return res.status(400).json({
-    //         error: 'That email has already been registered'
-    //     });
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
 
@@ -69,7 +62,7 @@ module.exports.validateToken = async (req, res) => {
         if (!token)
             return res.json(false);
 
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        let verified = jwt.verify(token, process.env.JWT_SECRET);
         if (!verified)
             return res.json(false);
 
@@ -79,9 +72,7 @@ module.exports.validateToken = async (req, res) => {
 
         return res.json(true);
     } catch (error) {
-        res.status(400).json({
-            error: error
-        })
+        return res.json(false)
     }
 }
 
@@ -97,6 +88,23 @@ module.exports.findUserByID = async (req, res) => {
         return res.status(200).json({
             id: user._id,
         })
+    } catch (error) {
+        return res.status(500).json({
+            error: 'That user could not be found'
+        })
+    }
+}
+
+module.exports.getUserName = async (req, res) => {
+    try {
+        let encodedUserID = req.header("token");
+        let decodedToken = jwt.verify(encodedUserID, process.env.JWT_SECRET)
+        const user = await User.findById(decodedToken.id);
+        if (!user)
+            return res.status(404).json({
+                error: 'User could not be found'
+            })
+        return res.status(200).json(user.firstName)
     } catch (error) {
         return res.status(500).json({
             error: 'That user could not be found'

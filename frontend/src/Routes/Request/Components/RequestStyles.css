@@ -1,12 +1,10 @@
 
 .searchbar {
-    margin-bottom: 20px;
+    margin-bottom: 100px;
 }
 
 .list-group-container {
-    margin: 20px auto;
     width: 100%;
-    padding: 20px;
     display: flex;
     flex-wrap: wrap;
     /* justify-content: space-evenly; */
@@ -14,12 +12,12 @@
 }
 
 .request-card {
-    width: 10vw;
+    width: 20vw;
     min-width: 200px;
-    height: 150px;
     display: inline-block;
     margin: 3vh 1vw;
     padding: 15px;
+    
 }
 
 .smallCaps {
@@ -32,7 +30,6 @@
 }
 
 .status { 
-    display: inline;
     font-size: 12pt;
     font-weight: bold;
 }
@@ -45,8 +42,8 @@
     color: rgb(224, 95, 70);
 }
 
-.Pending {
-    color: rgb(217, 181, 39)
+.Expired {
+    color: rgb(54, 40, 39)
 }
 
 form.request-form {
@@ -57,5 +54,30 @@ form.request-form {
 .rewards-table-container {
     width: 25vw;
     min-width: 500px;
-    margin: 3vh 3vw ;
+    margin: 4vh auto;
+}
+
+.request-info {
+    width: 50%;
+    margin: 5vh auto;
+    padding: 30px 50px;
+}
+
+.centered {
+    margin: auto;
+}
+
+.buttonNext {
+   padding:2vw;
+}
+.spacing{
+    margin-bottom:2vw;
+}
+
+.rightSide{
+    float:right;
+}
+
+.requestsPage{
+    margin:5vw;
 }
