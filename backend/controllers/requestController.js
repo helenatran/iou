@@ -1,5 +1,6 @@
 const requestCollection = require('../models/requestModel');
 const mongoose = require('mongoose');
+const User = require('../models/userModel')
 /**
  * Create a request
  * POST request - requires minimum these fields in body:
@@ -13,9 +14,13 @@ const mongoose = require('mongoose');
     Other fields not mentioned: proof, completerId
  */
 module.exports.CreateRequest = (req,res) => {
-    console.log(req.body);
     let newRequest = new requestCollection(req.body);
-    
+    //To-do rewards array validation
+    console.log("Promise: " + rewardsArrayValidator(req.body.rewards))
+    if (!rewardsArrayValidator(req.body.rewards))
+        return res.status(422).json({
+            error: "The reward you are trying to add is invalid"
+        })
     newRequest.save((err, requestObject) => {
         if (err) {
             res.status(400).send(err); 
@@ -59,8 +64,11 @@ module.exports.getRequestbyId = (req, res) => {
  *  - requestID field in the body with string of request's object id
  */
 module.exports.UpdateRequest = (req, res) => {
+    if (!rewardsArrayValidator(req.body.requestChanges))
+        return res.status(422).json({
+            error: "The reward you are trying to add is invalid"
+        })
     let update = req.body.requestChanges;
-
     requestCollection.findByIdAndUpdate(
         { _id: req.body._id },
         update,
@@ -73,6 +81,34 @@ module.exports.UpdateRequest = (req, res) => {
         }); 
 
 };
+
+function rewardsArrayValidator(rewardsArray) {
+    const favours = [
+        "Breakfast", 
+        "Dinner", 
+        "Brunch", 
+        "Bubble Tea",
+        "Drinks", 
+        "Coffee", 
+        "Chocolate", 
+        "Dessert", 
+        "Fast Food", 
+        "Donuts"
+    ];
+    for (let i = 0; i < rewardsArray.length; ++i) {
+        try {
+            const userId = mongoose.Types.ObjectId(rewardsArray[i].rewarderId);
+            const user = User.findById({ userId })
+            if (!user)
+                return false;
+            if (!favours.includes(rewardsArray[i].rewardItem))
+                return false;
+        } catch (error) {
+            return false;
+        }
+    }
+    return true;
+}
 
 /**
  * Delete Request

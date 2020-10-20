@@ -6,7 +6,7 @@ const User = require('../models/userModel')
 module.exports.createRequestValidator = [
     check('taskTitle')
         .trim()
-        .isLength({ min: 3, max: 20 })
+        .isLength({ min: 3, max: 30 })
         .withMessage("The task title must be between 3 and 30 characters long"),
     check('taskDescription')
         .optional()

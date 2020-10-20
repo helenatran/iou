@@ -24,7 +24,7 @@ class RequestInfo extends Component {
             proof: "",
             completerUserId: "",
             rewards: [],
-            requestChanges: {}
+            requestChanges: {},
         };
 
         //TODO - ONLY EVENT HANDLER FUNCTIONS NEED TO BE BOUND
@@ -94,7 +94,7 @@ class RequestInfo extends Component {
         else {
             rewards.splice(index, 1);
             this.setState({rewards: rewards});
-            this.updateRequestChanges("rewards", this.state.rewards)
+            this.updateRequest("rewards", this.state.rewards)
         }
     }
     
