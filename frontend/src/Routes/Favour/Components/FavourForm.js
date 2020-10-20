@@ -8,6 +8,7 @@ import FavourFormSwitch from './FavourFormComponents/FavourFormSwitch';
 import FavourFormProofUpload from './FavourFormComponents/FavourFormProofUpload';
 import { withStyles, Paper } from '@material-ui/core';
 import getToken from '../../../Helpers/getToken';
+import ErrorNotice from '../../Errors/Error';
 
 const useStyles = (theme) => ({
     root: {
@@ -31,13 +32,15 @@ class FavourForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            favour: {},
-            friend: {},
+            favour: '',
+            friend: '',
             comments: '',
             oweMe: false,
             proof: null,
             proofUrl: '',
-            proofConfirmation: ''
+            proofConfirmation: '',
+            error: [],
+            errorState: false
         }
         this.updateFavour = this.updateFavour.bind(this);
         this.updateComments = this.updateComments.bind(this);
@@ -53,6 +56,11 @@ class FavourForm extends React.Component {
                 favour: value.name
             })
         }
+        else {
+            this.setState({
+                favour: ''
+            })
+        }
     }
 
     updateComments(event) {
@@ -65,6 +73,11 @@ class FavourForm extends React.Component {
         if (value !== null) {
             this.setState({
                 friend: value._id
+            })
+        }
+        else {
+            this.setState({
+                friend: ''
             })
         }
     }
@@ -94,8 +107,6 @@ class FavourForm extends React.Component {
                     this.setState({
                         proofUrl: response.data.data.Location
                     })
-                    console.log(response);
-                    console.log(this.state.proofUrl);
                 })
                 .catch(err => console.log(err));
         }
@@ -121,9 +132,16 @@ class FavourForm extends React.Component {
             proof: this.state.proofUrl
         }
 
-        console.log(newFavour);
+        let url = ''
 
-        await axios.post('/api/favours', newFavour, {
+        if (this.state.oweMe) {
+            url = '/api/favours/withProof'
+        }
+        else {
+            url = '/api/favours'
+        }
+
+        await axios.post(url, newFavour, {
             headers: {
                 "token": localStorage.getItem("token")
             }
@@ -133,7 +151,14 @@ class FavourForm extends React.Component {
                 console.log(response.data)
                 window.location = '/favours';
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                const error = err.response.data.error;
+                console.log(err.response.data.error);
+                this.setState({
+                    error: error,
+                    errorState: true
+                })
+            })
     }
 
     render() {
@@ -143,6 +168,7 @@ class FavourForm extends React.Component {
                 <Paper>
                     <div className={classes.title}><h1>Create Favour</h1></div>
                     <form noValidate autoComplete="off">
+                        {this.state.errorState === true ? <ErrorNotice message={this.state.error} /> : ""}
                         <FavourFormSwitch oweMe={this.state.oweMe} updateOweMe={this.updateOweMe} />
                         <FavourFormUsers
                             oweMe={this.state.oweMe}
@@ -150,7 +176,7 @@ class FavourForm extends React.Component {
                         />
                         <FavourFormFavours updateFavour={this.updateFavour} />
                         <FavourFormComments comments={this.state.comments} updateComments={this.updateComments} />
-                        <FavourFormProofUpload updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />
+                        <FavourFormProofUpload oweMe={this.state.oweMe} updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />
                         <FavourFormButtons submitFavour={this.submitFavour} />
                     </form>
                 </Paper>
