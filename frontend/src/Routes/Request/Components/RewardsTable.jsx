@@ -108,7 +108,7 @@ class RewardsTable extends Component {
                                     return (
                                         <TableRow key={indexKey}>
                                             <TableCell>
-                                                {rewardObj.rewardItem} from {rewardObj.rewarderId}
+                                                {rewardObj.rewardItem} from {rewardObj.rewarderName}
                                             </TableCell>
                                             <TableCell>
                                                 {this.renderDeleteRewardButton(indexKey)}

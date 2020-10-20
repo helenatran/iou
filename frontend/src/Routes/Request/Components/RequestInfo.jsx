@@ -15,6 +15,7 @@ class RequestInfo extends Component {
         this.state = {
             userId: "",
             id: this.props.match.params.id,
+            userName: "",
             taskTitle: "",
             taskDescription: "",
             requesterUserId: "",
@@ -60,6 +61,23 @@ class RequestInfo extends Component {
         .catch((error) => {
             console.log(error);
         })
+        
+        if (this.state.userId !== null) {
+            axios.post('/api/user/name', null, {
+                headers: {
+                    "token": localStorage.getItem("token")
+                }
+            }).then(res => {
+                this.setState({
+                    userName: res.data
+                })
+            })
+            .catch(error =>
+                console.log(error)
+            )
+        }
+        
+
     }
 
     handleChangeProof(event) {
@@ -73,6 +91,7 @@ class RequestInfo extends Component {
         // make request object and update state
         const rewardObj = {
             rewarderId: this.state.userId,
+            rewarderName: this.state.userName,
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
