@@ -10,6 +10,7 @@ router.post('/withProof', checkAuth, createFavourValidatorWithProof, runValidato
 router.get('/:FavourId', checkAuth, favourController.getFavourWithID);
 router.put('/:FavourId', checkAuth, updateFavourValidator, runValidator, favourController.updateFavour);
 router.put('/:FavourId/withProof', checkAuth, updateFavourValidatorWithProof, runValidator, favourController.updateFavour);
+router.delete('/:FavourId', checkAuth, favourController.deleteFavour);
 router.get('/user/:id', checkAuth, favourController.getAllUserFavours);
 
 

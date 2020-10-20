@@ -97,6 +97,10 @@ class FavourForm extends React.Component {
 
     async submitFavour(event) {
         event.preventDefault();
+        this.setState({
+            error: [],
+            errorState: false
+        })
 
         if (this.state.proof) {
             const data = new FormData();
@@ -153,7 +157,6 @@ class FavourForm extends React.Component {
             })
             .catch(err => {
                 const error = err.response.data.error;
-                console.log(err.response.data.error);
                 this.setState({
                     error: error,
                     errorState: true
