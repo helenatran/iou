@@ -112,7 +112,11 @@ class RequestInfo extends Component {
     async handleDeleteReward(index) { // update state and request object
         let rewards = this.state.rewards;
         if (rewards.length === 1) {
-            axios.delete(`/api/request/delete/${this.state.id}`)
+            axios.delete(`/api/request/delete/${this.state.id}`, {
+                headers: {
+                    "token": localStorage.getItem("token")
+                }
+            })
             .then(window.location = '/')
             .catch(err => {
                 console.log(err);
@@ -207,10 +211,11 @@ class RequestInfo extends Component {
     }
 
     //unused - keep for later bettering of UI
-    addFavourIdToReward(favourId, rewardIndex) {
+    async addFavourIdToReward(favourId, rewardIndex) {
         let rewards = this.state.rewards;
         rewards[rewardIndex]["favourId"] = favourId;
         this.setState({rewards: rewards});
+        await this.updateRequestChanges("rewards", this.state.rewards);
     }
 
     //#endregion
@@ -232,7 +237,11 @@ class RequestInfo extends Component {
                 requestChanges: requestChanges
             }
 
-            await axios.patch(`/api/request/update/`, payload)
+            await axios.patch(`/api/request/update/`, payload, {
+                headers: {
+                    "token": localStorage.getItem("token")
+                }
+            })
             .then(res => {
                 if (onRequestClosureFunction) {
                     onRequestClosureFunction();
@@ -279,9 +288,14 @@ class RequestInfo extends Component {
 
     renderProofUploadForm() {
         const status = this.state.status;
-        if (status !== "Open"){ 
+        if (status === "Closed"){ 
             return (
-                <div>This request is {status} and can no longer be completed.</div>
+                <>
+                    <div>This request is Closed and can no longer be completed.
+                    <br/>
+                    Proof: <a href={this.state.proof}>Image Link</a></div>
+                    <img width="60%" src={this.state.proof} alt="Request Completion Proof"/>
+                </>  
             );
         }
         if (this.isLoggedIn()) {
