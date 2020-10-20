@@ -4,7 +4,7 @@ function getToken() {
         return JSON.parse(atob(token));
     } catch (e) {
         //window.location = '/';
-        console.log("bad")
+        return false;
     }
 }
 
