@@ -6,11 +6,20 @@ import FavourList from './Components/FavourList';
 import FavourPagination from './Components/FavourPagination';
 import { Link } from 'react-router-dom';
 import getToken from '../../Helpers/getToken';
+import Container from '@material-ui/core/Container';
+import Box from '@material-ui/core/Box';
+
 
 const useStyles = (theme) => ({
     root: {
-        margin: 20
+       // margin: 20
     },
+    buttonMargin: {
+        marginRight: '20px',
+    },
+    favourTitle: {
+        marginTop: '20px'
+    }
 });
 
 class Favours extends React.Component {
@@ -28,7 +37,7 @@ class Favours extends React.Component {
             favoursToShow: 'pendingIOwe',
             selectedFavour: {},
             currentPage: 1,
-            favoursPerPage: 15,
+            favoursPerPage: 6,
             loading: true,
         };
         this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
@@ -126,8 +135,9 @@ class Favours extends React.Component {
         const currentFavours = favours.slice(indexOfFirstFavour, indexOfLastFavour);
 
         return (
+            <Container maxWidth="md">
             <div className={classes.root}>
-                <h1>Favours</h1>
+                <h1 style={{marginTop: 20}}>Favours</h1>
                 <TextField className="centre-this"
                     id="standard-full-width"
                     fullWidth
@@ -138,9 +148,9 @@ class Favours extends React.Component {
                     style={{ marginBottom: 10 }}>
                 </TextField>
                 <div>
-                    <Button variant="contained" onClick={() => this.updateShow('pendingIOwe')}>I owe</Button>
-                    <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
-                    <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
+                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingIOwe')}>Favours I Owe</Button>
+                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Favours I'm Owed</Button>
+                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
                 {this.state.loading ? ("") : (
                     <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
@@ -148,6 +158,7 @@ class Favours extends React.Component {
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
                 <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
             </div >
+            </Container>
         )
     }
 }
