@@ -18,13 +18,13 @@ if (currentPage > 1) {
     if (currentPage < numberOfPages) {
     return(<div className ="paginationButton">
         <Button variant="contained" color="primary" onClick={() => paginate(currentPage-1)} href="/leaderboard/!#"> Back </Button>
-   <span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+   <span className="spaceButton">{currentPage} of {numberOfPages}</span>
    <Button variant="contained" color="primary" onClick={() => paginate(currentPage+1)} href="/leaderboard/!#"> Next </Button>
     </div>)
     }
     else {
         return(<div className ="paginationButton"><Button variant="contained" color="primary" onClick={() => paginate(currentPage-1)} href="/leaderboard/!#"> Back </Button>
-<span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+<span className="spaceButton">{currentPage} of {numberOfPages}</span>
 <Button variant="contained" disabled> Next </Button>
         </div>)
     }
@@ -34,7 +34,7 @@ else {
     
     return( <div className ="paginationButton">
        <Button variant="contained" disabled> Back </Button>
-        <span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+        <span className="spaceButton">{currentPage} of {numberOfPages}</span>
           <Button variant="contained" color="primary" onClick={() => paginate(currentPage+1)} href="/leaderboard/!#">Next</Button>
     </div>)
   
