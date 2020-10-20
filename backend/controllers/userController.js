@@ -56,21 +56,18 @@ module.exports.loginUser = async (req, res) => {
     })
 }
 
-module.exports.validateToken = async (req, res) => {
+module.exports.validateToken = async (req, res) => {  
+    const token = req.header("token");
+    if (!token)
+        return res.json(false);
     try {
-        const token = req.header("token");
-        if (!token)
-            return res.json(false);
-
         let verified = jwt.verify(token, process.env.JWT_SECRET);
-        if (!verified)
-            return res.json(false);
 
         const user = await User.findById(verified.id);
         if (!user)
             return res.json(false);
-
-        return res.json(true);
+        else
+            return res.json(true);
     } catch (error) {
         return res.json(false)
     }
