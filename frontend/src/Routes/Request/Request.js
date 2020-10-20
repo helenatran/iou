@@ -5,6 +5,8 @@ import RequestListGroup from './Components/RequestListGroup';
 import Pagination from './Components/Pagination';
 import './Components/RequestStyles.css';
 import Container from '@material-ui/core/Container';
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 const Requests = props => {
     const [requests, setRequests] = useState([]);
@@ -41,9 +43,14 @@ const maxPage = Math.ceil(newRequests.length/requestsPerPage);
 
 return (
     <div className="requestsPage">
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
         <div className="requests-header">
             <h1>Requests</h1>
+    <Link to={"/request/new"}>
+        <Button variant="contained" color="primary">
+            Add Request
+        </Button>
+    </Link>
         </div>
         <div className="spacing">
     <TextField label="Search for task..." id="standard-full-width" value={input} onChange={(e)=> updateInput(e.target.value)} className="searchbar"/>
