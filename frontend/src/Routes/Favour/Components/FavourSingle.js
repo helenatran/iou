@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import Time from 'react-time-format';
 import { withStyles } from '@material-ui/core/styles';
 import { Paper, Grid, Button } from '@material-ui/core';
@@ -26,8 +27,30 @@ const useStyles = (theme) => ({
 })
 
 class FavourSingle extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            favour: this.props.location.state.favour
+        }
+        this.deleteFavour = this.deleteFavour.bind(this);
+    }
+
+    deleteFavour(event) {
+        event.preventDefault();
+        axios.delete(`/api/favours/${this.state.favour._id}`, {
+            headers: {
+                "token": localStorage.getItem("token")
+            }
+        })
+            .then(response => {
+                console.log(response);
+                window.location = '/favours';
+            })
+            .catch(err => console.log(err))
+    }
+
     render() {
-        const favour = this.props.location.state.favour;
+        const favour = this.state.favour;
 
         let type = '';
         if (favour.oweMe) {
@@ -66,7 +89,9 @@ class FavourSingle extends React.Component {
                         </Grid>
                     </Grid>
                     <div className={classes.button}>
-                        {favour.isCompleted ? ('') : (<Link to={{
+                        {favour.isCompleted ? (
+                            <Button variant="contained" onClick={this.deleteFavour}>Delete Favour</Button>
+                        ) : (<Link to={{
                             pathname: '/favours/' + favour._id + '/update',
                             myCustomProps: favour,
                             state: { favour: favour },
