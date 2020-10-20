@@ -146,8 +146,6 @@ class RequestInfo extends Component {
                 this.setState({
                     proofUrl: response.data.data.Location
                 })
-                console.log("UPLOADED PROOF TO DB");
-                console.log(this.state.proofUrl);
                 
                 this.completeRequest();
             })
@@ -156,8 +154,6 @@ class RequestInfo extends Component {
     }
 
     async completeRequest() { // sets proof, sets/saves status 
-        console.log(`HIT MAKE COMPLETE REQUEST`)
-        
         await this.setState({status: "Closed"})
         await this.updateRequestChanges("status", this.state.status);
 
@@ -166,14 +162,11 @@ class RequestInfo extends Component {
         
         await this.updateRequestChanges("proof", this.state.proofUrl);
     
-        console.log(this.state.requestChanges);
         this.saveRequestUpdates(this.makeRewardFavoursOnRequestCompletion);
     }   
 
     makeRewardFavoursOnRequestCompletion() {
-        console.log(`HIT MAKE REWARD FAVOURS`)
         const rewards = this.state.rewards;
-        const arr = []
         for (const rewardIndex in rewards) {
             const reward = rewards[rewardIndex];
             const favourPayload = {
@@ -184,14 +177,11 @@ class RequestInfo extends Component {
                 oweMe: true,
                 proof: this.state.proofUrl
             }
-            arr.push(favourPayload);
             this.makeFavour(favourPayload, rewardIndex);
         }
-        console.table(arr);
     }
 
     makeFavour(favourPayload, rewardIndex) {
-        console.log('HIT MAKE FAVOUR');
         let url = '/api/favours/withProof';
 
         axios.post(url, favourPayload, {
@@ -200,8 +190,7 @@ class RequestInfo extends Component {
             }
         })
         .then(response => {
-            console.log("FAVOUR HAS BEEN MADE FOR "+ this.state.rewards[rewardIndex].rewardItem);
-            console.log(response.data);
+            //unused - keep for later ebttering of UI
             this.addFavourIdToReward(response._id, rewardIndex);
         })
         .catch(err => {
@@ -212,15 +201,13 @@ class RequestInfo extends Component {
                 errorState: true
             })
         })
-        console.table(this.state.rewards);
     }
 
+    //unused - keep for later bettering of UI
     addFavourIdToReward(favourId, rewardIndex) {
-        console.log(`HIT add favour id to reward`);
         let rewards = this.state.rewards;
         rewards[rewardIndex]["favourId"] = favourId;
         this.setState({rewards: rewards});
-        console.log(this.state.rewards);
     }
 
     //#endregion
@@ -244,8 +231,6 @@ class RequestInfo extends Component {
 
             await axios.patch(`/api/request/update/`, payload)
             .then(res => {
-                console.log('UPDATED REQUEST');
-                console.log(res);
                 if (onRequestClosureFunction) {
                     onRequestClosureFunction();
                 }
@@ -287,7 +272,7 @@ class RequestInfo extends Component {
 
     renderProofUploadForm() {
         const status = this.state.status;
-        if (status === "Expired" || status === "Closed"){ 
+        if (status !== "Open"){ 
             return (
                 <div>This request is {status} and can no longer be completed.</div>
             );
