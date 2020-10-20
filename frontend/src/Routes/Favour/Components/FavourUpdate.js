@@ -68,6 +68,10 @@ class FavourUpdate extends React.Component {
 
     async updateFavour(event) {
         event.preventDefault();
+        this.setState({
+            error: [],
+            errorState: false
+        })
 
         if (this.state.proof) {
             const data = new FormData();

@@ -1,6 +1,7 @@
 const User = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 
 module.exports.registerUser = async (req, res) => {
     const salt = await bcrypt.genSalt(parseInt(process.env.SALT_ROUNDS));
