@@ -10,6 +10,7 @@ import getToken from '../../Helpers/getToken';
 const useStyles = (theme) => ({
     root: {
         margin: theme.spacing(1),
+        margin: 20
     },
 });
 
@@ -140,7 +141,7 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} />
+                <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
                 <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
             </div >
