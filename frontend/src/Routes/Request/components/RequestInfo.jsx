@@ -61,10 +61,18 @@ class RequestInfo extends Component {
 
     handleDeleteReward(index) { // update state and request object
         let rewards = this.state.rewards;
-        rewards.splice(index, 1);
-        this.setState({rewards: rewards});
-
-        this.updateRequestChanges("rewards", this.state.rewards);
+        if (rewards.length === 1) {
+            axios.delete(`/api/request/delete/${this.state.id}`)
+            .then(window.location = '/')
+            .catch(err => {
+                console.log(err);
+            })
+        }
+        else {
+            rewards.splice(index, 1);
+            this.setState({rewards: rewards});
+            this.updateRequestChanges("rewards", this.state.rewards)
+        }
     }
 
     updateRequestChanges(fieldName, value) {

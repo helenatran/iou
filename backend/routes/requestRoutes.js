@@ -5,6 +5,6 @@ router.get('/', requestController.getAllRequests);
 router.get('/:id', requestController.getRequestbyId);
 router.post('/create', requestController.CreateRequest);
 router.patch('/update', requestController.UpdateRequest);
-router.delete('/delete', requestController.DeleteRequest);
+router.delete('/delete/:id', requestController.DeleteRequest);
 
 module.exports = router;
