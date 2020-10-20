@@ -2,6 +2,11 @@ const Favour = require('../models/favourModel');
 const User = require('../models/userModel');
 
 module.exports.createFavour = (req, res) => {
+    if (req.body.oweUserId === req.body.userId)
+        return res.status(400).json({
+            error: [{
+                error: 'You can not owe yourself!'
+            }]})
     let newFavour = new Favour(req.body);
     newFavour.save((err, Favour) => {
         if (err) {
