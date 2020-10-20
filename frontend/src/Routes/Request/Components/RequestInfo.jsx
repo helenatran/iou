@@ -101,11 +101,9 @@ class RequestInfo extends Component {
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
-        this.setState({rewards: rewards});
+        await this.setState({rewards: rewards});
 
         await this.updateRequestChanges("rewards", this.state.rewards);
-        console.log(this.state.rewards);
-        console.log(this.state.requestChanges);
         this.saveRequestUpdates();
     }
 
