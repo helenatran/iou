@@ -249,7 +249,11 @@ class RequestInfo extends Component {
     //#region User checks
 
     isLoggedIn() {
-        return getToken() !== null;
+        const token = getToken();
+        if (token)
+            return true;
+        else
+            return false;
     }
 
     userIsRequester() { 

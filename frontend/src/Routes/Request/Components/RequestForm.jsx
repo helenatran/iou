@@ -16,6 +16,7 @@ class RequestForm extends Component {
             taskTitle: "",
             taskDescription: "",
             userId: "",
+            userName: "",
             status: "Open",
             requestExpiry: new Date(),
             rewards: [],
@@ -34,6 +35,21 @@ class RequestForm extends Component {
     componentDidMount() {
         const token = getToken();
         this.setState({userId: token !== null ? token.id : null})
+        
+        if (this.state.userId !== null) {
+            axios.post('/api/user/name', null, {
+                headers: {
+                    "token": localStorage.getItem("token")
+                }
+            }).then(res => {
+                this.setState({
+                    userName: res.data
+                })
+            })
+            .catch(error =>
+                console.log(error)
+            )
+        }
     }
 
     handleChangeTaskTitle(event) { 
@@ -52,6 +68,7 @@ class RequestForm extends Component {
     handleAddReward(newReward) { 
         const rewardObj = {
             rewarderId: getToken().id,
+            rewarderName: this.state.userName,
             rewardItem: newReward
         }
         let rewards = this.state.rewards.concat(rewardObj);
