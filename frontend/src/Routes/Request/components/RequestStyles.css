@@ -32,7 +32,6 @@
 }
 
 .status { 
-    display: inline;
     font-size: 12pt;
     font-weight: bold;
 }
@@ -45,8 +44,8 @@
     color: rgb(224, 95, 70);
 }
 
-.Pending {
-    color: rgb(217, 181, 39)
+.Expired {
+    color: rgb(54, 40, 39)
 }
 
 form.request-form {
@@ -57,5 +56,15 @@ form.request-form {
 .rewards-table-container {
     width: 25vw;
     min-width: 500px;
-    margin: 3vh 3vw ;
+    margin: 4vh auto;
+}
+
+.request-info {
+    width: 50%;
+    margin: 5vh auto;
+    padding: 30px 50px;
+}
+
+.centered {
+    margin: auto;
 }
