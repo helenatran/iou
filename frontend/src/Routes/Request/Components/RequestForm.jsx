@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
 import Button from '@material-ui/core/Button';
+import ErrorNotice from '../../Errors/Error';
 
 import RewardsTable from "./RewardsTable";
 import "./RequestStyles.css";
@@ -18,7 +19,9 @@ class RequestForm extends Component {
             userId: "",
             requestExpiry: new Date(),
             rewards: [],
-            newRewardObj: {}
+            newRewardObj: {},
+            error: [],
+            errorState: false
         };
 
         //event handler bindings
@@ -66,6 +69,7 @@ class RequestForm extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
+        this.setState({ errorState: false })
         const newRequest = {
             taskTitle: this.state.taskTitle,
             taskDescription: this.state.taskDescription,
@@ -82,8 +86,13 @@ class RequestForm extends Component {
             .then(response => {
                 window.location = '/request'
             })
-            .catch(err => console.log(err));
-        
+            .catch(err => {
+                const error = err.response.data.error;
+                this.setState({
+                    error: error,
+                    errorState: true
+                })
+            })
     }
 
     isLoggedIn() {
@@ -93,6 +102,7 @@ class RequestForm extends Component {
     render() {
         return (
             <div className="page-content-container">
+                {this.state.errorState === true ? <ErrorNotice message={this.state.error} /> : ""}
                 <h1>Create a New Request</h1>
                 <Card>
                     <form className="request-form" onSubmit={this.handleSubmit}>

@@ -7,7 +7,6 @@ async function validateToken() {
               "token": localStorage.getItem('token')
             }
           });
-        console.log(tokenCheck)
         return(tokenCheck.data ? true : false)
     } catch (err) {
         return false;
