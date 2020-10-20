@@ -29,7 +29,8 @@ class Favours extends React.Component {
             favoursToShow: 'pendingIOwe',
             selectedFavour: {},
             currentPage: 1,
-            favoursPerPage: 15
+            favoursPerPage: 15,
+            loading: true,
         };
         this.updateSelectedFavour = this.updateSelectedFavour.bind(this);
         this.paginate = this.paginate.bind(this);
@@ -52,6 +53,7 @@ class Favours extends React.Component {
                     filteredFavoursOwned: data.owned,
                     filteredFavoursOwed: data.owed,
                     filteredFavoursCompleted: data.completed,
+                    loading: false,
                 })
             } catch (e) {
                 console.log(e);
@@ -141,7 +143,9 @@ class Favours extends React.Component {
                     <Button variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Owe me</Button>
                     <Button variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
                 </div>
-                <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
+                {this.state.loading ? ("") : (
+                    <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
+                )}
                 <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
                 <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
             </div >
