@@ -100,8 +100,9 @@ module.exports.getAllUserFavours = async (req, res) => {
         })
     } catch (error) {
         return res.status(400).json({
-            error: error
-        })
+            error: [{
+                error: 'err'
+            }]})
     }
 }
 
@@ -110,7 +111,10 @@ module.exports.getFavourWithID = (req, res) => {
         .then((favour) => {
             res.status(200).send(favour);
         })
-        .catch(err => res.status(400).json({ 'error': err }));
+        .catch(err => res.status(400).json({
+            error: [{
+                error: 'err'
+            }]}))
 };
 
 module.exports.updateFavour = async (req, res) => {
@@ -118,5 +122,8 @@ module.exports.updateFavour = async (req, res) => {
         .then((favour) => {
             res.status(200).send(favour);
         })
-        .catch(err => res.status(400).json({ 'error': err }))
+        .catch(err => res.status(400).json({
+            error: [{
+                error: 'Could not be updated'
+            }]}))
 };
