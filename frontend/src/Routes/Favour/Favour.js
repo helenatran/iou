@@ -9,7 +9,6 @@ import getToken from '../../Helpers/getToken';
 
 const useStyles = (theme) => ({
     root: {
-        margin: theme.spacing(1),
         margin: 20
     },
 });
