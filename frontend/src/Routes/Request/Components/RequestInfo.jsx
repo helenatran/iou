@@ -322,7 +322,6 @@ class RequestInfo extends Component {
         const {taskTitle, taskDescription, requesterUserId, timeCreated, requestExpiry, status} = this.state;
         return (
             <Card className="request-info">  
-                <Button onClick={ () => {this.makeRewardFavoursOnRequestCompletion()}}>click me</Button>
                 <div className="centered">
                     Request: {taskTitle}
                     <br/>
