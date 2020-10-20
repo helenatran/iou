@@ -151,7 +151,7 @@ class RequestForm extends Component {
                     <form className="request-form" onSubmit={this.handleSubmit}>
                         <TextField onChange={this.handleChangeTaskTitle} label="Request" required id="standard-required" />
                         <br />
-                        <TextField onChange={this.handleChangeTaskDescription} label="Description" id="outlined-multiline-flexible" />
+                        <TextField onChange={this.handleChangeTaskDescription} required label="Description" id="outlined-multiline-flexible" />
                         <br />
                         <br />
 
