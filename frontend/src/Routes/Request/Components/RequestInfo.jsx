@@ -93,7 +93,7 @@ class RequestInfo extends Component {
 
     //#region Add/Delete to Rewards
 
-    handleAddReward(newReward) {
+    async handleAddReward(newReward) {
         // make request object and update state
         const rewardObj = {
             rewarderId: this.state.userId,
@@ -103,11 +103,13 @@ class RequestInfo extends Component {
         let rewards = this.state.rewards.concat(rewardObj);
         this.setState({rewards: rewards});
 
-        this.updateRequestChanges("rewards", this.state.rewards);
+        await this.updateRequestChanges("rewards", this.state.rewards);
+        console.log(this.state.rewards);
+        console.log(this.state.requestChanges);
         this.saveRequestUpdates();
     }
 
-    handleDeleteReward(index) { // update state and request object
+    async handleDeleteReward(index) { // update state and request object
         let rewards = this.state.rewards;
         if (rewards.length === 1) {
             axios.delete(`/api/request/delete/${this.state.id}`)
@@ -119,7 +121,8 @@ class RequestInfo extends Component {
         else {
             rewards.splice(index, 1);
             this.setState({rewards: rewards});
-            this.updateRequest("rewards", this.state.rewards)
+            await this.updateRequestChanges("rewards", this.state.rewards);
+            this.saveRequestUpdates();
         }
     }
 
