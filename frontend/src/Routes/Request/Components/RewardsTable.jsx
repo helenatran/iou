@@ -34,7 +34,8 @@ class RewardsTable extends Component {
 
     componentDidMount() {
         const token = getToken();
-        this.setState({userId: token !== null ? token.id : null})
+        if (token)
+            this.setState({userId: token.id})
     }
 
     handleChangeReward(event) {
@@ -122,7 +123,7 @@ class RewardsTable extends Component {
                                     return (
                                         <TableRow key={indexKey}>
                                             <TableCell>
-                                                {rewardObj.rewardItem} from {rewardObj.rewarderName}
+                                                {rewardObj.rewardItem}
                                             </TableCell>
                                             <TableCell>
                                                 {this.renderDeleteRewardButton(indexKey)}

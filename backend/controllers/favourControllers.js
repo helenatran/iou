@@ -113,7 +113,7 @@ module.exports.getFavourWithID = (req, res) => {
         })
         .catch(err => res.status(400).json({
             error: [{
-                error: 'err'
+                error: err
             }]}))
 };
 
@@ -124,6 +124,6 @@ module.exports.updateFavour = async (req, res) => {
         })
         .catch(err => res.status(400).json({
             error: [{
-                error: 'Could not be updated'
+                error: err
             }]}))
 };
