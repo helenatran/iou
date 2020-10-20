@@ -46,26 +46,38 @@ class RewardsTable extends Component {
     }
 
     renderAddRewardForm() {
-        return this.isLoggedIn() 
-        ?
-            <div>
-                <label>Select a Reward to add:   </label>
-                <RewardSelectField handleChangeReward={this.handleChangeReward} />
+        if (this.props.requestStatus !== "Open") {
+            return (
+                <div>
+                    <label>This request is {this.props.requestStatus} and can no longer have rewards added to it.</label>
+                </div>
+            );
+        }
+        if (this.isLoggedIn()) {
+            return (
+                <div>
+                    <label>Select a Reward to add:   </label>
+                    <RewardSelectField handleChangeReward={this.handleChangeReward} />
 
-                <br/>
-                <Button 
-                    onClick={(event) => {
-                        event.preventDefault();
-                        this.props.handleAddReward(this.state.newReward);
-                    }}
-                    variant="contained" 
-                    color="primary" 
-                >Add Reward</Button>
-            </div>
-        :
-            <div>
-                <label>Login or register to add a reward. </label>
-            </div>
+                    <br/>
+                    <Button 
+                        onClick={(event) => {
+                            event.preventDefault();
+                            this.props.handleAddReward(this.state.newReward);
+                        }}
+                        variant="contained" 
+                        color="primary" 
+                    >Add Reward</Button>
+                </div>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <label>Login or register to add a reward. </label>
+                </div>
+            );
+        }
     }
     
 
@@ -74,7 +86,7 @@ class RewardsTable extends Component {
     }
 
     renderDeleteRewardButton(indexKey) {
-        if (this.isLoggedIn() && this.isRewardByUser(indexKey)) {
+        if (this.props.requestStatus === "Open" && this.isLoggedIn() && this.isRewardByUser(indexKey)) {
             return (
                 <Button 
                     onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
