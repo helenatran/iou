@@ -89,7 +89,7 @@ class FavourUpdate extends React.Component {
             status: "completed",
             favourComment: this.state.comments,
             proof: this.state.proofUrl,
-            timeCompleted: new Date().toLocaleString()
+            timeCompleted: new Date().toISOString()
         }
 
         let url = '';

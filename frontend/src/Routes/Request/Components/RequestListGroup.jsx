@@ -24,7 +24,7 @@ const RequestListGroup = ({newRequests, currentPage, maxPage}) => {
                 <div key={i}>
                     <Card className="request-card">
                     <h5>Task:</h5>  {taskTitle} <br/> 
-                    <h5>Rewards:</h5> There are {rewards.length} rewards.
+                    <h5>Number of rewards:</h5>{rewards.length}
                 <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
                 {rewards.map((rewards, j) =>
