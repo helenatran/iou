@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import axios from "axios";
 import getToken from "../../../Helpers/getToken";
-import tokenValidator from "../../../Helpers/tokenValidator"
 import RewardsTable from './RewardsTable';
 import FavourFormProofUpload from '../../Favour/Components/FavourFormComponents/FavourFormProofUpload';
 import { getCurrentYYYYMMDDDate } from '../../../Helpers/dateFormatter';
@@ -251,7 +250,11 @@ class RequestInfo extends Component {
     //#region User checks
 
     isLoggedIn() {
-        return tokenValidator().data;
+        const token = getToken();
+        if (token)
+            return true;
+        else    
+            return false;
     }
 
     userIsRequester() { 
