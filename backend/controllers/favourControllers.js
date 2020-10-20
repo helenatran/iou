@@ -10,7 +10,10 @@ module.exports.createFavour = (req, res) => {
     let newFavour = new Favour(req.body);
     newFavour.save((err, Favour) => {
         if (err) {
-            res.send(err);
+            return res.status(400).json({
+                error: [{
+                    error: 'Could not save to the database'
+                }]})
         }
         res.json(Favour);
     })
@@ -21,7 +24,10 @@ module.exports.getFavours = (req, res) => {
         .then((favours) => {
             res.status(200).send(favours);
         })
-        .catch(err => res.status(400).json({ 'error': err }));
+        .catch(err => res.status(400).json({ 
+            error: [{
+                error: 'Could not retrieve from the database'
+        }]}))
 };
 
 module.exports.getAllUserFavours = async (req, res) => {
@@ -29,8 +35,9 @@ module.exports.getAllUserFavours = async (req, res) => {
     const user = await User.findById(req.params.id)
     if (!user)
         return res.status(400).json({
-            error: 'The user could not be found'
-        })
+            error: [{
+                error: 'The user could not be found'
+        }]})
 
     // Get a list of all the users in the database
     let users = await User.find();
@@ -106,7 +113,7 @@ module.exports.getAllUserFavours = async (req, res) => {
     } catch (error) {
         return res.status(400).json({
             error: [{
-                error: 'err'
+                error: error
             }]})
     }
 }
@@ -118,7 +125,7 @@ module.exports.getFavourWithID = (req, res) => {
         })
         .catch(err => res.status(400).json({
             error: [{
-                error: 'err'
+                error: err
             }]}))
 };
 
