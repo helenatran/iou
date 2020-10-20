@@ -79,9 +79,7 @@ module.exports.validateToken = async (req, res) => {
 
         return res.json(true);
     } catch (error) {
-        res.status(400).json({
-            error: error
-        })
+        return res.json(false)
     }
 }
 

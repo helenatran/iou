@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
     Other fields not mentioned: proof, completerId
  */
 module.exports.CreateRequest = (req,res) => {
+    console.log(req.body);
     let newRequest = new requestCollection(req.body);
     
     newRequest.save((err, requestObject) => {
