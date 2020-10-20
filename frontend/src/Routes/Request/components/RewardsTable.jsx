@@ -12,6 +12,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Button from '@material-ui/core/Button';
 
 import RewardSelectField from "./RewardSelectField";
+import getToken from '../../../Helpers/getToken';
+
 import './RequestStyles.css';
 
 class RewardsTable extends Component {
@@ -26,16 +28,66 @@ class RewardsTable extends Component {
         */
 
         this.state = {
-            newReward: "",
+            newReward: ""
         }
 
         this.handleChangeReward = this.handleChangeReward.bind(this);
     }
 
+    componentDidMount() {
+        const token = getToken();
+        this.setState({userId: token !== null ? token.id : null})
+    }
+
     handleChangeReward(event) {
         this.setState({newReward: event.target.value});
     }
+
+    isLoggedIn() {
+        return this.state.userId != null; 
+    }
+
+    renderAddRewardForm() {
+        return this.isLoggedIn() 
+        ?
+            <div>
+                <label>Select a Reward to add:   </label>
+                <RewardSelectField handleChangeReward={this.handleChangeReward} />
+
+                <br/>
+                <Button 
+                    onClick={(event) => {
+                        event.preventDefault();
+                        this.props.handleAddReward(this.state.newReward);
+                    }}
+                    variant="contained" 
+                    color="primary" 
+                >Add Reward</Button>
+            </div>
+        :
+            <div>
+                <label>Login or register to add a reward. </label>
+            </div>
+    }
     
+
+    isRewardByUser(indexKey) {
+        return this.state.userId === this.props.rewards[indexKey].rewarderId;
+    }
+
+    renderDeleteRewardButton(indexKey) {
+        if (this.isLoggedIn() && this.isRewardByUser(indexKey)) {
+            return (
+                <Button 
+                    onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
+                    aria-label="delete"
+                >
+                    <DeleteIcon color="action" />
+                </Button>
+            );
+        }
+    }
+
     render() { 
         return ( 
             <><div className="rewards-table-container">
@@ -61,12 +113,7 @@ class RewardsTable extends Component {
                                                 {rewardObj.rewardItem} from {rewardObj.rewarderId}
                                             </TableCell>
                                             <TableCell>
-                                                <Button 
-                                                    onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
-                                                    aria-label="delete"
-                                                >
-                                                    <DeleteIcon color="action" />
-                                                </Button>
+                                                {this.renderDeleteRewardButton(indexKey)}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -74,21 +121,7 @@ class RewardsTable extends Component {
                             }
                         </TableBody>    
                     </Table>
-
-                    <div>
-                        <label>Select a Reward to add:   </label>
-                        <RewardSelectField handleChangeReward={this.handleChangeReward} />
-
-                        <br/>
-                        <Button 
-                            onClick={(event) => {
-                                event.preventDefault();
-                                this.props.handleAddReward(this.state.newReward);
-                            }}
-                            variant="contained" 
-                            color="primary" 
-                        >Add Reward</Button>
-                    </div>
+                    {this.renderAddRewardForm()}
                 </TableContainer>
             </div></>
         );
