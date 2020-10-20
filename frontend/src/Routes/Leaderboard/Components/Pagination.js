@@ -1,7 +1,7 @@
 import React from 'react';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+import Button from '@material-ui/core/Button';
+import '../leaderstyle.css'
+
 
 
 const PaginationLeaderboard = ({usersPerPage, totalUsers, paginate, currentPage}) => {
@@ -9,32 +9,38 @@ const PaginationLeaderboard = ({usersPerPage, totalUsers, paginate, currentPage}
     for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i++) {
         pageNumbers.push(i)
     }
+    const numberOfPages = Math.ceil(totalUsers / usersPerPage);
 
 //look up conditional rendering
 
-    return (
-        <div>
-                   Showing Top {(currentPage-1)*10}-{currentPage*10} Users
-                   Page Number <FormControl style={{minWidth:50}} >
-        
-        <Select>  
-            
-            {pageNumbers.map(number => (
-                <li key = {number}>
-                    <a  style={{padding: "8px"}} onClick={() => paginate(number)} href="/leaderboard/!#">{number}</a>
-                </li>
-            ))} 
+if (currentPage > 1) {
 
-</Select>
-         </FormControl>
-         
-         <a  style={{padding: "8px"}} onClick={() => paginate(currentPage-1)} href="/leaderboard/!#">Back</a>  
-         <a  style={{padding: "8px"}} onClick={() => paginate(currentPage+1)} href="/leaderboard/!#">Next</a> 
+    if (currentPage < numberOfPages) {
+    return(<div className ="paginationButton">
+        <Button variant="contained" color="primary" onClick={() => paginate(currentPage-1)} href="/leaderboard/!#"> Back </Button>
+   <span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+   <Button variant="contained" color="primary" onClick={() => paginate(currentPage+1)} href="/leaderboard/!#"> Next </Button>
+    </div>)
+    }
+    else {
+        return(<div className ="paginationButton"><Button variant="contained" color="primary" onClick={() => paginate(currentPage-1)} href="/leaderboard/!#"> Back </Button>
+<span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+<Button variant="contained" disabled> Next </Button>
+        </div>)
+    }
+}
+else {
 
-            
-            
-        </div>
-    )
+    
+    return( <div className ="paginationButton">
+       <Button variant="contained" disabled> Back </Button>
+        <span className="spaceButton">{(currentPage-1)*10}-{currentPage*10}</span>
+          <Button variant="contained" color="primary" onClick={() => paginate(currentPage+1)} href="/leaderboard/!#">Next</Button>
+    </div>)
+  
+
+}
+
 }
 
 export default PaginationLeaderboard;

@@ -6,7 +6,7 @@ const Users = ({users, currentPage}) => {
 const calc = ((currentPage-1)*10);
 
     return (
-        <div className="centre-this">
+        <div className="userList">
             <ul className="name" >
                 {users.map((users, i) => (
                     <li key={users.id}>
