@@ -93,6 +93,7 @@ class RewardsTable extends Component {
                 <Button 
                     onClick={(event) => {this.props.handleDeleteReward(indexKey);}} 
                     aria-label="delete"
+                    data-testid="delete-reward-button"
                 >
                     <DeleteIcon color="action" />
                 </Button>
@@ -107,7 +108,7 @@ class RewardsTable extends Component {
                     <Table>
                         <TableHead>
                             <TableRow>
-                                <TableCell>Rewards</TableCell>
+                                <TableCell data-testid="rewards-table-heading">Rewards</TableCell>
                                 <TableCell></TableCell>
                             </TableRow>
                         </TableHead>
@@ -115,21 +116,23 @@ class RewardsTable extends Component {
                             {
                                 this.props.rewards.length === 0 
                                 ?
-                                <TableRow><h5>There are no rewards yet. Select and Add a Reward below</h5></TableRow>
+                                    <TableRow>
+                                        <TableCell colSpan={2}><p data-testid="no-rewards-text">There are no rewards yet. Select and Add a Reward below.</p></TableCell>
+                                    </TableRow>
                                 :
-                                this.props.rewards.map((rewardObj, i) => {
-                                    let indexKey = this.props.rewards.indexOf(rewardObj);
-                                    return (
-                                        <TableRow key={indexKey}>
-                                            <TableCell>
-                                                {rewardObj.rewardItem} from {rewardObj.rewarderName}
-                                            </TableCell>
-                                            <TableCell>
-                                                {this.renderDeleteRewardButton(indexKey)}
-                                            </TableCell>
-                                        </TableRow>
-                                    );
-                                })
+                                    this.props.rewards.map((rewardObj, i) => {
+                                        let indexKey = this.props.rewards.indexOf(rewardObj);
+                                        return (
+                                            <TableRow data-testid="reward-row" key={indexKey}>
+                                                <TableCell>
+                                                    {rewardObj.rewardItem} from {rewardObj.rewarderName}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {this.renderDeleteRewardButton(indexKey)}
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })
                             }
                         </TableBody>    
                     </Table>
