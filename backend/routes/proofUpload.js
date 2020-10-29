@@ -4,12 +4,11 @@ const multer = require("multer");
 const AWS = require("aws-sdk");
 
 // Multer ships with storage engines DiskStorage and MemoryStorage
-// And Multer adds a body object and a file or files object to the request object. The body object contains the values of the text fields of the form, the file or files object contains the files uploaded via the form.
+// Multer adds a body object and a file to the request object. 
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
-
-// route to upload a pdf document file
+// POST request - Route to upload the file
 // In upload.single("file") - the name inside the single-quote is the name of the field that is going to be uploaded.
 router.post("/upload", upload.single("file"), function (req, res) {
     const file = req.file;
@@ -21,7 +20,6 @@ router.post("/upload", upload.single("file"), function (req, res) {
     });
 
     //Where you want to store your file
-
     const params = {
         Bucket: process.env.AWS_BUCKET_NAME,
         Key: file.originalname,
@@ -30,6 +28,7 @@ router.post("/upload", upload.single("file"), function (req, res) {
         ACL: "public-read"
     };
 
+    //Upload on our Amazon S3 bucket
     s3bucket.upload(params, function (err, data) {
         if (err) {
             res.status(500).json({ error: true, Message: err });
