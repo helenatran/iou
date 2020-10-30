@@ -1,18 +1,12 @@
 import React from 'react'
 import axios from 'axios'
-import { withStyles } from '@material-ui/core/styles';
-import { Button, TextField } from '@material-ui/core';
+import { withStyles, Button, TextField, Container } from '@material-ui/core';
 import FavourList from './Components/FavourList';
 import FavourPagination from './Components/FavourPagination';
 import { Link } from 'react-router-dom';
 import getToken from '../../Helpers/getToken';
-import Container from '@material-ui/core/Container';
-
 
 const useStyles = (theme) => ({
-    root: {
-       // margin: 20
-    },
     buttonMargin: {
         marginRight: '20px',
     },
@@ -135,28 +129,28 @@ class Favours extends React.Component {
 
         return (
             <Container maxWidth="md">
-            <div className={classes.root}>
-                <h1 style={{marginTop: 20}}>Favours</h1>
-                <TextField className="centre-this"
-                    id="standard-full-width"
-                    fullWidth
-                    placeholder="Search for a favour..."
-                    variant="outlined"
-                    value={this.searchInput}
-                    onChange={(e) => this.updateSearchInput(e.target.value)}
-                    style={{ marginBottom: 10 }}>
-                </TextField>
                 <div>
-                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingIOwe')}>Favours I Owe</Button>
-                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Favours I'm Owed</Button>
-                    <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
-                </div>
-                {this.state.loading ? ("") : (
-                    <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
-                )}
-                <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
-                <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
-            </div >
+                    <h1 style={{ marginTop: 20 }}>Favours</h1>
+                    <TextField className="centre-this"
+                        id="standard-full-width"
+                        fullWidth
+                        placeholder="Search for a favour..."
+                        variant="outlined"
+                        value={this.searchInput}
+                        onChange={(e) => this.updateSearchInput(e.target.value)}
+                        style={{ marginBottom: 10 }}>
+                    </TextField>
+                    <div>
+                        <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingIOwe')}>Favours I Owe</Button>
+                        <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('pendingOweMe')}>Favours I'm Owed</Button>
+                        <Button className={classes.buttonMargin} variant="contained" onClick={() => this.updateShow('completed')}>Past favours</Button>
+                    </div>
+                    {this.state.loading ? ("") : (
+                        <FavourList favours={currentFavours} updateSelectedFavour={this.updateSelectedFavour} favoursToShow={this.state.favoursToShow} />
+                    )}
+                    <Link to={`/favours/create`}><Button variant="contained">Create Favour</Button></Link>
+                    <FavourPagination favoursPerPage={this.state.favoursPerPage} totalFavours={favours.length} paginate={this.paginate} />
+                </div >
             </Container>
         )
     }

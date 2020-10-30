@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
-import { withStyles } from '@material-ui/core/styles';
-import { Paper, Button, Checkbox, TextField } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { Link } from 'react-router-dom';
+import { withStyles, Paper, Button, TextField } from '@material-ui/core';
+import FavourUpdateCheckbox from './FavourUpdateComponents/FavourUpdateCheckbox';
+import FavourUpdateComments from './FavourUpdateComponents/FavourUpdateComments';
+import FavourUpdateProofUpload from './FavourUpdateComponents/FavourUpdateProofUpload';
+import FavourUpdateButtons from './FavourUpdateComponents/FavourUpdateButtons';
 import ErrorNotice from '../../Errors/Error';
 
 const useStyles = (theme) => ({
@@ -22,9 +22,6 @@ const useStyles = (theme) => ({
         display: 'flex',
         justifyContent: 'center',
         margin: 6
-    },
-    input: {
-        display: 'none',
     },
 })
 
@@ -48,15 +45,11 @@ class FavourUpdate extends React.Component {
     }
 
     handleCheck(event) {
-        this.setState({
-            isCompleted: event.target.checked
-        })
+        this.setState({ isCompleted: event.target.checked })
     }
 
     updateComments(event) {
-        this.setState({
-            comments: event.target.value
-        })
+        this.setState({ comments: event.target.value })
     }
 
     updateProof(event) {
@@ -97,12 +90,8 @@ class FavourUpdate extends React.Component {
         }
 
         let url = '';
-        if (this.state.favour.oweMe) {
-            url = `/api/favours/${this.state.favour._id}`;
-        }
-        else {
-            url = `/api/favours/${this.state.favour._id}/withProof`
-        }
+        if (this.state.favour.oweMe) { url = `/api/favours/${this.state.favour._id}`; }
+        else { url = `/api/favours/${this.state.favour._id}/withProof` }
 
         await axios.put(url, updatedFavour, {
             headers: {
@@ -124,7 +113,6 @@ class FavourUpdate extends React.Component {
     }
 
     render() {
-        // const favour = this.props.location.state.favour;
         const { classes } = this.props;
         return (
             <div className={classes.root}>
@@ -132,54 +120,10 @@ class FavourUpdate extends React.Component {
                     {this.state.errorState === true ? <ErrorNotice message={this.state.error} /> : ""}
                     <h1>Update Favour: {this.state.favour.favourName}</h1>
                     <p>Friend: {this.state.favour.oweMe ? (this.state.favour.owner.firstName) : (this.state.favour.ower.firstName)}</p>
-                    <FormGroup row>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    color="primary"
-                                    checked={this.state.isCompleted}
-                                    onChange={this.handleCheck}
-                                />
-                            }
-                            label="I confirm the favour has been completed:"
-                            labelPlacement="start"
-                            style={{ marginLeft: 0 }}
-
-                        />
-                    </FormGroup>
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Comments"
-                        multiline
-                        rows={3}
-                        variant="outlined"
-                        margin="normal"
-                        fullWidth
-                        value={this.state.comments}
-                        onChange={this.updateComments}
-                        style={{ marginBottom: 15 }}
-                    />
-                    <div>{this.state.favour.oweMe ? ('') : (
-                        <div className={classes.button}>
-                            <input
-                                accept="image/*"
-                                className={classes.input}
-                                id="contained-button-file"
-                                multiple
-                                type="file"
-                                onChange={this.updateProof} />
-                            <label htmlFor="contained-button-file">
-                                <Button variant="contained" color="primary" component="span">Upload photo proof</Button>
-                            </label>
-                            <p style={{ marginTop: 5, marginLeft: 5 }}>{this.state.proofConfirmation}</p>
-                        </div>
-                    )}</div>
-                    <div className={classes.button}>
-                        <Button variant="contained" type="submit" onClick={this.updateFavour}>Submit</Button>
-                    </div>
-                    <div className={classes.button}>
-                        <Link to={`/favours`}><Button variant="contained">Cancel</Button></Link>
-                    </div>
+                    <FavourUpdateCheckbox isCompleted={this.state.isCompleted} handleCheck={this.handleCheck} />
+                    <FavourUpdateComments comments={this.state.comments} updateComments={this.updateComments} />
+                    <FavourUpdateProofUpload favour={this.state.favour} updateProof={this.updateProof} proofConfirmation={this.state.proofConfirmation} />
+                    <FavourUpdateButtons updateFavour={this.updateFavour} />
                 </Paper>
             </div>
         );
