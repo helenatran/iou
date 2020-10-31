@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { withStyles, Paper, Grid } from '@material-ui/core';
+import { makeStyles, Paper, Grid } from '@material-ui/core';
 import FavourSingleImage from './FavourSingleComponents/FavourSingleImage';
 import FavourSingleDetails from './FavourSingleComponents/FavourSingleDetails';
 import FavourSingleButtons from './FavourSingleComponents/FavourSingleButtons';
 
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -19,20 +19,15 @@ const useStyles = (theme) => ({
     gridItem: {
         margin: 8
     }
-})
+}))
 
-class FavourSingle extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            favour: this.props.location.state.favour
-        }
-        this.deleteFavour = this.deleteFavour.bind(this);
-    }
+const FavourSingle = (props) => {
+    const classes = useStyles();
+    const [favour, setFavour] = useState(props.location.state.favour);
 
-    deleteFavour(event) {
+    const deleteFavour = (event) => {
         event.preventDefault();
-        axios.delete(`/api/favours/${this.state.favour._id}`, {
+        axios.delete(`/api/favours/${favour._id}`, {
             headers: {
                 "token": localStorage.getItem("token")
             }
@@ -44,25 +39,21 @@ class FavourSingle extends React.Component {
             .catch(err => console.log(err))
     }
 
-    render() {
-        const favour = this.state.favour;
-        const { classes } = this.props;
-        return (
-            <div className={classes.root}>
-                <Paper>
-                    <Grid container spacing={2}>
-                        <Grid item className={classes.gridItem}>
-                            <FavourSingleImage favour={favour} />
-                        </Grid>
-                        <Grid item className={classes.gridItem}>
-                            <FavourSingleDetails favour={favour} />
-                        </Grid>
+    return (
+        <div className={classes.root}>
+            <Paper>
+                <Grid container spacing={2}>
+                    <Grid item className={classes.gridItem}>
+                        <FavourSingleImage favour={favour} />
                     </Grid>
-                    <FavourSingleButtons favour={favour} deleteFavour={this.deleteFavour} />
-                </Paper>
-            </div >
-        );
-    }
+                    <Grid item className={classes.gridItem}>
+                        <FavourSingleDetails favour={favour} />
+                    </Grid>
+                </Grid>
+                <FavourSingleButtons favour={favour} deleteFavour={deleteFavour} />
+            </Paper>
+        </div >
+    );
 }
 
-export default withStyles(useStyles)(FavourSingle);
+export default FavourSingle;

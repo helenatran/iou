@@ -15,7 +15,7 @@ const favours = [
     { name: 'Donuts' }
 ];
 
-export default function FavourFormFavours(props) {
+const FavourFormFavours = (props) => {
     return (
         <div>
             <Autocomplete
@@ -36,3 +36,5 @@ export default function FavourFormFavours(props) {
 
     );
 }
+
+export default FavourFormFavours;

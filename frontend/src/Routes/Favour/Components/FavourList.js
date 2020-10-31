@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Grid } from '@material-ui/core';
 import FavourListMessage from './FavourListComponents/FavourListMessage';
 import FavourListCard from './FavourListComponents/FavourListCard';
@@ -10,8 +10,9 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function FavourList(props) {
+const FavourList = (props) => {
     const classes = useStyles();
+    const [selectedFavour, setSelectedFavour] = useState({});
 
     return (
         <div>
@@ -19,10 +20,12 @@ export default function FavourList(props) {
                 <FavourListMessage favours={props.favours} favoursToShow={props.favoursToShow} />
                 {props.favours.map((item) => (
                     <Grid item key={item._id}>
-                        <FavourListCard updateSelectedFavour={props.updateSelectedFavour} item={item} />
+                        <FavourListCard updateSelectedFavour={(favour) => setSelectedFavour(favour)} item={item} />
                     </Grid>
                 ))}
             </Grid>
         </div>
     );
 }
+
+export default FavourList;
