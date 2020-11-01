@@ -1,6 +1,8 @@
 const { check } = require('express-validator');
 const User = require('../models/userModel');
 
+
+//Express validator check to check input of Register form
 module.exports.registerUserValidator = [
     check('firstName')
         .trim()
@@ -25,6 +27,10 @@ module.exports.registerUserValidator = [
         .withMessage("Password must be at least 8 characters long")
 ]
 
+/*
+ * Express validator check to check input of Login form
+ * Accepts any non-empty, valid value and passes it to the login controller method
+ */
 module.exports.loginUserValidator = [
     check('email')
         .trim()

@@ -18,7 +18,11 @@ function App() {
     user: undefined,
   })
   
-
+/* 
+ * Authentication code to determine login status mainly from:
+   - https://www.youtube.com/watch?v=sWfD20ortB4&ab_channel=Devistry
+   - https://github.com/jgbijlsma/mern-auth-template-front
+ */
   useEffect(() => {
     const isLoggedIn = async () => {
       let token = localStorage.getItem("token");
@@ -26,6 +30,7 @@ function App() {
         localStorage.setItem("token", "");
         token="";
       }
+      
       const tokenValid = await axios.post('/api/user/validateToken', null, {
         headers: {
           "token": token
@@ -52,21 +57,21 @@ function App() {
         <UserContext.Provider value={{ userDetails, setUserDetails }}>
           <ButtonAppBar />
           <RouterSwitch>
-          
+            {/* Public Routes are routes that should only be seen by users not registered and not logged in */}
             <PublicRoute path='/login' component={Routes.Login} />
             <PublicRoute path='/register' component={Routes.Register} />
+            {/* Private Routes are routes that should only be seen by users that are logged in  */}
             <PrivateRoute path='/account' component={Routes.Account} />
             <PrivateRoute path='/favours' exact component={Routes.Favour} />
             <PrivateRoute path='/favours/create' component={Routes.FavourForm} />
             <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
             <PrivateRoute path='/favours/:favourid' component={Routes.FavourSingle} />
             <PrivateRoute path='/request/new' component={Routes.RequestForm} />
+            {/* Normal Routes are routes that can be seen by anyone at anytime */}
             <Route path='/leaderboard' component={Routes.Leaderboard} />
             <Route path='/request/:id' component={Routes.RequestInfo} />
             <Route path='/' component={Routes.Request} />
             <Route path='/request/' component={Routes.Request} />
-            
-            
           </RouterSwitch>
         </UserContext.Provider>
       </BrowserRouter>
