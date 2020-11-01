@@ -31,9 +31,5 @@ module.exports.createRequestValidator = [
         .withMessage("The offered rewards are not in an array")
         .not()
         .isEmpty()
-        .withMessage("You must add at least one reward to the request"),
-    check('requestExpiry')
-        .optional()
-        .isDate()
-        .withMessage("This is not a valid date")
+        .withMessage("You must add at least one reward to the request")
 ]

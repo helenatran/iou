@@ -13,14 +13,8 @@ const User = require('../models/userModel')
  */
 module.exports.CreateRequest = (req,res) => {
     let newRequest = new requestCollection(req.body);
+
     //To-do rewards array validation
-    if (req.body.requestExpiry !== null) {
-        if (req.body.requestExpiry < new Date().getDate)
-            return res.status(400).json({
-                error: [{
-                    error: 'Please select a date after today'
-                }]}) 
-    }
     if (!rewardsArrayValidator(req.body.rewards))
         return res.status(422).json({
             error: "The reward you are trying to add is invalid"

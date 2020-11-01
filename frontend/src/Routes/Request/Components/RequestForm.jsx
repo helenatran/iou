@@ -18,7 +18,6 @@ class RequestForm extends Component {
             userId: "",
             userName: "",
             status: "Open",
-            requestExpiry: null,
             rewards: [],
             newRewardObj: {},
             error: [],
@@ -28,7 +27,6 @@ class RequestForm extends Component {
         //event handler bindings
         this.handleChangeTaskTitle = this.handleChangeTaskTitle.bind(this);
         this.handleChangeTaskDescription = this.handleChangeTaskDescription.bind(this);
-        this.handleChangeExpiry = this.handleChangeExpiry.bind(this);
         this.handleAddReward = this.handleAddReward.bind(this);
         this.handleDeleteReward = this.handleDeleteReward.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -62,10 +60,6 @@ class RequestForm extends Component {
         this.setState({ taskDescription: event.target.value });
     }
     
-    handleChangeExpiry(event) { 
-        this.setState({ requestExpiry: event.target.value });
-    }
-    
     // === rewards table functions ===
     handleAddReward(newReward) { 
         const rewardObj = {
@@ -87,55 +81,28 @@ class RequestForm extends Component {
     handleSubmit = (event) => {
         event.preventDefault();
         this.setState({ errorState: false })
-        if (this.state.requestExpiry === null) {
-            const newRequest = {
-                taskTitle: this.state.taskTitle,
-                taskDescription: this.state.taskDescription,
-                status: this.state.status,
-                rewards: this.state.rewards,
-                requesterUserId: this.state.userId
-            }
-            axios.post('/api/request/create', newRequest, {
-                headers: {
-                    "token": localStorage.getItem("token")
-                }
-            })
-                .then(response => {
-                    window.location = '/request'
-                })
-                .catch(err => {
-                    const error = err.response.data.error;
-                    this.setState({
-                        error: error,
-                        errorState: true
-                    })
-                })
+        const newRequest = {
+            taskTitle: this.state.taskTitle,
+            taskDescription: this.state.taskDescription,
+            status: this.state.status,
+            rewards: this.state.rewards,
+            requesterUserId: this.state.userId
         }
-        else {
-            const newRequest = {
-                taskTitle: this.state.taskTitle,
-                taskDescription: this.state.taskDescription,
-                requestExpiry: this.state.requestExpiry,
-                status: this.state.status,
-                rewards: this.state.rewards,
-                requesterUserId: this.state.userId
+        axios.post('/api/request/create', newRequest, {
+            headers: {
+                "token": localStorage.getItem("token")
             }
-            axios.post('/api/request/create', newRequest, {
-                headers: {
-                    "token": localStorage.getItem("token")
-                }
+        })
+            .then(response => {
+                window.location = '/request'
             })
-                .then(response => {
-                    window.location = '/request'
+            .catch(err => {
+                const error = err.response.data.error;
+                this.setState({
+                    error: error,
+                    errorState: true
                 })
-                .catch(err => {
-                    const error = err.response.data.error;
-                    this.setState({
-                        error: error,
-                        errorState: true
-                    })
-                })
-        }
+            })
     }
 
     isLoggedIn() {
@@ -153,8 +120,6 @@ class RequestForm extends Component {
                         <br />
                         <TextField onChange={this.handleChangeTaskDescription} required label="Description" id="outlined-multiline-flexible" />
                         <br />
-                        <br />
-
                         <label>Reward: </label>
                         
                         <RewardsTable 
@@ -163,18 +128,7 @@ class RequestForm extends Component {
                             handleDeleteReward={this.handleDeleteReward}
                             handleAddReward={this.handleAddReward}
                         />
-
-                        <br/>
-                        <br/>
-                        <TextField
-                            id="date"
-                            label="Request Expiry"
-                            onChange={this.handleChangeExpiry}
-                            type="date"
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
+                        
                         <br />
                         <br />
                         <Button variant="contained" color="primary" type="submit">Create</Button>

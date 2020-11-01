@@ -7,7 +7,6 @@ import axios from "axios";
 import getToken from "../../../Helpers/getToken";
 import RewardsTable from './RewardsTable';
 import FavourFormProofUpload from '../../Favour/Components/FavourFormComponents/FavourFormProofUpload';
-import { getCurrentYYYYMMDDDate } from '../../../Helpers/dateFormatter';
 
 class RequestInfo extends Component {
     constructor(props) {
@@ -21,7 +20,6 @@ class RequestInfo extends Component {
             requesterUserId: "",
             requesterUserName:"",
             timeCreated: "",
-            requestExpiry: "",
             status: "",
             proof: "",
             proofUrl: "",
@@ -60,7 +58,6 @@ class RequestInfo extends Component {
                 taskDescription: res.data.taskDescription,
                 requesterUserId: res.data.requesterUserId,
                 timeCreated: res.data.timeCreated,
-                requestExpiry: res.data.requestExpiry,
                 rewards: res.data.rewards,
                 status: res.data.status,
                 proof: res.data.proof,
@@ -297,14 +294,14 @@ class RequestInfo extends Component {
     //#endregion
 
     renderProofUploadForm() {
-        const status = this.state.status;
+        const {status, proofUrl} = this.state;
         if (status === "Closed"){ 
             return (
                 <>
                     <div>This request is Closed and can no longer be completed.
                     <br/>
-                    Proof: <a href={this.state.proofUrl}>Image Link</a></div>
-                    <img width="60%" src={this.state.proofUrl} alt="Request Completion Proof"/>
+                    Proof: <a href={proofUrl}>Image Link</a></div>
+                    <img width="60%" src={proofUrl} alt="Request Completion Proof"/>
                 </>  
             );
         }
@@ -350,7 +347,7 @@ class RequestInfo extends Component {
     }
 
     render() {
-        const {taskTitle, taskDescription, requesterUserName, timeCreated, requestExpiry, status} = this.state;
+        const {taskTitle, taskDescription, status, rewards} = this.state;
         return (
             <Card className="request-info">  
                 <div className="centered">
@@ -360,16 +357,12 @@ class RequestInfo extends Component {
                     {/* <br/>
                     Requested by: {requesterUserName} */}
                     <br/>
-                    Created: {getCurrentYYYYMMDDDate(timeCreated)}
-                    <br/>
-                    Request expires on {getCurrentYYYYMMDDDate(requestExpiry)} 
-                    <br/>
                     Status: <span className={"status smallCaps " + status}>{status}</span>
                     <br/>
                     rewards table: 
                     <RewardsTable 
-                        requestStatus={this.state.status}
-                        rewards={this.state.rewards}
+                        requestStatus={status}
+                        rewards={rewards}
                         handleDeleteReward={this.handleDeleteReward}
                         handleAddReward={this.handleAddReward}
                         />
