@@ -1,35 +1,60 @@
 const Favour = require('../models/favourModel');
 const User = require('../models/userModel');
 
-module.exports.createFavour = (req, res) => {
+/**
+ * Create a favour
+ * POST request - below are the required fields in body:
+    "userId": String of the ID of the user who owes the favour,
+    "oweUserId": String of the ID of the user to whom the other user owes a favour,
+    "favourName": String
+    "oweMe": Boolean (false by default)
+    
+    Other fields:
+    "isCompleted": Boolean (set as false by default)
+    "status": String (set as "pending" by default)
+    "favourComment": String (optional)
+    "proof": String of the image URL (required only when oweMe is true)
+ */
+module.exports.createFavour = async (req, res) => {
     if (req.body.oweUserId === req.body.userId)
         return res.status(400).json({
             error: [{
-                error: 'You can not owe yourself!'
-            }]})
+                error: 'You cannot owe yourself!'
+            }]
+        })
     let newFavour = new Favour(req.body);
-    newFavour.save((err, Favour) => {
+    await newFavour.save((err, Favour) => {
         if (err) {
             return res.status(400).json({
                 error: [{
                     error: 'Could not save to the database'
-                }]})
+                }]
+            })
         }
         res.json(Favour);
     })
 };
 
-module.exports.getFavours = (req, res) => {
-    Favour.find()
+/**
+ * Get all favours (sorted by oldest to newest)
+ * GET favours - no need for params/body fields
+ */
+module.exports.getFavours = async (req, res) => {
+    await Favour.find()
         .then((favours) => {
             res.status(200).send(favours);
         })
-        .catch(err => res.status(400).json({ 
+        .catch(err => res.status(400).json({
             error: [{
                 error: 'Could not retrieve from the database'
-        }]}))
+            }]
+        }))
 };
 
+/**
+ * Get all favours which belong to the current logged-in user (sorted by oldest to newest)
+ * GET user's all favours - required current user ID
+ */
 module.exports.getAllUserFavours = async (req, res) => {
     // Check that the user exists before we proceed
     const user = await User.findById(req.params.id)
@@ -37,7 +62,8 @@ module.exports.getAllUserFavours = async (req, res) => {
         return res.status(400).json({
             error: [{
                 error: 'The user could not be found'
-        }]})
+            }]
+        })
 
     // Get a list of all the users in the database
     let users = await User.find();
@@ -114,21 +140,37 @@ module.exports.getAllUserFavours = async (req, res) => {
         return res.status(400).json({
             error: [{
                 error: error
-            }]})
+            }]
+        })
     }
 }
 
-module.exports.getFavourWithID = (req, res) => {
-    Favour.findById(req.params.FavourId)
+/**
+ * Get Favour by ID
+ * GET favour - requires favour ID in the params
+ */
+module.exports.getFavourWithID = async (req, res) => {
+    await Favour.findById(req.params.FavourId)
         .then((favour) => {
             res.status(200).send(favour);
         })
         .catch(err => res.status(400).json({
             error: [{
                 error: err
-            }]}))
+            }]
+        }))
 };
 
+/**
+ * Update Favour
+ * PUT request - below are the required fields:
+ *  - favourID: String of Favour's object ID
+ *  - isCompleted: Boolean (set to true)
+ * 
+ * Other fields: 
+ *  - favourComments: String (optional)
+ *  - proof: String of image URL (required only when oweMe is false)
+ */
 module.exports.updateFavour = async (req, res) => {
     await Favour.findOneAndUpdate({ _id: req.params.FavourId }, req.body, { new: true })
         .then((favour) => {
@@ -137,9 +179,14 @@ module.exports.updateFavour = async (req, res) => {
         .catch(err => res.status(400).json({
             error: [{
                 error: 'Could not be updated'
-            }]}))
+            }]
+        }))
 };
 
+/**
+ * Delete Favour
+ * DELETE favour - requires favourID field in the body
+ */
 module.exports.deleteFavour = async (req, res) => {
     await Favour.deleteOne({ _id: req.params.FavourId })
         .then((favour) => {

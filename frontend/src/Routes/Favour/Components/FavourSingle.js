@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import Time from 'react-time-format';
-import { withStyles } from '@material-ui/core/styles';
-import { Paper, Grid, Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { makeStyles, Paper, Grid } from '@material-ui/core';
+import FavourSingleImage from './FavourSingleComponents/FavourSingleImage';
+import FavourSingleDetails from './FavourSingleComponents/FavourSingleDetails';
+import FavourSingleButtons from './FavourSingleComponents/FavourSingleButtons';
 
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -18,26 +18,16 @@ const useStyles = (theme) => ({
     },
     gridItem: {
         margin: 8
-    },
-    button: {
-        display: 'flex',
-        justifyContent: 'center',
-        margin: 6
     }
-})
+}))
 
-class FavourSingle extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            favour: this.props.location.state.favour
-        }
-        this.deleteFavour = this.deleteFavour.bind(this);
-    }
+const FavourSingle = (props) => {
+    const classes = useStyles();
+    const [favour, setFavour] = useState(props.location.state.favour);
 
-    deleteFavour(event) {
+    const deleteFavour = (event) => {
         event.preventDefault();
-        axios.delete(`/api/favours/${this.state.favour._id}`, {
+        axios.delete(`/api/favours/${favour._id}`, {
             headers: {
                 "token": localStorage.getItem("token")
             }
@@ -49,61 +39,21 @@ class FavourSingle extends React.Component {
             .catch(err => console.log(err))
     }
 
-    render() {
-        const favour = this.state.favour;
-
-        let type = '';
-        if (favour.oweMe) {
-            type = 'Owe me';
-        }
-        else { type = 'I owe'; }
-
-        let sourceImage = '';
-        if (favour.favourName === 'Breakfast') { sourceImage = '/favourImages/breakfast.jpg' }
-        if (favour.favourName === 'Brunch') { sourceImage = '/favourImages/brunch.jpg' }
-        if (favour.favourName === 'Bubble Tea') { sourceImage = '/favourImages/bubbletea.jpg' }
-        if (favour.favourName === 'Coffee') { sourceImage = '/favourImages/coffee.png' }
-        if (favour.favourName === 'Dessert') { sourceImage = '/favourImages/dessert.png' }
-        if (favour.favourName === 'Dinner') { sourceImage = '/favourImages/dinner.png' }
-        if (favour.favourName === 'Donuts') { sourceImage = '/favourImages/donuts.jpg' }
-        if (favour.favourName === 'Drinks') { sourceImage = '/favourImages/drinks.png' }
-        if (favour.favourName === 'Fast Food') { sourceImage = '/favourImages/fastfood.png' }
-        if (favour.favourName === 'Chocolate') { sourceImage = '/favourImages/chocolate.png' }
-
-        const { classes } = this.props;
-        return (
-            <div className={classes.root}>
-                <Paper>
-                    <Grid container spacing={2}>
-                        <Grid item className={classes.gridItem}>
-                            <img src={sourceImage} alt="favour proof" width="225" height="225" />
-                        </Grid>
-                        <Grid item className={classes.gridItem}>
-                            <h1>Favour: {favour.favourName}</h1>
-                            <p>{favour.timeCompleted == null ? (<span><b>Date Created: </b><Time value={favour.timeCreated} format="DD/MM/YYYY" /></span>) : (<span><b>Date Completed: </b><Time value={favour.timeCompleted} format="DD/MM/YYYY" /></span>)}</p>
-                            <p><b>Friend: </b>{favour.oweMe ? (favour.owner.firstName) : (favour.ower.firstName)}</p>
-                            <p><b>Type: </b>{type}</p>
-                            <p><b>Status: </b>{favour.status}</p>
-                            <p>{favour.favourComment !== "" ? (<span><b>Comments: </b>{favour.favourComment}</span>) : ('')}</p>
-                            <p>{favour.proof !== "" ? (<span><b>Photo proof: </b><a href={favour.proof}>Proof</a></span>) : ('')}</p>
-                        </Grid>
+    return (
+        <div className={classes.root}>
+            <Paper>
+                <Grid container spacing={2}>
+                    <Grid item className={classes.gridItem}>
+                        <FavourSingleImage favour={favour} />
                     </Grid>
-                    <div className={classes.button}>
-                        {favour.isCompleted ? (
-                            <Button variant="contained" onClick={this.deleteFavour}>Delete Favour</Button>
-                        ) : (<Link to={{
-                            pathname: '/favours/' + favour._id + '/update',
-                            myCustomProps: favour,
-                            state: { favour: favour },
-                        }}><Button variant="contained">Update Favour</Button></Link>)}
-                    </div>
-                    <div className={classes.button}>
-                        <Link to={`/favours`}><Button variant="contained">Back to list</Button></Link>
-                    </div>
-                </Paper>
-            </div >
-        );
-    }
+                    <Grid item className={classes.gridItem}>
+                        <FavourSingleDetails favour={favour} />
+                    </Grid>
+                </Grid>
+                <FavourSingleButtons favour={favour} deleteFavour={deleteFavour} />
+            </Paper>
+        </div >
+    );
 }
 
-export default withStyles(useStyles)(FavourSingle);
+export default FavourSingle;

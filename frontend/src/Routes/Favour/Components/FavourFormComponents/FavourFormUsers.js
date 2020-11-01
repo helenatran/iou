@@ -1,98 +1,40 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { withStyles, TextField, Box } from '@material-ui/core';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { makeStyles, Box } from '@material-ui/core';
+import FavourFormUsersIOwe from './FavourFormUsersComponents/FavourFormUsersIOwe';
+import FavourFormUsersOweMe from './FavourFormUsersComponents/FavourFormUsersOweMe';
 
-const useStyles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
     root: {
         display: 'flex',
         justifyContent: 'center',
     },
-})
+}))
 
-class FavourFormUsers extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            users: [],
-        }
-    }
+const FavourFormUsers = (props) => {
+    const classes = useStyles();
+    const [users, setUsers] = useState([]);
 
-    componentDidMount() {
+    useEffect(() => {
         const url = '/api/user';
-        (async () => {
+        const getUsers = async () => {
             try {
                 const res = await axios.get(url);
                 const { data } = await res;
-                this.setState({
-                    users: data,
-                })
+                setUsers(data)
             } catch (e) {
                 console.log(e);
             }
-        })();
-    }
+        }; getUsers();
+    }, [])
 
-    render() {
-        const { classes } = this.props;
-        return (
-            <Box className={classes.root}>
-                <div>{this.props.oweMe ? (
-                    <Autocomplete
-                        id="combo-box-left-friend"
-                        options={this.state.users}
-                        getOptionLabel={option => option.firstName}
-                        onChange={this.props.updateFriend}
-                        style={{ width: 300, marginRight: 10 }}
-                        renderInput={(params) =>
-                            <TextField {...params}
-                                label="Select a user"
-                                variant="outlined"
-                                required
-                                margin="normal"
-                                fullWidth
-                            />}
-                    />
-                ) : (
-                        <TextField
-                            id="iOwe"
-                            label="I"
-                            fullWidth
-                            disabled
-                            margin="normal"
-                            variant="outlined"
-                            style={{ width: 300, marginRight: 10 }} />
-                    )}</div>
-                <p style={{ marginTop: 30 }}>{this.props.oweMe ? "Owes" : "Owe"}</p>
-                <div>{this.props.oweMe ? (
-                    <TextField
-                        id="oweMe"
-                        label="Me"
-                        fullWidth
-                        disabled
-                        margin="normal"
-                        variant="outlined"
-                        style={{ width: 300, marginLeft: 10 }} />
-                ) : (
-                        <Autocomplete
-                            id="combo-box-right-friend"
-                            options={this.state.users}
-                            getOptionLabel={option => option.firstName}
-                            onChange={this.props.updateFriend}
-                            style={{ width: 300, marginLeft: 10 }}
-                            renderInput={(params) =>
-                                <TextField {...params}
-                                    label="Select a user"
-                                    variant="outlined"
-                                    required
-                                    margin="normal"
-                                    fullWidth
-                                />}
-                        />
-                    )}</div>
-            </Box>
-        );
-    }
+    return (
+        <Box className={classes.root}>
+            <FavourFormUsersIOwe users={users} oweMe={props.oweMe} updateFriend={props.updateFriend} />
+            <p style={{ marginTop: 30 }}>{props.oweMe ? "Owes" : "Owe"}</p>
+            <FavourFormUsersOweMe users={users} oweMe={props.oweMe} updateFriend={props.updateFriend} />
+        </Box>
+    );
 }
 
-export default withStyles(useStyles)(FavourFormUsers);
+export default FavourFormUsers;
