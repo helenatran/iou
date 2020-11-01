@@ -8,9 +8,7 @@ const User = require('../models/userModel')
     "taskDescription":String,
     "requesterUserId" : String of user id,
     "status": "Open",
-    "requestExpiry":"", (optional)
-    "rewards": [{"rewarderId": "5f58e18452ae84695c5105d6", "rewardItem": "1 coffee"}]
-    
+    "rewards": array of reward objects { rewarderId: String, rewardItem: String, rewarderName: String }
     Other fields not mentioned: proof, completerId
  */
 module.exports.CreateRequest = (req,res) => {
