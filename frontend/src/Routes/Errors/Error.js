@@ -4,7 +4,11 @@ import CloseIcon from '@material-ui/icons/Close'
 import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton';
 
-
+/*
+ * Reusable component that displays an alert with the error messages received from the backend
+ * Makes use of the Alert component from the MaterialUI Component Library
+ * Errors have to be received in a specific format to render
+ */
 const ErrorAlert = props => {
     const [open, setOpen] = useState(true);
 
