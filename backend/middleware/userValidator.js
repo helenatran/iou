@@ -2,7 +2,14 @@ const { check } = require('express-validator');
 const User = require('../models/userModel');
 
 
-//Express validator check to check input of Register form
+/*
+ * Express validator check to check input of Register form
+ * Receives the following fields from the front end:
+    - "firstName": String
+    - "lastName": String
+    - "email": String
+    - "password": String
+ */
 module.exports.registerUserValidator = [
     check('firstName')
         .trim()

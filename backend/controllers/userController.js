@@ -61,7 +61,7 @@ module.exports.loginUser = async (req, res) => {
                 error: 'That email or password was incorrect'
             }]
         })
-    
+
     // Only the userID is needed on the front end for now
     const jwtPayload = {
         id: user._id,
@@ -107,7 +107,7 @@ module.exports.validateToken = async (req, res) => {
     "token": "String",
  * Part of the authentication code from:
    - https://www.youtube.com/watch?v=sWfD20ortB4&ab_channel=Devistry
-   - https://github.com/jgbijlsma/mern-auth-template-front
+   - https://github.com/jgbijlsma/mern-auth-template-back/blob/master/routes/userRouter.js
  */
 module.exports.findUserByID = async (req, res) => {
     try {
@@ -121,8 +121,8 @@ module.exports.findUserByID = async (req, res) => {
             return res.status(404).json({
                 error: 'User could not be found'
             })
-        
-        
+
+
         return res.status(200).json({
             id: user._id,
         })
@@ -163,7 +163,7 @@ module.exports.getUserName = async (req, res) => {
 
 /*
  * Retrieves entire user list from MongoDB
- * GET request
+ * GET request - no fields needed to be received
  */
 module.exports.getUsers = async (req, res) => {
     await User.find()
@@ -171,7 +171,7 @@ module.exports.getUsers = async (req, res) => {
             res.status(200).send(users);
         })
         .catch(err => {
-            res.status(400).json({ 
+            res.status(400).json({
                 error: [{
                     error: 'Could not retrieve users'
                 }]

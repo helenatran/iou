@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import ButtonAppBar from './navBar/navBar';
 import UserContext from './Context/userContext';
+import * as Routes from './Routes/routes'
+import axios from 'axios';
+import PrivateRoute from './Helpers/PrivateRoute';
+import PublicRoute from './Helpers/PublicRoute';
 import {
   BrowserRouter,
   Route,
   Switch as RouterSwitch,
 } from 'react-router-dom';
-import * as Routes from './Routes/routes'
-import axios from 'axios';
-import PrivateRoute from './Helpers/PrivateRoute';
-import PublicRoute from './Helpers/PublicRoute';
 
 function App() {
   const [ userDetails, setUserDetails ] = useState({
@@ -21,27 +21,28 @@ function App() {
 /* 
  * Authentication code to determine login status mainly from:
    - https://www.youtube.com/watch?v=sWfD20ortB4&ab_channel=Devistry
-   - https://github.com/jgbijlsma/mern-auth-template-front
+   - https://github.com/jgbijlsma/mern-auth-template-front/blob/master/src/App.js
  */
   useEffect(() => {
     const isLoggedIn = async () => {
       let token = localStorage.getItem("token");
+      // Need to set token value to empty otherwise axios post call below will return an error without a token in local storage
       if (token === null) {
         localStorage.setItem("token", "");
         token="";
       }
-      
+      // tokenValid will return true if the token supplied to the api is valid
       const tokenValid = await axios.post('/api/user/validateToken', null, {
         headers: {
           "token": token
         }
       });
+      // If the token is valid, get the user's details based on their id and set the values in Context
       if (tokenValid.data) {
         const user = await axios.get('/api/user/find', {
           headers: {
             "token": token
-          },
-        });
+          }});
         setUserDetails({
           token,
           user: user.data,
