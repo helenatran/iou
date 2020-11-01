@@ -26,18 +26,28 @@ const Register = props => {
     const [ password, setPassword ] = useState();
     const [ error, setError ] = useState([]);
     const [ errorState, setErrorState ] = useState();
-
     const history = useHistory();
 
+    /*
+     * Made partial use of the Authentication code from:
+       - https://github.com/jgbijlsma/mern-auth-template-front/blob/master/src/components/auth/Register.js
+       - https://www.youtube.com/watch?v=bppuE6rbO1c&ab_channel=Devistry
+     * Code differs as authentication code from above immediately logs user in upon successful registration
+     * The following code only redirects the successully registered user to the login page
+     */
     const submitForm = async (e) => {
         e.preventDefault();
+        // On method call, we want to set the error state back to false to prevent the error from persisting
         setErrorState(false);
         try {
+            // Create a new user object to be sent to the API call
             const requestsCompleted = 0;
             const newRegisteredUser = { firstName, lastName, email, password, requestsCompleted }
             await axios.post('/api/user/register', newRegisteredUser)
+            // If API call is successul, then redirect user to the login page
             history.push('/login')
         } catch (err) {
+            // If an error occurs, set the error to error received from backend and then setError state to true to render error
             err.response.data.error && setError(err.response.data.error)
             setErrorState(true);
         }

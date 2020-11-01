@@ -37,21 +37,21 @@ export default function Login() {
      */
     const submitForm = async (e) => {
         e.preventDefault();
-        //On method call, we want to set the error state back to false to prevent the error from persisting
+        // On method call, we want to set the error state back to false to prevent the error from persisting
         setErrorState(false);
         try {
-            //If the API call to login is successful, populate Context values with the result of the call
+            // If the API call to login is successful, populate Context values with the result of the call
             const userLogin = { email, password };
             const login = await axios.post('/api/user/login', userLogin);
             setUserDetails({
                 token: login.data.success.token,
                 user: login.data.success.user,
             });
-            //Set the JWT token generated from backend to localStorage, then redirect to homepage
+            // Set the JWT token generated from backend to localStorage, then redirect to homepage
             localStorage.setItem("token", login.data.success.token);
             history.push("/");
         } catch (err) {
-            //If an error occurs, set the value of the error to the error received from backend, then setErrorState true to render error component
+            // If an error occurs, set the value of the error to the error received from backend, then setErrorState true to render error component
             err.response.data.error && setError(err.response.data.error)
             setErrorState(true);
         }
