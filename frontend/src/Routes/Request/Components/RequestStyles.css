@@ -42,10 +42,6 @@
     color: rgb(224, 95, 70);
 }
 
-.Expired {
-    color: rgb(54, 40, 39)
-}
-
 form.request-form {
     display: inline-block;
     padding: 30px;

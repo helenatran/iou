@@ -27,16 +27,12 @@ const RequestSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ["Open", "Closed", "Expired"],
+        enum: ["Open", "Closed"], // note to self: can probably change this to Open: bool field
     },
     timeCreated: {
         type: Date,
         required: true,
         default: Date.now
-    },
-    requestExpiry: {
-        type: Date,
-        required: false
     },
     rewards: {
         type: Array,
