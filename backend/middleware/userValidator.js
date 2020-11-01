@@ -12,6 +12,7 @@ module.exports.registerUserValidator = [
         .trim()
         .isLength({ min: 2, max: 50 })
         .withMessage("Last name must be between 3 to 50 characters"),
+    // Use a custom check to determine if email exists
     check('email')
         .trim()
         .isEmail()
