@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import ButtonAppBar from './navBar/navBar';
 import UserContext from './Context/userContext';
+import {FavourTypeProvider} from './Context/favourTypesContext';
 import * as Routes from './Routes/routes'
 import axios from 'axios';
 import PrivateRoute from './Helpers/PrivateRoute';
@@ -16,8 +17,8 @@ function App() {
   const [ userDetails, setUserDetails ] = useState({
     token: undefined,
     user: undefined,
-  })
-  
+  });
+
 /* 
  * Authentication code to determine login status mainly from:
    - https://www.youtube.com/watch?v=sWfD20ortB4&ab_channel=Devistry
@@ -45,7 +46,7 @@ function App() {
           }});
         setUserDetails({
           token,
-          user: user.data,
+          user: user.data, // user data is id and firstname
         })
       }
     };
@@ -56,6 +57,7 @@ function App() {
     <div>
       <BrowserRouter>
         <UserContext.Provider value={{ userDetails, setUserDetails }}>
+        <FavourTypeProvider>
           <ButtonAppBar />
           <RouterSwitch>
             {/* Public Routes are routes that should only be seen by users not registered and not logged in */}
@@ -73,6 +75,7 @@ function App() {
             <Route path='/' component={Routes.Request} />
             <Route path='/request/' component={Routes.Request} />
           </RouterSwitch>
+        </FavourTypeProvider>
         </UserContext.Provider>
       </BrowserRouter>
     </div>

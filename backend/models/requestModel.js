@@ -27,7 +27,7 @@ const RequestSchema = new Schema({
     status: {
         type: String,
         required: true,
-        enum: ["Open", "Closed"], // note to self: can probably change this to Open: bool field
+        enum: ["Open", "Closed"],
     },
     timeCreated: {
         type: Date,
@@ -38,7 +38,6 @@ const RequestSchema = new Schema({
         type: Array,
         required: true
     }
-    // todo - add rewards array of one array element required
 }, {
     collection: 'requests'
 });

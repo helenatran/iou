@@ -1,14 +1,18 @@
 const { check, body } = require('express-validator');
 const mongoose = require('mongoose')
 const User = require('../models/userModel')
-//const Request = require('../models/requestModel');
 
+/**
+ * validator for inputs from the create requestform in the frontend
+ * requires: taskTitle, requesterUserId, status and rewardsarray
+ */
 module.exports.createRequestValidator = [
     check('taskTitle')
         .trim()
         .isLength({ min: 3, max: 30 })
         .withMessage("The task title must be between 3 and 30 characters long"),
     check('taskDescription')
+        .optional()
         .trim()
         .isLength({ min: 3, max: 100 })
         .withMessage("Please enter between 3 and 100 characters for the task description"),

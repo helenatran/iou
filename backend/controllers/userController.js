@@ -71,7 +71,10 @@ module.exports.loginUser = async (req, res) => {
     return res.json({
         success: {
             token,
-            user: { id: user._id },
+            user: {
+                id: user._id,
+                firstName: user.firstName
+            },
             message: 'Successful Authentication'
         }
     })
@@ -125,6 +128,7 @@ module.exports.findUserByID = async (req, res) => {
 
         return res.status(200).json({
             id: user._id,
+            firstName: user.firstName
         })
     } catch (error) {
         return res.status(500).json({
