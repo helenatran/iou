@@ -14,29 +14,51 @@ The project has been split into two halves, `backend` and `frontend`
 
 #### Folder Structure
 
-```
+```markdown
 src
-  │   app.ts        # App entry point and setup
-  └───middleware    # Middleware methods and functions
-  └───models        # ORM/db Models and classes
-  └───repositories  # Collection oriented data-access logic
-  └───routes        # HTTP RESTful endpoints
-  └───services      # Business logic
-  └───exceptions    # Custom exception classes
-  └───utls          # Helper functions and methods
+  └───controllers   # Business logic called by the REST API
+  └───middleware    # Middleware functions
+  └───models        # MongooseJS Schemas
+  └───routes        # REST API endpoints
+      server.js     # Start point of backend
+```
+
+### Frontend
+
+#### Folder Structure
+
+```markdown
+src
+  └───Context       # Context API
+  └───Helpers       # Useful helper functions
+  └───navBar        # Navigation bar rendering
+  └───Routes        # Components for different site features
+      index.js      # Start point of frontend
+      App.js        # Routing logic for frontend components
 ```
 
 ## How to run the project
 
-Make sure to install the npm packages in both the `frontend` and `backend` folders.
+### Prerequisites
 
-Run `npm install` in both folders.
+* Install packages by running `cd backend && npm install` and `cd frontend && npm install`
+* Create an optomised build for `frontend` by running `cd frontend && npm run-script build`
+* A `.env` file is needed in the `backend` folder to store environment variables like:
+  * ATLAS_URI - MongoDB Atlas connection string for database connectivity
+  * SALT_ROUNDS - Number of times to salt a plain text password
+  * JWT_SECRET - Secret key to sign JWT t
+  * AWS_BUCKET_NAME - AWS S3 Bucket Name
+  * AWS_ACCESS_KEY_ID - AWS S3 Bucket Access Key ID
+  * AWS_SECRET_ACCESS_KEY= AWS S3 Bucket Access Key
+  * AWS_Uploaded_File_URL_LINK - AWS S3 Bucket URL
 
-Then create the react production optimized build by running `npm run-script build`.
+### Starting the project
 
-Then run the project by typing `npm start` in the terminal.
+To start the project, first start the server by running `cd backend && node server.js`
 
-Note: A `.env` file is needed in the `backend` folder to contain the URI for the Atlas Database among other things that we don't want exposed to the public
+Then start the frontend by running `cd frontend && npm start`
+
+Navigate to `http://localhost:3000` in your browser to access the application
 
 ## Contributors
 
