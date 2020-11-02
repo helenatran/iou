@@ -64,7 +64,7 @@ const RequestInfo = () => {
 
         //cleanup
         return () => (isSubscribed = false);
-    }, []);
+    }, [requestId]);
     
     // add any updates that change into requestChanges state
     const updateRequestChanges = (fieldName, value) => {
