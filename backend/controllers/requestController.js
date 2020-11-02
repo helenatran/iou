@@ -49,8 +49,6 @@ module.exports.getAllRequests = (req,res) => {
  * GET request - requires id in the params
  */
 module.exports.getRequestbyId = (req, res) => {
-    console.log('get a request:')
-    console.log(req.params.id);
     requestCollection.findById(req.params.id)
         .then((request) => {
             res.status(200).send(request);
@@ -85,18 +83,35 @@ module.exports.UpdateRequest = (req, res) => {
 
 };
 
+/**
+ * Delete Request
+ * DELETE request - requires requestId field in the body
+ */
+module.exports.DeleteRequest = async (req, res) => {
+    await requestCollection.findById(req.params.id, function(err, request) {
+        if(!request)
+            return res.status(400).json({ message: "That request could not be found"})
+        request.deleteOne()
+            .then(request => {
+                res.status(200).json({ message: "The request has been successfully deleted"})
+            })
+            .catch(err => {
+                return res.status(400).json({ error: "The request could not be deleted"})
+            })
+    })
+};
+
+// increments request completed in user for leaderboard
 async function awardRequestCompleted(id) {
     User.findById(id, function(err, user) {
         if(!user) {  // not found
-            console.log("User not found");
+            return res.status(400).json({
+                error: [{
+                    error: 'User could not be found'
+                }]})
         }
-        console.log("before:" + user.requestsCompleted)
         user.requestsCompleted = user.requestsCompleted + 1;
-        console.log("after:" + user.requestsCompleted)
         user.save()
-            .then(user => {
-                console.log("Updated Requests Completed")
-            })
             .catch(err => {
                 console.log("Could not update the thing")
             });
@@ -130,21 +145,3 @@ function rewardsArrayValidator(rewardsArray) {
     }
     return true;
 }
-
-/**
- * Delete Request
- * DELETE request - requires requestId field in the body
- */
-module.exports.DeleteRequest = async (req, res) => {
-    await requestCollection.findById(req.params.id, function(err, request) {
-        if(!request)
-            return res.status(400).json({ message: "That request could not be found"})
-        request.deleteOne()
-            .then(request => {
-                res.status(200).json({ message: "The request has been successfully deleted"})
-            })
-            .catch(err => {
-                return res.status(400).json({ error: "The request could not be deleted"})
-            })
-    })
-};

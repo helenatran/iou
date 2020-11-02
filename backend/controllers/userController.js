@@ -50,7 +50,8 @@ module.exports.loginUser = async (req, res) => {
         success: {
             token,
             user: {
-                id: user._id
+                id: user._id,
+                firstName: user.firstName
             },
             message: 'Successful Authentication'
         }
@@ -85,24 +86,8 @@ module.exports.findUserByID = async (req, res) => {
             })
         return res.status(200).json({
             id: user._id,
+            firstName: user.firstName
         })
-    } catch (error) {
-        return res.status(500).json({
-            error: 'That user could not be found'
-        })
-    }
-}
-
-module.exports.getUserName = async (req, res) => {
-    try {
-        let encodedUserID = req.header("token");
-        let decodedToken = jwt.verify(encodedUserID, process.env.JWT_SECRET)
-        const user = await User.findById(decodedToken.id);
-        if (!user)
-            return res.status(404).json({
-                error: 'User could not be found'
-            })
-        return res.status(200).json(user.firstName)
     } catch (error) {
         return res.status(500).json({
             error: 'That user could not be found'

@@ -38,7 +38,6 @@ const RequestSchema = new Schema({
         type: Array,
         required: true
     }
-    // todo - add rewards array of one array element required
 }, {
     collection: 'requests'
 });
