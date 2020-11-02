@@ -46,7 +46,7 @@ src
 * A `.env` file is needed in the `backend` folder to store environment variables like:
   * ATLAS_URI - MongoDB Atlas connection string for database connectivity
   * SALT_ROUNDS - Number of times to salt a plain text password
-  * JWT_SECRET - Secret key to sign JWT t
+  * JWT_SECRET - Secret key to sign JWT token
   * AWS_BUCKET_NAME - AWS S3 Bucket Name
   * AWS_ACCESS_KEY_ID - AWS S3 Bucket Access Key ID
   * AWS_SECRET_ACCESS_KEY= AWS S3 Bucket Access Key
