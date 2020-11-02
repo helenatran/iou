@@ -10,7 +10,7 @@ import {FavourTypesContext} from '../../../Context/favourTypesContext';
 
 
 const AddReward = (props) => {
-    const [favourTypes, setFavourTypes] = useContext(FavourTypesContext);
+    const [favourTypes] = useContext(FavourTypesContext);
     const [newReward, setNewReward] = useState('');
 
     const handleAddReward = (e) => {
