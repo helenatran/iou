@@ -62,7 +62,6 @@ function App() {
             <PublicRoute path='/login' component={Routes.Login} />
             <PublicRoute path='/register' component={Routes.Register} />
             {/* Private Routes are routes that should only be seen by users that are logged in  */}
-            <PrivateRoute path='/account' component={Routes.Account} />
             <PrivateRoute path='/favours' exact component={Routes.Favour} />
             <PrivateRoute path='/favours/create' component={Routes.FavourForm} />
             <PrivateRoute path='/favours/:favourid/update' component={Routes.FavourUpdate} />
