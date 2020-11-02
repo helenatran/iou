@@ -59,6 +59,12 @@ form.request-form {
     padding: 30px 50px;
 }
 
+.add-reward {
+    margin: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
 .centered {
     margin: auto;
 }

@@ -1,4 +1,7 @@
 /*
+ * PrivateRoute code inspired by:
+   - https://medium.com/@thanhbinh.tran93/private-route-public-route-and-restricted-route-with-react-router-d50b27c15f5e
+   and from discussion on MS Teams
  * This helper method is used to secure routes from users who have not registered or logged in
  * Code in the useEffect block is run on startup with loading text used to provide feedback to the user
  * If a user is detected as being logged in, the component renders
