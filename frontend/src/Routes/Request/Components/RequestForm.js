@@ -34,7 +34,7 @@ const RequestForm = () => {
                 setUserName(userDetails.user.firstName);
             }
         }
-    });
+    },[userDetails.user]);
 
     const handleSubmit = e => {
         e.preventDefault();
