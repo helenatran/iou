@@ -1,5 +1,9 @@
 const User = require('../models/userModel');
 
+/**
+ * Get all existing users
+ * GET request that sorts users by descending order of requestsCompleted
+ */
 module.exports.getRank = (req, res) => {
     User.find({})
         .sort([["requestsCompleted", -1]])
