@@ -8,8 +8,6 @@ import IconButton from '@material-ui/core/IconButton';
 import { Link } from 'react-router-dom';
 import UserContext from "../Context/userContext";
 
-
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -24,8 +22,13 @@ const useStyles = makeStyles((theme) => ({
 
 export default function ButtonAppBar() {
   const classes = useStyles();
-  const { userDetails, setUserDetails } = useContext(UserContext); 
-
+  const { userDetails, setUserDetails } = useContext(UserContext);
+  /*
+   * Logout code from:
+     - https://www.youtube.com/watch?v=bppuE6rbO1c&ab_channel=Devistry
+     - https://github.com/jgbijlsma/mern-auth-template-front/blob/master/src/components/auth/AuthOptions.js
+   * Logging out just sets Context values to null and set's token in local storage to empty
+   */
   const logout = () => {
     setUserDetails({
       token: undefined,
@@ -43,7 +46,8 @@ export default function ButtonAppBar() {
           <Typography variant="h6" className={classes.title}>
             IOU
           </Typography>
-          { userDetails.user ? (
+          {/* Render the navigation bar based on the logged in status of the user */}
+          {userDetails.user ? (
             <>
               <Link to="/requests"><Button color="inherit">Requests</Button></Link>
               <Link to="/favours"><Button color="inherit">Favours</Button></Link>
@@ -51,13 +55,13 @@ export default function ButtonAppBar() {
               <Link to="/"><Button onClick={logout} color="inherit">Log out</Button></Link>
             </>
           ) : (
-            <>
-              <Link to="/login"><Button color="inherit">Login</Button></Link>
-              <Link to="/register"><Button color="inherit">Register</Button></Link>
-              <Link to="/requests"><Button color="inherit">Requests</Button></Link>
-              <Link to="/leaderboard"><Button color="inherit">Leaderboard</Button></Link>
-            </>
-          )}
+              <>
+                <Link to="/login"><Button color="inherit">Login</Button></Link>
+                <Link to="/register"><Button color="inherit">Register</Button></Link>
+                <Link to="/requests"><Button color="inherit">Requests</Button></Link>
+                <Link to="/leaderboard"><Button color="inherit">Leaderboard</Button></Link>
+              </>
+            )}
         </Toolbar>
       </AppBar>
     </div>

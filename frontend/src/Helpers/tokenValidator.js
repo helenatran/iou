@@ -1,3 +1,7 @@
+/*
+ * Helper method to check validity of the user's supplied token
+ * API call will return true if the token is valid
+ */
 import axios from 'axios';
 
 async function validateToken() {

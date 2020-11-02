@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FavourUpdate = (props) => {
     const classes = useStyles();
-    const [favour, setFavour] = useState(props.location.state.favour);
+    const [favour] = useState(props.location.state.favour);
     const [isCompleted, setIsCompleted] = useState(false);
     const [comments, setComments] = useState('');
     const [proof, setProof] = useState(null);

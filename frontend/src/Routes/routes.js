@@ -1,6 +1,5 @@
 export { default as Login } from './Login/Login'
 export { default as Register } from './Register/Register'
-export { default as Account } from './Account/Account'
 export { default as Favour } from './Favour/Favour'
 export { default as FavourForm } from './Favour/Components/FavourForm'
 export { default as FavourSingle } from './Favour/Components/FavourSingle'
