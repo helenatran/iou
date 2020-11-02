@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FavourList = (props) => {
     const classes = useStyles();
-    const [selectedFavour, setSelectedFavour] = useState({});
+    const [ setSelectedFavour ] = useState({});
 
     return (
         <div>

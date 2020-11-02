@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 
 const FavourSingle = (props) => {
     const classes = useStyles();
-    const [favour, setFavour] = useState(props.location.state.favour);
+    const [ favour ] = useState(props.location.state.favour);
 
     const deleteFavour = (event) => {
         event.preventDefault();
