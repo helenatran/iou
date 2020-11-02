@@ -28,7 +28,7 @@ module.exports.CreateRequest = (req,res) => {
 };
 
 /**
- * Get all requests (sorted by latest first)
+ * Get all open requests (sorted by latest first)
  * GET request - no need for params/body fields
  */
 module.exports.getAllRequests = (req,res) => {

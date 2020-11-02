@@ -40,7 +40,8 @@ const RequestForm = () => {
         e.preventDefault();
         
         setErrorState(false);
-
+        
+        // request payload with new request's details
         const newRequest = {
             taskTitle: taskTitle,
             taskDescription: taskDescription,
@@ -92,32 +93,32 @@ const RequestForm = () => {
 
     return (
         <div className="page-content-container">
-                
-                {errorState === true ? <ErrorNotice message={error} /> : ""}
-                <h1>Create a New Request</h1>
-                <Card>
-                    <form className="request-form" onSubmit={handleSubmit}>
-                        <TextField onChange={updateTaskTitle} label="Request" required id="standard-required" />
-                        <br />
-                        <TextField onChange={updateTaskDescription} label="Description" id="outlined-multiline-flexible" />
-                        <br />
-                        <br />
+            {errorState === true ? <ErrorNotice message={error} /> : ""}
+            
+            <h1>Create a New Request</h1>
+            <Card>
+                <form className="request-form" onSubmit={handleSubmit}>
+                    <TextField onChange={updateTaskTitle} label="Request" required id="standard-required" />
+                    <br />
+                    <TextField onChange={updateTaskDescription} label="Description" id="outlined-multiline-flexible" />
+                    <br />
+                    <br />
 
-                        <label>Reward: </label>
-                        
-                        <RewardsTable 
-                            requestStatus={status}
-                            rewards={rewards}
-                            handleDeleteReward={deleteReward}
-                            handleAddReward={addReward}
-                        />
-                        <br />
-                        <br />
-                        <Button disabled={!canSubmit()} variant="contained" color="primary" type="submit">Create</Button>
-                    </form>
-                </Card>
-                <Link to={'/'}><Button variant="contained">Back to all Requests</Button></Link>
-            </div>
+                    <label>Reward: </label>
+                    
+                    <RewardsTable 
+                        requestStatus={status}
+                        rewards={rewards}
+                        handleDeleteReward={deleteReward}
+                        handleAddReward={addReward}
+                    />
+                    <br />
+                    <br />
+                    <Button disabled={!canSubmit()} variant="contained" color="primary" type="submit">Create</Button>
+                </form>
+            </Card>
+            <Link to={'/'}><Button variant="contained">Back to all Requests</Button></Link>
+        </div>
     );
 }
 

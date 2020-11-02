@@ -24,12 +24,10 @@ const RewardsTable = (props) => {
     const { userDetails } = useContext(UserContext); 
 
     function isLoggedIn() {
-        if (userDetails.user) {
-            return true;
-        }
-        return false;
+        return userDetails.user.id ? true : false;
     }
 
+    // checks if the reward at the rewards[indexKey] belongs to the current logged in user
     function isRewardByCurrentUser(indexKey) {
         if (userDetails.user) {
             return userDetails.user.id === props.rewards[indexKey].rewarderId;
@@ -37,6 +35,7 @@ const RewardsTable = (props) => {
         return false;
     }
 
+    // renders delete button for each reward in the table
     const renderDeleteRewardButton = (indexKey) => {
         if (props.requestStatus === "Open" && isLoggedIn() && isRewardByCurrentUser(indexKey)) {
             return (
@@ -50,6 +49,7 @@ const RewardsTable = (props) => {
         }
     }
 
+    // extra conditions for rendering add reward component
     const renderAddRewards = () => {
         if (isLoggedIn()) {
             if (props.requestStatus === "Open" ) {

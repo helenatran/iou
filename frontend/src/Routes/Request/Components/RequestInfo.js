@@ -62,17 +62,18 @@ const RequestInfo = () => {
         }
         loadRequest();
 
+        //cleanup
         return () => (isSubscribed = false);
     }, []);
     
-    //updateReqeustChanges 
+    // add any updates that change into requestChanges state
     const updateRequestChanges = (fieldName, value) => {
         let newRequestChanges = requestChanges;
         newRequestChanges[fieldName] = value;
         setRequestChanges(newRequestChanges);
     }
 
-    //saverequestChanges
+    // makes web request to save any updates accumulated in requestChanges state
     const saveRequestUpdates = (onRequestClosureFunction) => {
         if (Object.keys(requestChanges).length > 0) {
             const payload = {
@@ -86,7 +87,7 @@ const RequestInfo = () => {
                 }
             })
             .then(res => {
-                if (onRequestClosureFunction) {
+                if (onRequestClosureFunction) { // extra actions for when request closes
                     onRequestClosureFunction();
                 }
             })
@@ -111,9 +112,9 @@ const RequestInfo = () => {
         saveRequestUpdates();
     }
 
-    //delete reward - indexKey:number - index of the reward to delete in rewards arrayt
+    //delete reward - indexKey:number - index of the reward to delete in rewards array
     const deleteReward = (indexKey) => {
-        if (rewards.length === 1) {
+        if (rewards.length === 1) { // if last reward is deleted, delete request too
             axios.delete(`/api/request/delete/${requestId}`, {
                 headers: {
                     "token": localStorage.getItem("token")
@@ -159,10 +160,10 @@ const RequestInfo = () => {
         }
     }
 
-    //complete request
+    //complete request 
     const completeRequest = (e) => {
         setStatus("Closed");
-        setCompleterUserId(userDetails.user.id);//redundant??
+        setCompleterUserId(userDetails.user.id);
 
         updateRequestChanges("status", status);
         updateRequestChanges("completerUserId", completerUserId);
@@ -171,7 +172,7 @@ const RequestInfo = () => {
         saveRequestUpdates(generateFavours);
     }
 
-    //generate favours
+    //generate favours for each reward in the newly closed request
     const generateFavours = () => {
         for (const rewardIndex in rewards) {
             const reward = rewards[rewardIndex];
@@ -186,7 +187,8 @@ const RequestInfo = () => {
             makeFavour(favourPayload);
         }
     }
-    //make favour
+
+    //make favour - helper function 
     const makeFavour = (favourPayload) => {
         let url = '/api/favours/withProof';
 
@@ -202,6 +204,7 @@ const RequestInfo = () => {
         })
     }
 
+    // checks if the current logged in user has promised a reward to this request
     const isRewarder = () => {
         if (rewards.length > 0) {
             for (const rewardIndex in rewards) {
@@ -214,8 +217,10 @@ const RequestInfo = () => {
         return false;
     };
 
+    // checks if request belongs to current logged in user
     const isRequester = () => (isLoggedIn() && (userDetails.user.id === requesterUserId));
 
+    // extra conditions check for rendering proof upload form
     const renderProofUploadForm = () => {
         if (status === "Closed") { //show proof
             return ( 
